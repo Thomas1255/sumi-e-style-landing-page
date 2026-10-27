@@ -1,0 +1,153 @@
+{
+  "purpose": "Three additional crane-perspective video drafts for user review; existing first clip retained.",
+  "provider": "Higgsfield",
+  "model": "seedance_2_5",
+  "status": "completed_awaiting_user_review",
+  "quoted_credits_total": 54,
+  "quoted_credits_each": 18,
+  "balance_before": 86,
+  "planned_duration_seconds": 6,
+  "resolution": "480p",
+  "upscaling_authorized": false,
+  "page_integration_in_this_iteration": false,
+  "original_video_job_id": "592db06f-520b-418c-8d4c-50a278751e56",
+  "references": [
+    {
+      "index": 2,
+      "file": "art-previews/perspectives/02-left-bank.png",
+      "media_id": "7d130aad-2a64-4841-a68a-d1774fb56544"
+    },
+    {
+      "index": 3,
+      "file": "art-previews/perspectives/03-right-bank.png",
+      "media_id": "ca5dcff1-56e9-4122-94da-5b0224fde615"
+    },
+    {
+      "index": 4,
+      "file": "art-previews/perspectives/04-high-overhead.png",
+      "media_id": "291ebaa8-2250-4d62-803a-cd73e4a54f3c"
+    }
+  ],
+  "requests": [
+    {
+      "index": 2,
+      "params": {
+        "model": "seedance_2_5",
+        "mode": "omni_reference",
+        "duration": 6,
+        "resolution": "480p",
+        "draft": true,
+        "aspect_ratio": "16:9",
+        "generate_audio": false,
+        "bitrate_mode": "standard",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "7d130aad-2a64-4841-a68a-d1774fb56544"
+          }
+        ],
+        "prompt": "Animate the EXACT NINE cranes from the approved reference artwork as a coherent flock in continuous natural flight. Preserve the Japanese sumi-e black ink and neutral gray wash, ivory feather masses, dry-brush tapered tips and small red ink crown on EVERY head. Keep nine distinct birds with long forward-stretched necks, beaks, two naturally connected wings, and two long thin legs trailing backward. Each bird has its own starting wingbeat phase and subtly different cadence, with occasional individual glides; never synchronized flapping or identical repeated poses. Smooth physical shoulder/elbow/wrist motion and natural feather flex, no rubbery distortion, no stiff puppet or joint-rigged look. The largest near lower-left crane must retain natural smooth wing anatomy, without curled or hump-like shoulders. Camera tracks with the flock so all nine remain comfortably inside the frame at their reference relative sizes and distances; no cuts, zooms or camera orbit. Preserve the reference perspective throughout. A completely uniform bright chroma-green background fills the entire frame for later compositing, including between all wings, legs and feathers: no gradients, noise, scenery, ground, shadows, text, paint splashes, new objects or extra birds. No morphing, merging, lost birds, cloned wings, or birds exiting the frame. Silent clip.\nPerspective 2: camera behind and to the RIGHT of the flock, viewing their backs and right flanks as they travel diagonally AWAY toward UPPER LEFT, with a gentle natural left bank. Keep this left-turn three-quarter view, and preserve individual wingbeat variety."
+      }
+    },
+    {
+      "index": 3,
+      "params": {
+        "model": "seedance_2_5",
+        "mode": "omni_reference",
+        "duration": 6,
+        "resolution": "480p",
+        "draft": true,
+        "aspect_ratio": "16:9",
+        "generate_audio": false,
+        "bitrate_mode": "standard",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "ca5dcff1-56e9-4122-94da-5b0224fde615"
+          }
+        ],
+        "prompt": "Animate the EXACT NINE cranes from the approved reference artwork as a coherent flock in continuous natural flight. Preserve the Japanese sumi-e black ink and neutral gray wash, ivory feather masses, dry-brush tapered tips and small red ink crown on EVERY head. Keep nine distinct birds with long forward-stretched necks, beaks, two naturally connected wings, and two long thin legs trailing backward. Each bird has its own starting wingbeat phase and subtly different cadence, with occasional individual glides; never synchronized flapping or identical repeated poses. Smooth physical shoulder/elbow/wrist motion and natural feather flex, no rubbery distortion, no stiff puppet or joint-rigged look. The largest near lower-left crane must retain natural smooth wing anatomy, without curled or hump-like shoulders. Camera tracks with the flock so all nine remain comfortably inside the frame at their reference relative sizes and distances; no cuts, zooms or camera orbit. Preserve the reference perspective throughout. A completely uniform bright chroma-green background fills the entire frame for later compositing, including between all wings, legs and feathers: no gradients, noise, scenery, ground, shadows, text, paint splashes, new objects or extra birds. No morphing, merging, lost birds, cloned wings, or birds exiting the frame. Silent clip.\nPerspective 3: camera behind and to the LEFT of the flock, viewing backs and left flanks as they travel diagonally AWAY toward UPPER RIGHT, with a gentle natural right bank. Keep this right-turn three-quarter view, and preserve the reference's distinct upstroke, downstroke and gliding birds."
+      }
+    },
+    {
+      "index": 4,
+      "params": {
+        "model": "seedance_2_5",
+        "mode": "omni_reference",
+        "duration": 6,
+        "resolution": "480p",
+        "draft": true,
+        "aspect_ratio": "16:9",
+        "generate_audio": false,
+        "bitrate_mode": "standard",
+        "count": 1,
+        "medias": [
+          {
+            "role": "image",
+            "value": "291ebaa8-2250-4d62-803a-cd73e4a54f3c"
+          }
+        ],
+        "prompt": "Animate the EXACT NINE cranes from the approved reference artwork as a coherent flock in continuous natural flight. Preserve the Japanese sumi-e black ink and neutral gray wash, ivory feather masses, dry-brush tapered tips and small red ink crown on EVERY head. Keep nine distinct birds with long forward-stretched necks, beaks, two naturally connected wings, and two long thin legs trailing backward. Each bird has its own starting wingbeat phase and subtly different cadence, with occasional individual glides; never synchronized flapping or identical repeated poses. Smooth physical shoulder/elbow/wrist motion and natural feather flex, no rubbery distortion, no stiff puppet or joint-rigged look. The largest near lower-left crane must retain natural smooth wing anatomy, without curled or hump-like shoulders. Camera tracks with the flock so all nine remain comfortably inside the frame at their reference relative sizes and distances; no cuts, zooms or camera orbit. Preserve the reference perspective throughout. A completely uniform bright chroma-green background fills the entire frame for later compositing, including between all wings, legs and feathers: no gradients, noise, scenery, ground, shadows, text, paint splashes, new objects or extra birds. No morphing, merging, lost birds, cloned wings, or birds exiting the frame. Silent clip.\nPerspective 4: camera HIGH ABOVE and behind the flock, looking down onto the upper backs and broad wing surfaces as the birds travel AWAY toward TOP CENTER. Keep the higher rear/overhead view throughout, necks reaching forward along the flight direction and legs trailing behind. Independent wingbeats and glide intervals."
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "index": 2,
+      "job_id": "fd1a24aa-be07-435e-994c-48399acac5bb",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_192640_fd1a24aa-be07-435e-994c-48399acac5bb.mp4",
+      "file": "art-previews/crane-video-02-left-bank-480p.mp4",
+      "actual": {
+        "duration_seconds": 6.042,
+        "width": 854,
+        "height": 480,
+        "fps": "24/1",
+        "codec": "hevc",
+        "size_bytes": 1696798,
+        "audio_present": false
+      }
+    },
+    {
+      "index": 3,
+      "job_id": "785d2f09-916b-4a35-a427-2b66d87f472f",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_192640_785d2f09-916b-4a35-a427-2b66d87f472f.mp4",
+      "file": "art-previews/crane-video-03-right-bank-480p.mp4",
+      "actual": {
+        "duration_seconds": 6.042,
+        "width": 854,
+        "height": 480,
+        "fps": "24/1",
+        "codec": "hevc",
+        "size_bytes": 2028325,
+        "audio_present": false
+      }
+    },
+    {
+      "index": 4,
+      "job_id": "392e7d7e-a345-415d-b8f1-19f81350c640",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_192640_392e7d7e-a345-415d-b8f1-19f81350c640.mp4",
+      "file": "art-previews/crane-video-04-high-overhead-480p.mp4",
+      "actual": {
+        "duration_seconds": 6.042,
+        "width": 854,
+        "height": 480,
+        "fps": "24/1",
+        "codec": "hevc",
+        "size_bytes": 1742568,
+        "audio_present": false
+      }
+    }
+  ],
+  "credits_spent_total": 54,
+  "confirmed_balance_after": 32,
+  "review_notes": [
+    "All three files are valid silent 854 x 480 video, 24 fps, 6.042 seconds.",
+    "The right-turn draft crowds the right edge early in the clip; review wing/formation framing before approving it.",
+    "These are green-background review drafts. No upscaling, further paid generation, or page integration was performed."
+  ]
+}
