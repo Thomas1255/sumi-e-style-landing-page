@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eee8da">
+  <meta name="description" content="Step into Stillwater, a living sumi-e and watercolor scroll. Four lives, one quiet pond, and a little room for wonder.">
+  <meta property="og:title" content="Stillwater — Where the water whispers">
+  <meta property="og:description" content="A living water scroll, told through cranes, frogs, carp, and goldfish.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://stillwater-pond-scroll.noblepuppy1024.chatgpt.site">
+  <title>Stillwater — Where the water whispers</title>
+  <link rel="icon" type="image/svg+xml" href="assets/seal.svg">
+  <link rel="preload" as="image" href="assets/pond-scroll.webp" fetchpriority="high">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+  <noscript><style>.chapter-tabs{display:none}.chapter-panel[hidden]{display:grid!important}.chapter-panel{border-top:1px solid #a9b09d}.next-chapter,.sound-toggle{display:none}</style></noscript>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the scroll</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Stillwater, back to the beginning">
+      <span class="brand-seal" lang="ja" aria-hidden="true">水</span>
+      <span class="brand-name">STILLWATER<span class="brand-subtitle">AN INK & WATER STORY</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#story">The scroll</a>
+      <a href="#inhabitants">The inhabitants</a>
+      <a href="#epilogue">A quiet thought</a>
+    </nav>
+    <a class="header-action" href="#inhabitants">Enter the garden <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-art" role="img" aria-label="A sumi-e watercolor pond: white cranes in the shallows, a green frog on a mossy stone, and bronze carp and red goldfish beneath a misty mountain landscape."></div>
+      <div class="hero-wash" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="tiny-line"></span>A LIVING WATER SCROLL <span class="edition">/ 002</span></p>
+        <h1 id="hero-title">Where the<br>water<br><em>whispers.</em></h1>
+        <p class="hero-description">A quiet world, painted in ink and water.<br>Four lives, woven into the rhythm of one pond.</p>
+        <a class="unfold-link" href="#story"><span class="round-arrow" aria-hidden="true">↓</span><span>Unfold the scroll</span></a>
+      </div>
+      <div class="hero-calligraphy" aria-hidden="true"><span lang="ja">水の庭</span><span class="little-seal" lang="ja">静</span></div>
+      <div class="hero-margin-note" aria-hidden="true">NEO-TRADITIONAL SUMI-E & WATERCOLOR</div>
+      <div class="hero-bottom">
+        <div class="hero-caption"><span class="small-index">一</span><span>EVERY SMALL LIFE.<br>AN ENDLESS STORY.</span></div>
+        <p class="slow-note">Move slowly. <em>There is so much to notice.</em></p>
+        <button class="sound-toggle" type="button" aria-pressed="false" aria-label="Turn on ambient pond sounds">
+          <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="sound-label">Sound off</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="prologue page-width" id="story" aria-labelledby="prologue-title">
+      <div class="section-marker reveal"><span>THE FIRST RIPPLE</span><span class="marker-rule"></span><span>序</span></div>
+      <div class="prologue-grid">
+        <h2 class="reveal" id="prologue-title">Nothing is still.<br><em>Everything belongs.</em></h2>
+        <div class="prologue-text reveal"><p>At first, only a wash of blue. Then a wing unfolds, a reed trembles, a flash of red slips beneath the surface.</p><p>Look a little closer. This pond is a whole world, and every creature has a story to tell.</p><a class="text-link" href="#inhabitants">Meet the inhabitants <span aria-hidden="true">↘</span></a></div>
+      </div>
+      <div class="water-line" aria-hidden="true"><svg viewBox="0 0 1200 35" preserveAspectRatio="none"><path d="M0 18Q150 2 300 18T600 18T900 18T1200 18"/><path d="M0 24Q150 9 300 24T600 24T900 24T1200 24"/></svg></div>
+    </section>
+
+    <section class="inhabitants page-width" id="inhabitants" aria-labelledby="inhabitants-title">
+      <div class="inhabitants-heading reveal"><div><p class="eyebrow">FOUR PASSAGES · ONE POND</p><h2 id="inhabitants-title">Lives along the water.</h2></div><p>A small field guide to<br>the art of simply being.</p></div>
+      <div class="chapter-tabs" role="tablist" aria-label="Choose an inhabitant">
+        <button class="chapter-tab is-active" id="tab-crane" type="button" role="tab" aria-selected="true" aria-controls="panel-crane" tabindex="0" data-chapter="crane"><span class="tab-index">01</span><span class="tab-name">The crane<span class="tab-aside">A moment of grace</span></span><span class="tab-kanji" lang="ja" aria-hidden="true">鶴</span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+        <button class="chapter-tab" id="tab-frog" type="button" role="tab" aria-selected="false" aria-controls="panel-frog" tabindex="-1" data-chapter="frog"><span class="tab-index">02</span><span class="tab-name">The frog<span class="tab-aside">A little leap of faith</span></span><span class="tab-kanji" lang="ja" aria-hidden="true">蛙</span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+        <button class="chapter-tab" id="tab-carp" type="button" role="tab" aria-selected="false" aria-controls="panel-carp" tabindex="-1" data-chapter="carp"><span class="tab-index">03</span><span class="tab-name">The carp<span class="tab-aside">The quiet strength</span></span><span class="tab-kanji" lang="ja" aria-hidden="true">鯉</span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+        <button class="chapter-tab" id="tab-goldfish" type="button" role="tab" aria-selected="false" aria-controls="panel-goldfish" tabindex="-1" data-chapter="goldfish"><span class="tab-index">04</span><span class="tab-name">The goldfish<span class="tab-aside">A flicker of joy</span></span><span class="tab-kanji" lang="ja" aria-hidden="true">金魚</span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+      </div>
+
+      <div class="chapter-panels">
+        <article class="chapter-panel" id="panel-crane" role="tabpanel" aria-labelledby="tab-crane" tabindex="0">
+          <div class="chapter-copy"><p class="chapter-label">PASSAGE 01 <span>THE AIR ABOVE</span></p><h3>Grace, between<br><em>sky and water.</em></h3><p class="chapter-description">A white wing catches the first light. The crane steps through its own reflection, leaving a circle where the stillness used to be.</p><p class="chapter-poem">To move with such care<br>that the world barely stirs.</p><button class="next-chapter text-link" type="button" data-next="frog">Follow the next ripple <span aria-hidden="true">→</span></button></div>
+          <figure class="chapter-art crane-art"><img src="assets/pond-scroll.webp" width="1536" height="1024" loading="lazy" alt="Two white, red-crowned cranes standing in a watercolor pond beneath a pine tree."><figcaption><span>PLATE I · THE CRANE</span><span lang="ja">鶴</span></figcaption></figure>
+        </article>
+        <article class="chapter-panel" id="panel-frog" role="tabpanel" aria-labelledby="tab-frog" tabindex="0" hidden>
+          <div class="chapter-copy"><p class="chapter-label">PASSAGE 02 <span>THE MOSSY BANK</span></p><h3>A small leap.<br><em>A whole new world.</em></h3><p class="chapter-description">On a moss-soft stone, a little green dreamer watches the water. A breath, a pause, a leap. The pond opens its arms.</p><p class="chapter-poem">Even the smallest arrival<br>can change the surface of things.</p><button class="next-chapter text-link" type="button" data-next="carp">Follow the next ripple <span aria-hidden="true">→</span></button></div>
+          <figure class="chapter-art"><img src="assets/frog.webp" width="1536" height="1024" loading="lazy" alt="A green frog on a mossy river stone, beside a pale pink lotus and delicate grasses."><figcaption><span>PLATE II · THE FROG</span><span lang="ja">蛙</span></figcaption></figure>
+        </article>
+        <article class="chapter-panel" id="panel-carp" role="tabpanel" aria-labelledby="tab-carp" tabindex="0" hidden>
+          <div class="chapter-copy"><p class="chapter-label">PASSAGE 03 <span>THE WORLD BELOW</span></p><h3>Find your flow.<br><em>Keep your course.</em></h3><p class="chapter-description">Beneath the floating leaves, bronze scales turn like old coins in the light. The carp knows the patient language of the current.</p><p class="chapter-poem">There is a kind of strength<br>that never needs to make a sound.</p><button class="next-chapter text-link" type="button" data-next="goldfish">Follow the next ripple <span aria-hidden="true">→</span></button></div>
+          <figure class="chapter-art"><img src="assets/carp.webp" width="1536" height="1024" loading="lazy" alt="Two dark bronze common carp gliding through blue-green water and flowing aquatic grasses."><figcaption><span>PLATE III · THE CARP</span><span lang="ja">鯉</span></figcaption></figure>
+        </article>
+        <article class="chapter-panel" id="panel-goldfish" role="tabpanel" aria-labelledby="tab-goldfish" tabindex="0" hidden>
+          <div class="chapter-copy"><p class="chapter-label">PASSAGE 04 <span>A LITTLE LIGHT</span></p><h3>Some things exist<br><em>just to bring joy.</em></h3><p class="chapter-description">A ribbon of vermilion slips through the blue. Then another. The goldfish ask for nothing but a little room to dance.</p><p class="chapter-poem">Let the ordinary world<br>surprise you with its color.</p><a class="text-link" href="#epilogue">Carry the stillness with you <span aria-hidden="true">→</span></a></div>
+          <figure class="chapter-art"><img src="assets/goldfish.webp" width="1536" height="1024" loading="lazy" alt="Three vermilion goldfish with flowing translucent fins among dark lotus leaves in pale blue water."><figcaption><span>PLATE IV · THE GOLDFISH</span><span lang="ja">金魚</span></figcaption></figure>
+        </article>
+      </div>
+      <p class="field-note"><span class="little-dot" aria-hidden="true"></span> A FIELD NOTE <span class="field-note-line"></span> Different lives. The same water.</p>
+    </section>
+
+    <section class="epilogue" id="epilogue" aria-labelledby="epilogue-title">
+      <div class="epilogue-rings" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="epilogue-inner reveal"><span class="epilogue-seal" lang="ja" aria-hidden="true">余白</span><p class="eyebrow">THE SCROLL ENDS. THE WATER GOES ON.</p><h2 id="epilogue-title">Leave a little room<br><em>for wonder.</em></h2><p>Not every moment needs to become something.<br>Some are simply meant to be lived.</p><a class="unfold-link" href="#top"><span class="round-arrow" aria-hidden="true">↑</span><span>Return to the water</span></a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer page-width"><a class="footer-brand" href="#top">STILLWATER <span lang="ja">水の庭</span></a><p>A study in ink, water & the art of slowing down.</p><a href="#top" aria-label="Back to top">BACK TO THE BEGINNING <span aria-hidden="true">↑</span></a></footer>
+  <div class="ripple-layer" aria-hidden="true"></div>
+</body>
+</html>
