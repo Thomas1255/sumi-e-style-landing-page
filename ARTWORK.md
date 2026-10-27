@@ -1,5 +1,7 @@
 # Stillwater artwork
 
+The current scroll-driven crane experience uses the new panorama and transparent crane atlas documented in [FLIGHT-ARTWORK.md](FLIGHT-ARTWORK.md). The earlier pond paintings below are retained as project assets.
+
 Created with the built-in ImageGen tool. The four final paintings are saved as optimized WebP assets in `dist/assets/`: `pond-scroll.webp`, `frog.webp`, `carp.webp`, and `goldfish.webp`. The original generated PNGs remain in the tool's generated-images directory. No external imagery or stock photos are used.
 
 ## Hero: pond-scroll.webp
