@@ -1,0 +1,11 @@
+# Stillwater
+
+A neo-traditional sumi-e and watercolor scroll inspired by the supplied river story. Follow a flock of nine simple ink-and-water cranes through wetlands, golden terraces, autumn forest and a mountain gorge. Scroll drives the painted scenery, staggered wingbeats and glides. Story text hangs on linen with the supplied Canvas UI Cloth effect, while Canvas UI Clouds adds drifting mist and cursor wind.
+
+Includes chapter navigation, a keyboard-accessible flight slider, reduced-motion support, readable WebGL fallbacks and opt-in water audio. No Higgsfield credits have been spent.
+
+Run `npm run dev` and open http://localhost:5173. No dependency installation is required. Run `npm run build` to validate. Deployable files live in `stillwater/dist/`.
+
+Current implementation details are in `stillwater/REDESIGN.md`. Selected artwork and exact built-in ImageGen prompts are in `stillwater/FLOCK-ARTWORK.md`. Earlier art studies and prompts are retained separately.
+
+Repository: [Thomas1255/sumi-e-style-landing-page](https://github.com/Thomas1255/sumi-e-style-landing-page). The Git repository covers this entire workspace, with the site in `stillwater/`. Project work should be checked, committed, and pushed as described in `AGENTS.md`.

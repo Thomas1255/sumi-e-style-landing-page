@@ -8,7 +8,7 @@ export const CLOUD_OPTIONS = Object.freeze({
   cover: .1,
   density: 2.5,
   shading: .1,
-  opacity: .64,
+  opacity: .28,
   shadow: .06,
   shadowOffsetX: 200,
   shadowOffsetY: -10,

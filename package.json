@@ -1,12 +1,12 @@
 {
-  "name": "stillwater",
+  "name": "stillwater-landing-page",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs",
-    "start": "node server.mjs",
-    "build": "node scripts/check.mjs",
-    "check": "node scripts/check.mjs"
+    "dev": "node stillwater/server.mjs",
+    "start": "node stillwater/server.mjs",
+    "build": "node stillwater/scripts/check.mjs",
+    "check": "node stillwater/scripts/check.mjs"
   }
 }

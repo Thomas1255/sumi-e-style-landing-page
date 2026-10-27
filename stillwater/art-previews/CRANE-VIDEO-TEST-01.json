@@ -1,0 +1,35 @@
+{
+  "purpose": "First crane flight video test for user review; no website integration yet.",
+  "provider": "Higgsfield",
+  "model": "seedance_2_5",
+  "job_id": "592db06f-520b-418c-8d4c-50a278751e56",
+  "status": "completed",
+  "approved_credits": 24,
+  "quoted_credits": 24,
+  "outputs_authorized": 1,
+  "reference_file": "art-previews/crane-flock-varied-poses-v4.png",
+  "reference_media_id": "74e5c68a-6101-4a0d-8419-8771699d5807",
+  "params": {
+    "prompt": "Animate the approved nine-crane sumi-e ink flock, each crane keeping its red ink crown, with independent naturally staggered wingbeats, different subtle cadences and occasional glides. Rear-following camera; preserve hand-painted ink texture and nine distinct birds. Locked formation framing on a completely uniform bright chroma-green background for compositing over the existing watercolor landscapes. No scenery, no new birds, no camera cuts, no morphing, no joint-rigged appearance.",
+    "aspect_ratio": "16:9",
+    "duration": 8,
+    "reference_images": [
+      "74e5c68a-6101-4a0d-8419-8771699d5807"
+    ],
+    "mode": "omni_reference",
+    "resolution": "480p",
+    "generate_audio": false,
+    "bitrate_mode": "standard",
+    "draft": true
+  },
+  "user_review_required_before": [
+    "another paid generation",
+    "upscaling",
+    "integrating the test into the page"
+  ],
+  "note": "Green backdrop is intentional for compositing; the existing landscape artwork is retained.",
+  "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_081653_592db06f-520b-418c-8d4c-50a278751e56.mp4",
+  "actual": { "duration_seconds": 8.042, "width": 854, "height": 480, "fps": 24, "codec": "hevc", "size_bytes": 2026037 },
+  "credits_spent": 24,
+  "confirmed_balance_after": 86
+}
