@@ -1,21 +1,13 @@
 // The paintings contain the correct perspective. A restrained depth-dependent
 // dolly moves near riverbanks faster than peaks without flattening the artwork.
+import { sceneState } from './flight-timeline.js';
 export const SCENES=Object.freeze([
   'assets/flight-wetlands.webp','assets/flight-terraces.webp',
   'assets/flight-forest.webp','assets/flight-peaks.webp'
 ]);
-const CUTS=[.18,.43,.68],DISSOLVE=.095;
-const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
-const ease=t=>t*t*(3-2*t);
 export function routeCamera(progress,reducedMotion=false){
-  const p=reducedMotion?0:clamp(Number.isFinite(progress)?progress:0);
-  let index=0,blend=0;
-  for(let i=0;i<CUTS.length;i++){
-    const start=CUTS[i]-DISSOLVE/2,end=CUTS[i]+DISSOLVE/2;
-    if(p>=end)index=i+1;
-    else if(p>start){index=i;blend=ease((p-start)/DISSOLVE);break;}
-  }
-  return {progress:p,index,next:Math.min(3,index+1),blend,x:Math.sin(p*Math.PI*2.3)*.010,z:p*1000};
+  const scene=sceneState(progress,reducedMotion),p=scene.progress;
+  return {...scene,x:Math.sin(p*Math.PI*2.3)*.010,z:p*1000};
 }
 const VERT=`
 attribute vec2 aPosition;

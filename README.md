@@ -1,8 +1,8 @@
 # Stillwater
 
-A neo-traditional sumi-e and watercolor scroll inspired by the supplied river story. Follow a flock of nine simple ink-and-water cranes through wetlands, golden terraces, autumn forest and a mountain gorge. Scroll drives the painted scenery, staggered wingbeats and glides. Story text hangs on linen with the supplied Canvas UI Cloth effect, while Canvas UI Clouds adds drifting mist and cursor wind.
+A neo-traditional sumi-e and watercolor scroll inspired by the supplied river story. Follow nine ink-painted cranes through wetlands, golden terraces, autumn forest and a mountain gorge. Four approved, generated 1080p films provide the flight motion and changing perspectives. Scrolling advances or reverses each film; stopping holds its frame. Story text hangs on linen with the supplied Canvas UI Cloth effect, while Canvas UI Clouds adds drifting mist and cursor wind.
 
-Includes chapter navigation, a keyboard-accessible flight slider, reduced-motion support, readable WebGL fallbacks and opt-in water audio. No Higgsfield credits have been spent.
+Includes chapter navigation, a keyboard-accessible flight slider, reduced-motion support, transparent painted fallbacks and opt-in water audio. The original video drafts, upscales, prompts and credit records are preserved in `stillwater/art-previews/`. Integration uses the existing approved videos and requires no new generation.
 
 Run `npm run dev` and open http://localhost:5173. No dependency installation is required. Run `npm run build` to validate. Deployable files live in `stillwater/dist/`.
 

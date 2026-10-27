@@ -26,3 +26,6 @@ main{position:relative}.panel{position:relative;padding:160px var(--pad);min-hei
 .hero-calligraphy{color:#65715f9c}
 main{overflow-x:clip;overflow-y:visible}
 .stage{background:#eee8da url('assets/flight-wetlands.webp') 57% 50%/cover no-repeat}
+/* Paused films are decoded offscreen; WebGL removes their green backing. */
+.flight-decoder{position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-2}
+#flight-poster{position:absolute;z-index:2;pointer-events:none;object-fit:contain;width:62%;left:35%;top:28%;height:45%}
