@@ -1,4 +1,5 @@
 import { flightState, clamp } from './flight-model.js';
+import { mountPageClouds } from './page-clouds.js';
 const canvas = document.querySelector('#flight-canvas');
 const ctx = canvas.getContext('2d', { alpha:false });
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -117,6 +118,7 @@ addEventListener('scroll',schedule,{passive:true});addEventListener('resize',res
 atlas.addEventListener('load',schedule);
 controls.addEventListener('input',()=>{scrollTo({top:Number(controls.value)/1000*(document.documentElement.scrollHeight-innerHeight),behavior:'instant'});update();});
 resize();
+mountPageClouds(document.querySelector('#clouds-canvas'));
 // Opt-in ambient water sound; the animation itself is driven only by scrolling.
 const soundButton=document.querySelector('.sound-toggle'),soundLabel=document.querySelector('.sound-label');let audio,volume,dropTimer,playing=false;
 function createPond(){const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)throw new Error('Audio unavailable');audio=new AudioContext();volume=audio.createGain();volume.gain.value=0;volume.connect(audio.destination);const buffer=audio.createBuffer(1,audio.sampleRate*5,audio.sampleRate),channel=buffer.getChannelData(0);let previous=0;for(let i=0;i<channel.length;i++){previous=(previous+.025*(Math.random()*2-1))/1.025;channel[i]=previous*3;}const source=audio.createBufferSource();source.buffer=buffer;source.loop=true;const water=audio.createBiquadFilter();water.type='lowpass';water.frequency.value=740;source.connect(water);water.connect(volume);source.start();}

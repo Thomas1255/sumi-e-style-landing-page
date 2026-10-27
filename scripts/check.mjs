@@ -11,6 +11,8 @@ const css = await readFile(path.join(root, 'styles.css'), 'utf8');
 const js = await readFile(path.join(root, 'app.js'), 'utf8');
 execFileSync(process.execPath, ['--check', path.join(root, 'app.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'flight-model.js')]);
+execFileSync(process.execPath, ['--check', path.join(root, 'clouds.js')]);
+execFileSync(process.execPath, ['--check', path.join(root, 'page-clouds.js')]);
 const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
 if (new Set(ids).size !== ids.length) throw new Error('Duplicate document IDs');
 for (const match of html.matchAll(/(?:src|href)="([^"#]+)"/g)) {
@@ -38,4 +40,4 @@ for (let frame = 0; frame <= 359; frame++) {
   assert(Object.values(state).every(Number.isFinite), `Nonfinite value in frame ${frame}`);
   assert(state.x > 0 && state.x < 1 && state.y > 0 && state.y < 1, 'Crane must stay in the frame');
 }
-console.log('Verified assets, anchors, syntax, all 360 flight frames, reversible scrubbing, changing wingbeats/camera, and reduced-motion behavior.');
+console.log('Verified assets, anchors, cloud module syntax, all 360 flight frames, reversible scrubbing, and reduced-motion behavior.');
