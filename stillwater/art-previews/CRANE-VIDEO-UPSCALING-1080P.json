@@ -1,0 +1,215 @@
+{
+  "purpose": "Upscale all four approved crane flight clips to 1080p, preserving their existing motion and 24 fps.",
+  "provider": "Higgsfield",
+  "model": "bytedance_video_upscale",
+  "status": "completed",
+  "model_version": "standard",
+  "preset": "aigc",
+  "target_resolution": "1080p",
+  "fps": 24,
+  "balance_before": 32,
+  "quoted_credits_total": 5.2,
+  "quotes": [
+    {
+      "index": 1,
+      "credits": 1.6
+    },
+    {
+      "index": 2,
+      "credits": 1.2
+    },
+    {
+      "index": 3,
+      "credits": 1.2
+    },
+    {
+      "index": 4,
+      "credits": 1.2
+    }
+  ],
+  "sources": [
+    {
+      "index": 1,
+      "name": "rear-follow",
+      "job_id": "592db06f-520b-418c-8d4c-50a278751e56",
+      "duration": 8,
+      "file": "art-previews/crane-video-test-01-480p.mp4"
+    },
+    {
+      "index": 2,
+      "name": "left-bank",
+      "job_id": "fd1a24aa-be07-435e-994c-48399acac5bb",
+      "duration": 6,
+      "file": "art-previews/crane-video-02-left-bank-480p.mp4"
+    },
+    {
+      "index": 3,
+      "name": "right-bank",
+      "job_id": "785d2f09-916b-4a35-a427-2b66d87f472f",
+      "duration": 6,
+      "file": "art-previews/crane-video-03-right-bank-480p.mp4"
+    },
+    {
+      "index": 4,
+      "name": "high-overhead",
+      "job_id": "392e7d7e-a345-415d-b8f1-19f81350c640",
+      "duration": 6,
+      "file": "art-previews/crane-video-04-high-overhead-480p.mp4"
+    }
+  ],
+  "requests": [
+    {
+      "index": 1,
+      "params": {
+        "model": "bytedance_video_upscale",
+        "duration": 8,
+        "resolution": "1080p",
+        "fps": 24,
+        "preset": "aigc",
+        "model_version": "standard",
+        "count": 1,
+        "medias": [
+          {
+            "role": "video",
+            "value": "592db06f-520b-418c-8d4c-50a278751e56"
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "params": {
+        "model": "bytedance_video_upscale",
+        "duration": 6,
+        "resolution": "1080p",
+        "fps": 24,
+        "preset": "aigc",
+        "model_version": "standard",
+        "count": 1,
+        "medias": [
+          {
+            "role": "video",
+            "value": "fd1a24aa-be07-435e-994c-48399acac5bb"
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "params": {
+        "model": "bytedance_video_upscale",
+        "duration": 6,
+        "resolution": "1080p",
+        "fps": 24,
+        "preset": "aigc",
+        "model_version": "standard",
+        "count": 1,
+        "medias": [
+          {
+            "role": "video",
+            "value": "785d2f09-916b-4a35-a427-2b66d87f472f"
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "params": {
+        "model": "bytedance_video_upscale",
+        "duration": 6,
+        "resolution": "1080p",
+        "fps": 24,
+        "preset": "aigc",
+        "model_version": "standard",
+        "count": 1,
+        "medias": [
+          {
+            "role": "video",
+            "value": "392e7d7e-a345-415d-b8f1-19f81350c640"
+          }
+        ]
+      }
+    }
+  ],
+  "original_videos_preserved": true,
+  "page_integration_in_this_iteration": false,
+  "jobs": [
+    {
+      "index": 1,
+      "job_id": "112e79d8-dd34-4879-b4c4-9459b5ed4aa8",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_193622_112e79d8-dd34-4879-b4c4-9459b5ed4aa8.mp4",
+      "file": "art-previews/crane-video-01-rear-follow-1080p.mp4",
+      "actual": {
+        "duration_seconds": 8.042,
+        "width": 1918,
+        "height": 1080,
+        "fps": "24/1",
+        "frames": 193,
+        "codec": "h264",
+        "size_bytes": 9721427,
+        "audio_present": false
+      }
+    },
+    {
+      "index": 2,
+      "job_id": "2164ea91-8fd9-4326-bce0-d6bb4a2b04ab",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_193622_2164ea91-8fd9-4326-bce0-d6bb4a2b04ab.mp4",
+      "file": "art-previews/crane-video-02-left-bank-1080p.mp4",
+      "actual": {
+        "duration_seconds": 6.042,
+        "width": 1918,
+        "height": 1080,
+        "fps": "24/1",
+        "frames": 145,
+        "codec": "h264",
+        "size_bytes": 7792155,
+        "audio_present": false
+      }
+    },
+    {
+      "index": 3,
+      "job_id": "8ebe9969-974e-4898-869b-de7036b8ce36",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_193624_8ebe9969-974e-4898-869b-de7036b8ce36.mp4",
+      "file": "art-previews/crane-video-03-right-bank-1080p.mp4",
+      "actual": {
+        "duration_seconds": 6.042,
+        "width": 1918,
+        "height": 1080,
+        "fps": "24/1",
+        "frames": 145,
+        "codec": "h264",
+        "size_bytes": 8568732,
+        "audio_present": false
+      }
+    },
+    {
+      "index": 4,
+      "job_id": "6c79abbd-16d7-4e90-9687-517de9587ac5",
+      "status": "completed",
+      "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3LDjmySYYdfplvkVhMrAJhb1a7y/hf_20261027_193623_6c79abbd-16d7-4e90-9687-517de9587ac5.mp4",
+      "file": "art-previews/crane-video-04-high-overhead-1080p.mp4",
+      "actual": {
+        "duration_seconds": 6.042,
+        "width": 1918,
+        "height": 1080,
+        "fps": "24/1",
+        "frames": 145,
+        "codec": "h264",
+        "size_bytes": 8181995,
+        "audio_present": false
+      }
+    }
+  ],
+  "confirmed_balance_after": 26.76,
+  "confirmed_credit_delta": 5.24,
+  "verification": [
+    "All four exports are H.264, 1918 x 1080, 24 fps, and silent.",
+    "The original 193/145-frame durations are retained: view 1 is 8.042 seconds; views 2-4 are 6.042 seconds.",
+    "Frame samples were visually inspected; the source framing and existing right-edge crowding are retained.",
+    "The four 480p originals remain unchanged. No new motion generation or website integration was performed."
+  ],
+  "billing_note": "Preflight quoted 5.2 credits total. The confirmed balance changed from 32 to 26.76, a decrease of 5.24 credits."
+}
