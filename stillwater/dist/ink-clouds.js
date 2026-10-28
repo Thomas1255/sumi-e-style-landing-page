@@ -2,6 +2,7 @@ import { clamp, SCENE_CUTS } from './flight-timeline.js';
 
 // Give the painted banks a longer scroll runway than the underlying scene dissolve.
 export const INK_CLOUD_SCROLL_SPAN = .20;
+export const INK_CLOUD_INTRO_SPAN = .05;
 
 // Six separately painted PNGs; none is mirrored. Entries are in back-to-front order.
 export const INK_CLOUD_LAYERS = Object.freeze([
@@ -21,11 +22,14 @@ export function inkCloudFrame(progress, viewportWidth, viewportHeight, reducedMo
   const p = reducedMotion ? 0 : clamp(Number.isFinite(progress) ? progress : 0);
   const halfSpan = INK_CLOUD_SCROLL_SPAN / 2;
   const cut = SCENE_CUTS.find(center => p > center - halfSpan && p < center + halfSpan);
+  const intro = !reducedMotion && p < INK_CLOUD_INTRO_SPAN;
   // The layers already ease their own motion; a linear phase avoids accelerating twice.
-  const phase = cut === undefined ? 0 : clamp((p - cut + halfSpan) / INK_CLOUD_SCROLL_SPAN);
+  const phase = intro ? .60 + .40 * p / INK_CLOUD_INTRO_SPAN
+    : cut === undefined ? 0 : clamp((p - cut + halfSpan) / INK_CLOUD_SCROLL_SPAN);
   const width = Math.max(1, viewportWidth), height = Math.max(1, viewportHeight);
   return {
-    active: cut !== undefined,
+    active: intro || cut !== undefined,
+    intro,
     phase,
     strength: interval(phase, [0, .46]) * (1 - interval(phase, [.60, 1])),
     layers: INK_CLOUD_LAYERS.map(layer => {
@@ -71,6 +75,7 @@ export function mountInkClouds(after) {
   function render() {
     const frame = inkCloudFrame(progress, innerWidth, innerHeight, reduced);
     root.dataset.active = String(frame.active);
+    root.dataset.intro = String(frame.intro);
     root.dataset.cloudPhase = frame.phase.toFixed(6);
     root.dataset.cloudTransition = frame.strength.toFixed(6);
     fallback.style.opacity = String(ready ? 0 : frame.strength * .985);
@@ -91,6 +96,7 @@ export function mountInkClouds(after) {
     results.forEach((result, index) => { planes[index].hidden = result.status === 'rejected'; });
     root.dataset.cloudState = ready ? 'ready' : 'fallback';
     render();
+    document.documentElement.classList.remove('cloud-intro-loading');
   });
   addEventListener('resize', render, { passive: true });
   render();
@@ -103,6 +109,7 @@ export function mountInkClouds(after) {
     destroy() {
       disposed = true;
       removeEventListener('resize', render);
+      document.documentElement.classList.remove('cloud-intro-loading');
       root.remove();
     }
   };

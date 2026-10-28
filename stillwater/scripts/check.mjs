@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength, flockTravel } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
-import { INK_CLOUD_LAYERS, INK_CLOUD_SCROLL_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
+import { INK_CLOUD_LAYERS, INK_CLOUD_SCROLL_SPAN, INK_CLOUD_INTRO_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const html = await readFile(path.join(root, 'index.html'), 'utf8');
@@ -70,7 +70,14 @@ assert.equal(new Set(INK_CLOUD_LAYERS.map(layer=>layer.src)).size,6,'Cloud layer
 assert(INK_CLOUD_SCROLL_SPAN>=SCENE_DISSOLVE*2,'Cloud transitions need at least twice the scroll distance of the landscape dissolve');
 assert(SCENE_CUTS.slice(1).every((cut,index)=>cut-SCENE_CUTS[index]>INK_CLOUD_SCROLL_SPAN),'Cloud sequences must leave clear space between scenes');
 for(const viewport of [[1280,720],[390,844],[2560,1080]]){
-  const sample=SCENE_CUTS.flatMap(cut=>[-.05,-.025,0,.025,.05].map(offset=>cut+offset));
+  const opening=inkCloudFrame(0,...viewport);
+  assert(opening.active && opening.intro && opening.strength===1,'The first view must start with the cloud banks fully closed');
+  assert(opening.layers.every(layer=>layer.closure===1),'All six clouds must cover the opening');
+  const introPoints=[0,.01,.02,.03,.04,INK_CLOUD_INTRO_SPAN];
+  const introFrames=introPoints.map(p=>inkCloudFrame(p,...viewport));
+  for(let i=1;i<introFrames.length;i++)assert(introFrames[i].layers.every((layer,index)=>layer.closure<=introFrames[i-1].layers[index].closure),'Opening clouds must part gradually as the user scrolls');
+  assert.equal(inkCloudFrame(0,...viewport,true).active,false,'Reduced motion must reveal the page immediately');
+  const sample=[...introPoints,...SCENE_CUTS.flatMap(cut=>[-.05,-.025,0,.025,.05].map(offset=>cut+offset))];
   assert.deepEqual(sample.map(p=>inkCloudFrame(p,...viewport)),[...sample].reverse().map(p=>inkCloudFrame(p,...viewport)).reverse(),'Cloud layers must retrace on reverse scroll');
   for(const cut of SCENE_CUTS){
     assert(inkCloudFrame(cut,...viewport).layers.every(layer=>layer.closure===1),'All cloud planes must overlap at every perspective cut');
@@ -82,7 +89,7 @@ for(const viewport of [[1280,720],[390,844],[2560,1080]]){
     const leaving=inkCloudFrame(cut+.05,...viewport).layers;
     assert(leaving[4].closure<leaving[2].closure && leaving[2].closure<leaving[0].closure,'Foreground clouds must clear ahead of the slower rear planes');
   }
-  for(const p of [0,.3,.55,.9,1]){
+  for(const p of [INK_CLOUD_INTRO_SPAN,.3,.55,.9,1]){
     const frame=inkCloudFrame(p,...viewport);
     assert.equal(frame.active,false,'Cloud banks must clear the landscape between scene cuts');
     assert(frame.layers.every((layer,index)=>INK_CLOUD_LAYERS[index].side==='left'?layer.x+layer.width<0:layer.x>viewport[0]),'Inactive banks must sit outside the viewport');

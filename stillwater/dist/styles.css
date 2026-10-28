@@ -38,3 +38,13 @@ main{overflow-x:clip;overflow-y:visible}
 .ink-cloud-transition[data-active=true] .ink-cloud-layer{will-change:transform}
 .ink-cloud-loading{position:absolute;inset:0;background:#f3eddf;opacity:0}
 @media(prefers-reduced-motion:reduce){.ink-cloud-transition{display:none}}
+/* A longer physical scroll gives the layered clouds time to travel across the view. */
+.hero{height:345svh;min-height:2700px}
+.hero-copy{position:sticky;top:150px}
+.passage{min-height:495svh}
+.epilogue{min-height:375svh}
+html.cloud-intro-loading::after{content:'';position:fixed;inset:0;z-index:14;pointer-events:none;background:#f3eddf}
+@media(min-width:1600px){.hero-copy{top:18vh}}
+@media(max-width:650px){.hero{height:375svh;min-height:2850px}.hero-copy{top:135px}.passage{min-height:525svh}}
+@media(prefers-reduced-motion:reduce){html.cloud-intro-loading::after{display:none}.hero{height:115svh;min-height:900px}.hero-copy{position:relative;top:auto}.passage{min-height:165svh}.epilogue{min-height:125svh}}
+@media(max-width:650px) and (prefers-reduced-motion:reduce){.hero{height:125svh;min-height:950px}.passage{min-height:175svh}}
