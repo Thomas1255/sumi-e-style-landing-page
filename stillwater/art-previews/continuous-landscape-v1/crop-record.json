@@ -1,0 +1,81 @@
+{
+  "status": "awaiting_user_approval",
+  "implemented": false,
+  "generator": "built-in ImageGen",
+  "master": "master.png",
+  "master_size": [
+    836,
+    1881
+  ],
+  "master_sha256": "41d2be08d39421f13aab524b7b5e08d2343f3ef7ef3c0b736f6df0a155f36ea8",
+  "order": "bottom-to-top",
+  "sections": [
+    {
+      "scene": 1,
+      "file": "01-wetlands-gates.png",
+      "bounds_xyxy": [
+        0,
+        1411,
+        836,
+        1881
+      ],
+      "size": [
+        836,
+        470
+      ],
+      "direction": "forward/rear-follow"
+    },
+    {
+      "scene": 2,
+      "file": "02-village-terraces.png",
+      "bounds_xyxy": [
+        0,
+        940,
+        836,
+        1411
+      ],
+      "size": [
+        836,
+        471
+      ],
+      "direction": "upper-left"
+    },
+    {
+      "scene": 3,
+      "file": "03-autumn-temples.png",
+      "bounds_xyxy": [
+        0,
+        470,
+        836,
+        940
+      ],
+      "size": [
+        836,
+        470
+      ],
+      "direction": "upper-right"
+    },
+    {
+      "scene": 4,
+      "file": "04-mountain-gorge.png",
+      "bounds_xyxy": [
+        0,
+        0,
+        836,
+        470
+      ],
+      "size": [
+        836,
+        470
+      ],
+      "direction": "higher aerial"
+    }
+  ],
+  "checks": {
+    "four_sections": true,
+    "full_master_coverage": true,
+    "no_overlap_or_gaps": true,
+    "pixel_exact_reassembly": true
+  },
+  "note": "Direct crops preserve continuity. Section heights differ by at most one pixel because the generated master is 836 by 1881."
+}
