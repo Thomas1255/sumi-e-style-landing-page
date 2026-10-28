@@ -1,7 +1,7 @@
 import { createClouds } from './clouds.js';
-import { sceneCloudStrength } from './flight-timeline.js';
+import { mountInkClouds } from './ink-clouds.js';
 
-// Gentle ambient clouds use the supplied settings; scene changes swell the same field.
+// Keep the supplied ambient mist gentle; separate painted layers conceal scene changes.
 export const CLOUD_OPTIONS = Object.freeze({
   scale: 1,
   speed: .6,
@@ -24,10 +24,7 @@ export function mountPageClouds(output) {
   if (!output) return null;
   const smallScreen = matchMedia('(max-width: 650px)');
   const source = document.createElement('canvas');
-  const fallback = document.createElement('div');
-  fallback.className = 'scene-cloud-fallback';
-  fallback.setAttribute('aria-hidden', 'true');
-  output.after(fallback);
+  const transition = mountInkClouds(output);
   let instance = null;
   let contextLost = false;
   let disposed = false;
@@ -35,15 +32,8 @@ export function mountPageClouds(output) {
   const quality = () => smallScreen.matches ? .5 : .8;
 
   function syncTransition() {
-    const strength = sceneCloudStrength(progress, reducedMotion);
-    instance?.setOptions({
-      transition: strength,
-      opacity: CLOUD_OPTIONS.opacity + (.985 - CLOUD_OPTIONS.opacity) * strength,
-      cover: CLOUD_OPTIONS.cover + .28 * strength,
-      wind: CLOUD_OPTIONS.wind * (1 - .94 * strength)
-    });
+    const strength = transition.setProgress(progress, reducedMotion);
     output.dataset.cloudTransition = strength.toFixed(6);
-    fallback.style.opacity = String(instance && !contextLost ? 0 : strength * .96);
   }
 
   function start() {
@@ -104,7 +94,7 @@ export function mountPageClouds(output) {
       removeEventListener('pagehide', onPageHide);
       removeEventListener('pageshow', onPageShow);
       output.hidden = true;
-      fallback.remove();
+      transition.destroy();
     }
   };
 }

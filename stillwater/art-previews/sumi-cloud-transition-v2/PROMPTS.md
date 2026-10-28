@@ -1,6 +1,6 @@
 # Layered sumi-e cloud studies — v2
 
-Status: artwork preview awaiting user approval. The site's transition is unchanged.
+Status: approved by the user and implemented in `dist/ink-clouds.js` on 2026-10-28. The six original PNGs are preserved unchanged; runtime copies live in `dist/assets/clouds/`.
 
 This revision replaces the proposed two flat cloud banks with six separately generated transparent PNGs. Each side has a rear, middle and foreground plane. These are independent animation assets, not flattened layers inside one image.
 
@@ -12,7 +12,7 @@ All six were generated with the built-in ImageGen tool. Only the approved landsc
 | Middle | Broad uneven domes | Hooked shelves and receding waist | Medium, conceals the cut |
 | Foreground | Low billow with projecting tongues | High arch with hanging folds | Fast, overlaps the other planes |
 
-The opacity, overlap, viewport fitting, scroll timing and speed differences must be visually tuned after artwork approval. The suggested numeric speed multipliers in the JSON record are design intentions, not a working animation.
+The runtime uses separate staggered closing/opening intervals for all six layers, a fully overlapped hold at each scene cut, and responsive viewport fitting. The numeric speed multipliers in the original JSON prompt record remain design intentions; `dist/ink-clouds.js` defines the implemented motion. Reduced motion hides the transition, and the existing ambient Canvas UI mist remains gentle.
 
 The previous v1 artwork is preserved in the adjacent folder.
 

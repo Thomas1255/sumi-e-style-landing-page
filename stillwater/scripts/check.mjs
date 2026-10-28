@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength, flockTravel } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
+import { INK_CLOUD_LAYERS, inkCloudFrame } from '../dist/ink-clouds.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const html = await readFile(path.join(root, 'index.html'), 'utf8');
@@ -14,9 +15,9 @@ execFileSync(process.execPath, ['--check', path.join(root, 'app.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'flight-model.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'clouds.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'page-clouds.js')]);
-for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
+for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
 // Resolve all relative module imports, including assets loaded from JavaScript.
-for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','page-cloth.js','page-clouds.js']) {
+for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','page-cloth.js','page-clouds.js','ink-clouds.js']) {
   const module = await readFile(path.join(root, filename), 'utf8');
   for (const match of module.matchAll(/(?:from\s+|import\s+)['"](\.\/[^'"]+)['"]/g)) await access(path.resolve(root, match[1]));
   for (const match of module.matchAll(/['"](assets\/[^'"]+)['"]/g)) await access(path.join(root,match[1]));
@@ -64,6 +65,25 @@ for(const cut of SCENE_CUTS){
   for(const offset of [.01,.025,.04])assert(Math.abs(sceneCloudStrength(cut-offset)-sceneCloudStrength(cut+offset))<1e-10,'The cloud wash must retrace symmetrically');
 }
 for(const p of [0,.3,.55,.9,1])assert.equal(sceneCloudStrength(p),0,'Ambient scenes must remain clear');
+assert.equal(INK_CLOUD_LAYERS.length,6,'Each side needs three independently painted cloud planes');
+assert.equal(new Set(INK_CLOUD_LAYERS.map(layer=>layer.src)).size,6,'Cloud layers must use six distinct artworks');
+for(const viewport of [[1280,720],[390,844],[2560,1080]]){
+  const sample=SCENE_CUTS.flatMap(cut=>[-.05,-.025,0,.025,.05].map(offset=>cut+offset));
+  assert.deepEqual(sample.map(p=>inkCloudFrame(p,...viewport)),[...sample].reverse().map(p=>inkCloudFrame(p,...viewport)).reverse(),'Cloud layers must retrace on reverse scroll');
+  for(const cut of SCENE_CUTS){
+    assert(inkCloudFrame(cut,...viewport).layers.every(layer=>layer.closure===1),'All cloud planes must overlap at every perspective cut');
+    assert.equal(inkCloudFrame(cut,...viewport,true).active,false,'Reduced motion must leave the clouds offscreen');
+    const entering=inkCloudFrame(cut-.02,...viewport).layers;
+    assert(entering[0].closure>entering[2].closure && entering[2].closure>entering[4].closure,'Rear, middle and front clouds need staggered arrival');
+    const leaving=inkCloudFrame(cut+.018,...viewport).layers;
+    assert(leaving[4].closure<leaving[2].closure && leaving[2].closure<leaving[0].closure,'Foreground clouds must clear ahead of the slower rear planes');
+  }
+  for(const p of [0,.3,.55,.9,1]){
+    const frame=inkCloudFrame(p,...viewport);
+    assert.equal(frame.active,false,'Cloud banks must clear the landscape between scene cuts');
+    assert(frame.layers.every((layer,index)=>INK_CLOUD_LAYERS[index].side==='left'?layer.x+layer.width<0:layer.x>viewport[0]),'Inactive banks must sit outside the viewport');
+  }
+}
 assert(!js.includes('drawFlock'),'The page must use the approved film, not jointed wings');
 const travelPoints=[0,.04,.08,.12,.16,.18];
 const travel=travelPoints.map(p=>flockTravel(0,p));
@@ -81,4 +101,4 @@ assert.deepEqual([0,.30,.55,.9].map(p=>routeCamera(p).index),[0,1,2,3],'The flig
 for(const scene of SCENES)await access(path.join(root,scene));
 assert.equal((html.match(/data-cloth/g)||[]).length,5,'Every story panel must have cloth');
 await import('./server-check.mjs');
-console.log('Verified assets, reversible video frames, four synchronized landscapes, mist transitions, five cloth panels, reduced motion, and HTTP video seeking.');
+console.log('Verified assets, reversible video frames, four synchronized landscapes, six staggered cloud layers, five cloth panels, reduced motion, and HTTP video seeking.');

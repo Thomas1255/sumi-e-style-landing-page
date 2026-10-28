@@ -1,5 +1,5 @@
 {
-  "status": "preview-awaiting-user-approval",
+  "status": "approved-and-implemented",
   "generated_date": "2026-10-28",
   "tool": "built-in image_gen.imagegen",
   "intent": "Six independently movable sumi-e PNG layers: rear, middle and foreground for each side, with different original silhouettes and wash patterns. No animation implementation in this artwork revision.",
@@ -7,12 +7,12 @@
   "reference": "../continuous-landscape-perspectives-v2/01-wetlands-rear-follow.png",
   "references_policy": "Each layer generated separately using only the landscape as style/palette reference. No left asset was used to generate its right partner, and no generated image was mirrored or transformed.",
   "animation_notes": {
-    "status": "proposal-only; implement and visually tune after approval",
+    "status": "implemented in dist/ink-clouds.js; actual staggered intervals and responsive layout are the runtime source of truth",
     "rear": "Light distant banks enter first, moving slowly.",
     "middle": "Dense cover banks overlap near the center to hide each scene cut.",
     "foreground": "Larger forms cross faster, overlapping the slower planes to create depth.",
     "speed_values": "Relative suggestions only; not tested motion timings.",
-    "coverage": "Viewport fitting and complete scene-cut coverage still require implementation and browser verification."
+    "coverage": "Middle banks overlap beyond center; measured viewport coverage and browser verification recorded in implementation notes."
   },
   "assets": [
     {
@@ -33,7 +33,8 @@
         "transparent_percent": 61.65,
         "near_opaque_alpha_245_plus_percent": 17.9,
         "original_generated_bytes_preserved": true
-      }
+      },
+      "runtime_asset": "../../dist/assets/clouds/left-01-rear-wisps.png"
     },
     {
       "file": "right-01-rear-plumes.png",
@@ -53,7 +54,8 @@
         "transparent_percent": 59.87,
         "near_opaque_alpha_245_plus_percent": 23.74,
         "original_generated_bytes_preserved": true
-      }
+      },
+      "runtime_asset": "../../dist/assets/clouds/right-01-rear-plumes.png"
     },
     {
       "file": "left-02-middle-bank.png",
@@ -73,7 +75,8 @@
         "transparent_percent": 26.95,
         "near_opaque_alpha_245_plus_percent": 60.08,
         "original_generated_bytes_preserved": true
-      }
+      },
+      "runtime_asset": "../../dist/assets/clouds/left-02-middle-bank.png"
     },
     {
       "file": "right-02-middle-bank.png",
@@ -93,7 +96,8 @@
         "transparent_percent": 45.93,
         "near_opaque_alpha_245_plus_percent": 42.16,
         "original_generated_bytes_preserved": true
-      }
+      },
+      "runtime_asset": "../../dist/assets/clouds/right-02-middle-bank.png"
     },
     {
       "file": "left-03-front-billow.png",
@@ -113,7 +117,8 @@
         "transparent_percent": 42.34,
         "near_opaque_alpha_245_plus_percent": 43.2,
         "original_generated_bytes_preserved": true
-      }
+      },
+      "runtime_asset": "../../dist/assets/clouds/left-03-front-billow.png"
     },
     {
       "file": "right-03-front-roll.png",
@@ -133,7 +138,8 @@
         "transparent_percent": 56.06,
         "near_opaque_alpha_245_plus_percent": 33.27,
         "original_generated_bytes_preserved": true
-      }
+      },
+      "runtime_asset": "../../dist/assets/clouds/right-03-front-roll.png"
     }
   ],
   "validation": {
@@ -156,6 +162,68 @@
         "identical_or_mirrored": false
       }
     ],
-    "runtime_integration": "not performed; awaiting artwork approval"
+    "runtime_integration": "implemented; original PNG bytes retained in dist/assets/clouds/",
+    "runtime_copy_sha256_checks": "passed: all six original RGBA PNGs preserved byte-for-byte",
+    "viewport_coverage": {
+      "method": "Composite original PNG alpha sampled every 2 CSS pixels at the fully closed midpoint, using the runtime geometry and layer opacity. No artwork modified.",
+      "results": [
+        {
+          "viewport": [
+            1280,
+            720
+          ],
+          "mean_opacity": 0.997089,
+          "minimum_opacity": 0.980392,
+          "pixels_over_98_percent_opaque": 100.0
+        },
+        {
+          "viewport": [
+            390,
+            844
+          ],
+          "mean_opacity": 0.999972,
+          "minimum_opacity": 0.999755,
+          "pixels_over_98_percent_opaque": 100.0
+        },
+        {
+          "viewport": [
+            2560,
+            1080
+          ],
+          "mean_opacity": 0.99712,
+          "minimum_opacity": 0.980392,
+          "pixels_over_98_percent_opaque": 100.0
+        },
+        {
+          "viewport": [
+            1920,
+            1080
+          ],
+          "mean_opacity": 0.997089,
+          "minimum_opacity": 0.980392,
+          "pixels_over_98_percent_opaque": 100.0
+        }
+      ]
+    },
+    "browser_qa": {
+      "desktop": [
+        1280,
+        720
+      ],
+      "mobile": [
+        390,
+        844
+      ],
+      "all_three_scene_cuts": "all six planes fully overlapped at 18%, 43%, 68%; clear between cuts",
+      "reverse_scroll": "same progress reproduces the same layer transforms and closures",
+      "horizontal_overflow": false,
+      "all_pngs_decoded": true,
+      "console_errors_or_warnings": [],
+      "reduced_motion": "verified by timeline assertions and CSS media rule; OS preference was not changed"
+    }
+  },
+  "approval": {
+    "user_request": "looks good, implement",
+    "date": "2026-10-28"
   }
 }
