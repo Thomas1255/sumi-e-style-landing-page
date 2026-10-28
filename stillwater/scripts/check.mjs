@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
-import { FLIGHT_CLIPS, SCENE_CUTS, clipBounds, clipFrame, flightVideoState } from '../dist/flight-timeline.js';
+import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
@@ -57,7 +57,13 @@ for (const [index, clip] of FLIGHT_CLIPS.entries()) {
 for(const cut of SCENE_CUTS){
   const before=flightVideoState(cut-.00001),after=flightVideoState(cut+.00001);
   assert(before.layers[0].opacity<.001 && after.layers[1].opacity<.001,'Angle cuts must pass through mist');
+  assert.equal(sceneCloudStrength(cut),1,'Clouds must conceal the center of every scene change');
+  assert.equal(sceneCloudStrength(cut,true),0,'Reduced motion must avoid the cloud wash');
+  assert(sceneCloudStrength(cut-SCENE_DISSOLVE/2)<1e-10);
+  assert(sceneCloudStrength(cut+SCENE_DISSOLVE/2)<1e-10);
+  for(const offset of [.01,.025,.04])assert(Math.abs(sceneCloudStrength(cut-offset)-sceneCloudStrength(cut+offset))<1e-10,'The cloud wash must retrace symmetrically');
 }
+for(const p of [0,.3,.55,.9,1])assert.equal(sceneCloudStrength(p),0,'Ambient scenes must remain clear');
 assert(!js.includes('drawFlock'),'The page must use the approved film, not jointed wings');
 const cameraForward = [0,.25,.5,.75,1].map(p => routeCamera(p));
 const cameraReverse = [1,.75,.5,.25,0].map(p => routeCamera(p)).reverse();

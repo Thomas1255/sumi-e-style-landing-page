@@ -23,6 +23,11 @@ export function clipBounds(index) {
   return [index === 0 ? 0 : SCENE_CUTS[index - 1] - SCENE_DISSOLVE / 2,
     index === 3 ? 1 : SCENE_CUTS[index] + SCENE_DISSOLVE / 2];
 }
+export function sceneCloudStrength(progress, reducedMotion = false) {
+  const { blend } = sceneState(progress, reducedMotion);
+  // A dense center holds across the perspective cut, then opens into the next view.
+  return smooth(blend / .38) * (1 - smooth((blend - .62) / .38));
+}
 export function clipFrame(index, progress) {
   const [start, end] = clipBounds(index);
   return Math.round(clamp((progress - start) / (end - start)) * (FLIGHT_CLIPS[index].frames - 1));

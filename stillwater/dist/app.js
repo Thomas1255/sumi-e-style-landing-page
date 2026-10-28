@@ -7,6 +7,7 @@ import './audio.js';
 const birdCanvas=document.querySelector('#flight-canvas'),terrainCanvas=document.querySelector('#terrain-canvas');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const flock=createVideoFlock(birdCanvas,document.querySelector('#flight-poster'));
+const clouds=mountPageClouds(document.querySelector('#clouds-canvas'));
 const terrainImages=SCENES.map(src=>{const image=new Image();image.src=src;return image;});
 const controls=document.querySelector('#flight-timeline'),progressBar=document.querySelector('.reading-progress'),percentLabel=document.querySelector('#flight-percent');
 const panels=[...document.querySelectorAll('.panel')],navLinks=[...document.querySelectorAll('.chapter-nav a')];
@@ -24,6 +25,7 @@ function draw(progress){
   if(terrain&&!contextLost)terrain.render(progress,reduced.matches);
   else fallbackTerrain(reduced.matches?0:progress);
   flock.setProgress(progress,reduced.matches);
+  clouds?.setProgress(progress,reduced.matches);
 }
 function update(){
   const maximum=Math.max(1,document.documentElement.scrollHeight-innerHeight),progress=clamp(scrollY/maximum);
@@ -47,4 +49,3 @@ addEventListener('scroll',schedule,{passive:true});addEventListener('resize',res
 controls.addEventListener('input',()=>{scrollTo({top:Number(controls.value)/1000*(document.documentElement.scrollHeight-innerHeight),behavior:'instant'});update();});
 resize();
 mountStoryCloth();
-mountPageClouds(document.querySelector('#clouds-canvas'));

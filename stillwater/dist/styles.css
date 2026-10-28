@@ -29,3 +29,6 @@ main{overflow-x:clip;overflow-y:visible}
 /* Paused films are decoded offscreen; WebGL removes their green backing. */
 .flight-decoder{position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-2}
 #flight-poster{position:absolute;z-index:2;pointer-events:none;object-fit:contain;width:62%;left:35%;top:28%;height:45%}
+/* Scene mist passes over the landscape, cranes and cloth; controls stay reachable. */
+.clouds-canvas{z-index:12}
+.scene-cloud-fallback{position:fixed;inset:0;z-index:12;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 30% 40%,#f5f1e7,#eee8da 75%)}

@@ -101,6 +101,7 @@ const DEFAULTS = {
     shading: 0.1,
     color: "auto",
     opacity: 0.64,
+    transition: 0,
     shadow: 0.06,
     shadowOffsetX: 200,
     shadowOffsetY: -10,
@@ -247,6 +248,7 @@ uniform vec2 uContentScale;
 uniform vec3 uBase;
 uniform float uShading;
 uniform float uOpacity;
+uniform float uTransition;
 uniform float uShadow;
 uniform vec2 uShadowShift;
 uniform float uShadowLod;
@@ -261,6 +263,9 @@ void main () {
   float wind = texture(uWind, uv).r * uWindAmt;
   float cov = field.r - wind;
   float mist = smoothstep(0.04, 0.9, cov);
+  // Keep the original noise detail, with a nearly opaque veil between scenes.
+  // A raised floor prevents gaps in the cloud field from exposing the cut.
+  mist = mix(mist, 0.95 + 0.05 * mist, uTransition);
   float cloudA = mist * uOpacity;
 
   float lum = dot(uBase, vec3(0.299, 0.587, 0.114));
@@ -582,6 +587,7 @@ export function createClouds(elements, options = {}) {
         gl.uniform2f(composite.uniforms.uContentScale, contentScaleX, contentScaleY);
         gl.uniform3f(composite.uniforms.uBase, baseColor[0], baseColor[1], baseColor[2]);
         gl.uniform1f(composite.uniforms.uOpacity, Math.min(Math.max(config.opacity, 0), 1));
+        gl.uniform1f(composite.uniforms.uTransition, Math.min(Math.max(config.transition, 0), 1));
         gl.uniform1f(composite.uniforms.uShading, Math.max(config.shading, 0));
         gl.uniform1f(composite.uniforms.uShadow, Math.min(Math.max(config.shadow, 0), 1));
         gl.uniform2f(composite.uniforms.uShadowShift, -config.shadowOffsetX / Math.max(output.clientWidth, 1), config.shadowOffsetY / Math.max(output.clientHeight, 1));
@@ -692,9 +698,11 @@ export function createClouds(elements, options = {}) {
     return {
         setOptions (next) {
             if (!Object.entries(next).some(([key, value])=>config[key] !== value)) return;
+            const resize = next.quality !== undefined && next.quality !== config.quality;
+            const recolor = next.color !== undefined && next.color !== config.color;
             Object.assign(config, next);
-            syncCanvasSize();
-            syncBaseColor();
+            if (resize) syncCanvasSize();
+            if (recolor) syncBaseColor();
             start();
         },
         resize () {
