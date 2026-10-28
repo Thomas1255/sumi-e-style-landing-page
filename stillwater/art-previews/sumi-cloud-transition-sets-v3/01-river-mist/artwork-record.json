@@ -1,0 +1,127 @@
+{
+  "status": "preview-awaiting-user-approval",
+  "tool": "built-in image_gen.imagegen",
+  "generated_date": "2026-10-28",
+  "title": "River mist ribbons",
+  "target_transition": "Wetlands to village",
+  "opening_artwork": "unchanged; this set is for a later scene transition only",
+  "family_brief": "Structure family: expansive HORIZONTAL RIVER MIST. Think long unequal ivory cloud ribbons, flat-topped lenticular overhangs, thin flowing mist fingers and delicate horizontal brush grain. Shadows are very pale celadon-gray, broken, watery and soft; no dark outline. The long layered bands and wispy split ends are the defining motif. No big spiral curls, scalloped rows, ocean crests or round cotton-ball clusters. This set should feel spacious, low, quiet and stretched by a gentle breeze.",
+  "reference": "../../continuous-landscape-perspectives-v2/02-village-left-bank.png",
+  "assets": [
+    {
+      "file": "left-rear.png",
+      "side": "left",
+      "depth": "rear",
+      "design": "Two long unequal streamers",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: expansive HORIZONTAL RIVER MIST. Think long unequal ivory cloud ribbons, flat-topped lenticular overhangs, thin flowing mist fingers and delicate horizontal brush grain. Shadows are very pale celadon-gray, broken, watery and soft; no dark outline. The long layered bands and wispy split ends are the defining motif. No big spiral curls, scalloped rows, ocean crests or round cotton-ball clusters. This set should feel spacious, low, quiet and stretched by a gentle breeze.\nLayer: LEFT / REAR.\nComposition: Wide landscape canvas. A distant light bank originates along the LEFT edge at mid-height. Two long unequal mist streamers reach RIGHT: a thin high one arches gently upward; a fuller lower one flattens into a forked soft tongue. Transparent margins above and below. Large airy gaps only between outer streamers, with very fine dry-brush fringes.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-05f4dff4-a5a4-4533-b1e4-8e78570edb82.png",
+      "validation": {
+        "dimensions": [
+          2048,
+          768
+        ],
+        "mode": "RGBA",
+        "sha256": "2808eeef8b9f962d7d4704c342aee260378b2105f6c332cbc175011194a4eaa8",
+        "transparent_percent": 51.98,
+        "near_opaque_alpha_245_plus_percent": 28.51,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-rear.png",
+      "side": "right",
+      "depth": "rear",
+      "design": "A low fan of three tapering tails",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: expansive HORIZONTAL RIVER MIST. Think long unequal ivory cloud ribbons, flat-topped lenticular overhangs, thin flowing mist fingers and delicate horizontal brush grain. Shadows are very pale celadon-gray, broken, watery and soft; no dark outline. The long layered bands and wispy split ends are the defining motif. No big spiral curls, scalloped rows, ocean crests or round cotton-ball clusters. This set should feel spacious, low, quiet and stretched by a gentle breeze.\nLayer: RIGHT / REAR.\nComposition: Wide landscape canvas. A very pale rear cloud grows from the RIGHT edge into a LOW wide fan tapering LEFT. Three unequal slender tails descend toward the lower-left; the highest tail is shortest and the lowest tail is longest. The upper half is largely empty transparency. Avoid an arch or a mirror of a two-streamer cloud.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-d2d6eb0f-4690-4c3e-a62f-e6762cf9de79.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "65d726b4af1d08a5653eb7ab8b67529ea9ce4b2ff5b6c3d0605d5343eae2ab90",
+        "transparent_percent": 67.38,
+        "near_opaque_alpha_245_plus_percent": 19.88,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-middle.png",
+      "side": "left",
+      "depth": "middle",
+      "design": "Dense flat shelves with a long central overhang",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: expansive HORIZONTAL RIVER MIST. Think long unequal ivory cloud ribbons, flat-topped lenticular overhangs, thin flowing mist fingers and delicate horizontal brush grain. Shadows are very pale celadon-gray, broken, watery and soft; no dark outline. The long layered bands and wispy split ends are the defining motif. No big spiral curls, scalloped rows, ocean crests or round cotton-ball clusters. This set should feel spacious, low, quiet and stretched by a gentle breeze.\nLayer: LEFT / MIDDLE.\nComposition: Near-square canvas. A large nearly opaque warm ivory bank fills the LEFT edge including top-left and bottom-left and extends beyond them. Its RIGHT leading silhouette has FOUR extremely unequal flat cloud shelves: narrow high shelf, one long projecting middle overhang, recessed short shelf, then broad low rounded shelf. Long horizontal pale celadon wash pockets separate their painted faces. Rightmost 15-25% is organic transparency. No holes through the dense main body. Broad opaque interiors must conceal a scene behind them.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-9efcb792-e58e-4952-b8ac-2addf01dc407.png",
+      "validation": {
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "sha256": "3b88e5d0c8ddf618f233d92d4d82f9ab0b30dddba6306ec56955234579278252",
+        "transparent_percent": 33.56,
+        "near_opaque_alpha_245_plus_percent": 50.09,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-middle.png",
+      "side": "right",
+      "depth": "middle",
+      "design": "A wide canopy over a narrow waist",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: expansive HORIZONTAL RIVER MIST. Think long unequal ivory cloud ribbons, flat-topped lenticular overhangs, thin flowing mist fingers and delicate horizontal brush grain. Shadows are very pale celadon-gray, broken, watery and soft; no dark outline. The long layered bands and wispy split ends are the defining motif. No big spiral curls, scalloped rows, ocean crests or round cotton-ball clusters. This set should feel spacious, low, quiet and stretched by a gentle breeze.\nLayer: RIGHT / MIDDLE.\nComposition: Near-square canvas. Dense ivory mass fills the RIGHT edge including both right corners and continues beyond those edges. A very broad cloud canopy reaches LEFT in the upper half; the middle recedes sharply into a narrow soft waist, and a long FLAT lower cloud shelf reaches left near the bottom. Thin elongated brush wisps project from the canopy. Nearly opaque continuous body, no internal transparent holes; leftward outer silhouette is feathered against genuine transparency. Do not repeat four shelves or a regular stack.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-ce33e3da-b0d1-4615-b4eb-7b8fabe0338a.png",
+      "validation": {
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "sha256": "18f87e224eec71d40ddc9434acefc8700237fb7f76eeeeaee2f452a1791bcf00",
+        "transparent_percent": 47.87,
+        "near_opaque_alpha_245_plus_percent": 34.48,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-front.png",
+      "side": "left",
+      "depth": "front",
+      "design": "A broad low lens with split mist tips",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: expansive HORIZONTAL RIVER MIST. Think long unequal ivory cloud ribbons, flat-topped lenticular overhangs, thin flowing mist fingers and delicate horizontal brush grain. Shadows are very pale celadon-gray, broken, watery and soft; no dark outline. The long layered bands and wispy split ends are the defining motif. No big spiral curls, scalloped rows, ocean crests or round cotton-ball clusters. This set should feel spacious, low, quiet and stretched by a gentle breeze.\nLayer: LEFT / FRONT.\nComposition: Wide landscape canvas. Closest cloud is a massive LOW ivory lenticular billow anchored beyond the LEFT and BOTTOM edges. One broad quiet top plane rises slightly toward the middle-right and breaks into TWO narrow uneven split mist tips. Very long horizontal soft brush-shadow across the lower belly, no curls or crested wave. Top third and far right are transparent. Cloud body is almost opaque with fine fringed alpha edges.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-d3be769d-edab-4ed8-a5cc-224757436229.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "2369a6b85ba63b2a26773c09af256a81f8508e3941b0a3b36b842f9d849fb3ee",
+        "transparent_percent": 53.91,
+        "near_opaque_alpha_245_plus_percent": 35.25,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-front.png",
+      "side": "right",
+      "depth": "front",
+      "design": "An upper overhang with a hanging narrow veil",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: expansive HORIZONTAL RIVER MIST. Think long unequal ivory cloud ribbons, flat-topped lenticular overhangs, thin flowing mist fingers and delicate horizontal brush grain. Shadows are very pale celadon-gray, broken, watery and soft; no dark outline. The long layered bands and wispy split ends are the defining motif. No big spiral curls, scalloped rows, ocean crests or round cotton-ball clusters. This set should feel spacious, low, quiet and stretched by a gentle breeze.\nLayer: RIGHT / FRONT.\nComposition: Wide landscape canvas. A foreground cloud canopy is anchored beyond the RIGHT and TOP edges. One very long flattened upper overhang sweeps LEFT; underneath, a single NARROW hanging veil tapers diagonally down-left. Its main face is warm ivory, with a long shallow cool celadon-gray shadow tucked beneath. Bottom-left is largely transparent. Different silhouette from a low two-tipped lens. Dense body, delicate semi-transparent mist tips.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-7c58a4c3-dc73-4164-8724-76647d74023e.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "918e4781a5e61b9e37686705390f3f4ea922757457bf233209983cadf47f6773",
+        "transparent_percent": 60.62,
+        "near_opaque_alpha_245_plus_percent": 23.23,
+        "original_bytes_preserved": true
+      }
+    }
+  ],
+  "runtime_integration": "not performed; user approval required"
+}
