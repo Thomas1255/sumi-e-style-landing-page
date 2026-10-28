@@ -1,9 +1,9 @@
 {
-  "status": "awaiting_user_approval",
-  "implemented": false,
+  "status": "approved_and_implemented",
+  "implemented": true,
   "generator": "built-in ImageGen",
   "shared_master": "../continuous-landscape-v1/master.png",
-  "relationship": "Repainted camera views of one continuous setting, not adjoining crops. Existing cloud transitions are intended to bridge angle changes after approval.",
+  "relationship": "Repainted camera views of one continuous setting, bridged by the existing cloud transitions.",
   "records": [
     {
       "scene": 1,
@@ -13,7 +13,17 @@
         941
       ],
       "sha256": "c8c46d9ba47458234d513eb0c1d67a3b7f041dad55c7b28d6dd6f4d480e71af4",
-      "crane_reference": "01-rear-follow.png"
+      "crane_reference": "01-rear-follow.png",
+      "runtime_asset": "dist/assets/flight-wetlands-v2.webp",
+      "runtime_encoding": {
+        "format": "WebP",
+        "quality": 93,
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 818408
+      }
     },
     {
       "scene": 2,
@@ -23,7 +33,17 @@
         941
       ],
       "sha256": "7c6547586dae74b20e160af6fcd866eb1523998b634bf72bb2fe65b920a4d764",
-      "crane_reference": "02-left-bank.png"
+      "crane_reference": "02-left-bank.png",
+      "runtime_asset": "dist/assets/flight-village-v2.webp",
+      "runtime_encoding": {
+        "format": "WebP",
+        "quality": 93,
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 848908
+      }
     },
     {
       "scene": 3,
@@ -33,7 +53,17 @@
         941
       ],
       "sha256": "a13f6d700e3d76206e4c33dc274a22a41ae9e8dc21b3046bd5fe1194e3bde714",
-      "crane_reference": "03-right-bank.png"
+      "crane_reference": "03-right-bank.png",
+      "runtime_asset": "dist/assets/flight-temples-v2.webp",
+      "runtime_encoding": {
+        "format": "WebP",
+        "quality": 93,
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 812660
+      }
     },
     {
       "scene": 4,
@@ -43,13 +73,24 @@
         941
       ],
       "sha256": "15e2a73c35478f6804e816752a80a858dbac73807b2b4b0e5574d85839b7a85d",
-      "crane_reference": "04-high-overhead.png"
+      "crane_reference": "04-high-overhead.png",
+      "runtime_asset": "dist/assets/flight-gorge-v2.webp",
+      "runtime_encoding": {
+        "format": "WebP",
+        "quality": 93,
+        "size": [
+          1672,
+          941
+        ],
+        "bytes": 820396
+      }
     }
   ],
   "validation": [
     "All four files decode as valid PNG images.",
     "All four are landscape 16:9 previews.",
     "Visually reviewed directions: forward, upper-left, upper-right, steep overhead.",
-    "No changes to dist or application code."
-  ]
+    "Runtime WebP copies preserve the dimensions, framing and orientation of the approved PNGs; original PNGs remain unchanged."
+  ],
+  "approval": "User approved the four perspective studies and requested implementation on 2026-10-28."
 }

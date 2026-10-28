@@ -1,13 +1,22 @@
 # Flock landscape art
 
-Generated with the built-in ImageGen tool. Final selected landscape assets:
+The current backgrounds are the approved crane-matched views of the continuous landscape, generated with built-in ImageGen. Their originals, prompts and runtime mappings are in `art-previews/continuous-landscape-perspectives-v2/`. Runtime assets:
+
+- `dist/assets/flight-wetlands-v2.webp` — forward/rear-follow wetlands.
+- `dist/assets/flight-village-v2.webp` — upper-left village view.
+- `dist/assets/flight-temples-v2.webp` — upper-right temple forest.
+- `dist/assets/flight-gorge-v2.webp` — steep overhead gorge.
+
+## Earlier landscape set
+
+The earlier assets and prompts below are preserved as artwork history:
 
 - `E:/sumi-e-style-landing-page/stillwater/dist/assets/flight-wetlands.webp`
 - `E:/sumi-e-style-landing-page/stillwater/dist/assets/flight-terraces.webp`
 - `E:/sumi-e-style-landing-page/stillwater/dist/assets/flight-forest.webp`
 - `E:/sumi-e-style-landing-page/stillwater/dist/assets/flight-peaks.webp`
 
-The flock is drawn directly in Canvas from connected wing geometry. No photographic bird cutouts are used in the current page. Earlier detailed bird and map studies are retained but unused.
+The current flock motion uses the approved generated films. Earlier coded wing and map studies are retained but unused.
 
 ## wetlands
 

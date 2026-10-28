@@ -2,8 +2,8 @@
 // dolly moves near riverbanks faster than peaks without flattening the artwork.
 import { sceneState } from './flight-timeline.js';
 export const SCENES=Object.freeze([
-  'assets/flight-wetlands.webp','assets/flight-terraces.webp',
-  'assets/flight-forest.webp','assets/flight-peaks.webp'
+  'assets/flight-wetlands-v2.webp','assets/flight-village-v2.webp',
+  'assets/flight-temples-v2.webp','assets/flight-gorge-v2.webp'
 ]);
 export function routeCamera(progress,reducedMotion=false){
   const scene=sceneState(progress,reducedMotion),p=scene.progress;
@@ -22,7 +22,8 @@ uniform float uProgress,uBlend,uIndex,uNext,uSway;
 vec2 sceneUv(float aspect,float index){
   float screen=uResolution.x/uResolution.y;
   vec2 cover=screen>aspect?vec2(1.0,aspect/screen):vec2(screen/aspect,1.0);
-  vec2 anchor=vec2(.57,.365);
+  // Recede along each flock's direction; the final view looks down into the gorge.
+  vec2 anchor=index<.5?vec2(.58,.25):index<1.5?vec2(.23,.20):index<2.5?vec2(.78,.18):vec2(.50,.32);
   vec2 uv=(vUv-.5)*cover+.5;
   float age=clamp((uProgress-index*.25+.045)/.33,0.0,1.0);
   float depth=smoothstep(.28,1.05,uv.y);

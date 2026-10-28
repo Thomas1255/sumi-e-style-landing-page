@@ -1,6 +1,6 @@
 # Continuous landscape — crane-matched viewpoints
 
-Status: awaiting user approval. No changes to the website, deployable assets or animation code.
+Status: approved by the user and implemented on 2026-10-28. The four selected PNGs are preserved unchanged; runtime WebP mappings are recorded in artwork-record.json.
 
 ## Targeted revisions
 
@@ -19,7 +19,7 @@ References: C:/Users/tf156/.codex/generated_images/01a17b14-aeeb-77e2-ab65-a581f
 Use case: precise-object-edit / viewpoint correction. Image 1 is the gorge painting edit target, image 2 is the crane camera-angle reference. KEEP the same gorge setting, right-bank temple and pagoda design, two waterfalls, river, jade pines, ivory cloud ribbons, 2D neo-traditional sumi-e watercolor style and warm washi palette. CHANGE THE CAMERA to match the crane backs seen in image 2: a NEAR-VERTICAL TOP-DOWN view, looking straight down with only about 10–15 degrees forward inclination. The existing painting still shows too much frontal cliff; correct this decisively. We must see mostly ridge TOPS, tree CROWNS, temple roof TOPS and small courtyard ground planes. Visible cliff sides are strongly foreshortened and narrow, not tall upright walls. The temple buildings read as roof footprints from overhead with very little wall; pagoda roofs nest one above another when viewed from high above. The celadon river is below us in an irregular S from bottom center toward top center. Ledges and ridgelines surround the river in a coherent almost-overhead arrangement. NO horizon, NO sky, NO distant frontal mountain silhouettes. The entire rectangle is the ground far beneath the cranes. Make a top-down PAINTED SCROLL interpretation using flat graphic ink shapes and transparent washes, not a 3D model, not an isometric view, not photorealistic satellite terrain. Preserve recognizable landscape identity from image 1 while substantially changing its viewpoint. Only landscape in output: no cranes, birds, animals, text, seal, signature, border, frame or watermark. ONE full-bleed 16:9 2D ink and watercolor painting.
 
 
-Generated using built-in ImageGen. This iteration repaints the four sections of continuous-landscape-v1/master.png from the actual four crane reference perspectives. Unlike the earlier direct crops, these are camera-angle reinterpretations of the same continuous setting. They share terrain and landmark identity but are not pixel-adjoining tiles. The intended implementation would use the existing cloud transitions to conceal the camera changes, after user approval.
+Generated using built-in ImageGen. This iteration repaints the four sections of continuous-landscape-v1/master.png from the actual four crane reference perspectives. Unlike the earlier direct crops, these are camera-angle reinterpretations of the same continuous setting. They share terrain and landmark identity but are not pixel-adjoining tiles. The implementation uses the existing cloud transitions to conceal the camera changes.
 
 The original continuous master and all previous artwork remain preserved. No Higgsfield generation or video credits were used.
 
