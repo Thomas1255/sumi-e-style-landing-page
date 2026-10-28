@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength, flockTravel } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
-import { INK_CLOUD_LAYERS, INK_CLOUD_SCROLL_SPAN, INK_CLOUD_INTRO_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
+import { INK_CLOUD_LAYERS, INK_CLOUD_VARIANTS, INK_CLOUD_SCROLL_SPAN, INK_CLOUD_INTRO_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const html = await readFile(path.join(root, 'index.html'), 'utf8');
@@ -67,9 +67,15 @@ for(const cut of SCENE_CUTS){
 for(const p of [0,.3,.55,.9,1])assert.equal(sceneCloudStrength(p),0,'Ambient scenes must remain clear');
 assert.equal(INK_CLOUD_LAYERS.length,6,'Each side needs three independently painted cloud planes');
 assert.equal(new Set(INK_CLOUD_LAYERS.map(layer=>layer.src)).size,6,'Cloud layers must use six distinct artworks');
+assert.equal(INK_CLOUD_VARIANTS.length,4,'The opening and all three scene changes need their own composition');
 assert(INK_CLOUD_SCROLL_SPAN>=SCENE_DISSOLVE*2,'Cloud transitions need at least twice the scroll distance of the landscape dissolve');
 assert(SCENE_CUTS.slice(1).every((cut,index)=>cut-SCENE_CUTS[index]>INK_CLOUD_SCROLL_SPAN),'Cloud sequences must leave clear space between scenes');
 for(const viewport of [[1280,720],[390,844],[2560,1080]]){
+  const compositions=[0,...SCENE_CUTS].map(p=>inkCloudFrame(p,...viewport));
+  assert.equal(new Set(compositions.map(frame=>frame.variant)).size,4,'Every transition must select a distinct cloud variant');
+  assert.equal(new Set(compositions.map(frame=>JSON.stringify(frame.layers.map(({x,y,width,height,zIndex})=>({x,y,width,height,zIndex}))))).size,4,'Transition variety must change actual framing and overlaps');
+  const arrivals=SCENE_CUTS.map(cut=>inkCloudFrame(cut-.04,...viewport).layers.map(layer=>layer.closure));
+  assert.equal(new Set(arrivals.map(value=>JSON.stringify(value))).size,3,'Each scene change needs its own staggered choreography');
   const opening=inkCloudFrame(0,...viewport);
   assert(opening.active && opening.intro && opening.strength===1,'The first view must start with the cloud banks fully closed');
   assert(opening.layers.every(layer=>layer.closure===1),'All six clouds must cover the opening');
