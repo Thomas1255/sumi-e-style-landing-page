@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
-import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength } from '../dist/flight-timeline.js';
+import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength, flockTravel } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
@@ -65,6 +65,13 @@ for(const cut of SCENE_CUTS){
 }
 for(const p of [0,.3,.55,.9,1])assert.equal(sceneCloudStrength(p),0,'Ambient scenes must remain clear');
 assert(!js.includes('drawFlock'),'The page must use the approved film, not jointed wings');
+const travelPoints=[0,.04,.08,.12,.16,.18];
+const travel=travelPoints.map(p=>flockTravel(0,p));
+assert.deepEqual(travel,[...travelPoints].reverse().map(p=>flockTravel(0,p)).reverse(),'Opening travel must retrace on reverse scroll');
+assert(travel.every((pose,i)=>!i||pose.scale<travel[i-1].scale),'The opening flock must recede into the distance');
+assert(travel.at(-1).y<travel[0].y,'The opening flock must climb forward through the valley');
+assert.deepEqual(flockTravel(0,.12,true),flockTravel(0,0),'Reduced motion holds the opening flock');
+for(const index of [1,2,3])assert.deepEqual(flockTravel(index,.12),flockTravel(index,.9),'Later perspectives must retain their placement');
 const cameraForward = [0,.25,.5,.75,1].map(p => routeCamera(p));
 const cameraReverse = [1,.75,.5,.25,0].map(p => routeCamera(p)).reverse();
 assert.deepEqual(cameraForward,cameraReverse,'Camera must retrace the terrain on reverse scroll');

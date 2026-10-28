@@ -32,6 +32,16 @@ export function clipFrame(index, progress) {
   const [start, end] = clipBounds(index);
   return Math.round(clamp((progress - start) / (end - start)) * (FLIGHT_CLIPS[index].frames - 1));
 }
+export function flockTravel(index, progress, reducedMotion = false) {
+  if (index !== 0 || reducedMotion) return { scale: 1, x: 0, y: 0 };
+  const t = smooth(sceneState(progress).progress / SCENE_CUTS[0]);
+  // The rear-follow flock gently climbs away along a curved path into the valley.
+  return {
+    scale: 1 - .14 * t,
+    x: .008 * Math.sin(t * Math.PI) - .015 * t,
+    y: -.065 * t + .004 * Math.sin(t * Math.PI * 2)
+  };
+}
 export function flightVideoState(progress, reducedMotion = false) {
   const scene = sceneState(progress, reducedMotion);
   // Pass through the landscape's mist instead of superimposing two flocks.

@@ -1,4 +1,4 @@
-import { FLIGHT_CLIPS, flightVideoState, clamp } from './flight-timeline.js';
+import { FLIGHT_CLIPS, flightVideoState, flockTravel, clamp } from './flight-timeline.js';
 
 const VERT = `
 attribute vec2 aPosition;
@@ -90,25 +90,37 @@ export function createVideoFlock(canvas, poster) {
     if (queued) return;
     queued = true; requestAnimationFrame(() => { queued = false; render(); });
   }
-  function layout() {
+  function layout(index) {
     const width = document.documentElement.clientWidth, height = innerHeight;
     const forest = clamp((state.progress - .34) / .10) * (1 - clamp((state.progress - .60) / .10));
     let w = Math.min(width * (.58 - forest * .03), height * 1.45), x = width * (.69 - forest * .37), y = height * .49;
     if (width <= 650) {
       const footerTop = document.querySelector('.flight-controls').getBoundingClientRect().top;
-      const clothBottom = Math.max(height * .48, ...[...document.querySelectorAll('[data-cloth]')]
-        .map(panel => panel.getBoundingClientRect())
+      const clothRects = [...document.querySelectorAll('[data-cloth]')].map(panel => panel.getBoundingClientRect());
+      const clothBottom = Math.max(height * .48, ...clothRects
         .filter(rect => rect.top < height * .6 && rect.bottom > height * .25)
         .map(rect => rect.bottom));
       const top = Math.min(footerTop - 110, Math.max(height * .53, clothBottom + 16)), bottom = footerTop - 12;
       w = Math.min(width * .96, (bottom - top) * 1918 / 1080); x = width * .5; y = (top + bottom) / 2;
+      const enteringCloth = clothRects.find(rect => rect.top > height * .2 && rect.top < footerTop && rect.bottom > footerTop);
+      if (index === 0 && enteringCloth) {
+        const clearTop = height * .22, clearBottom = Math.max(clearTop + 90, enteringCloth.top - 16);
+        w = Math.min(width * .96, (clearBottom - clearTop) * 1918 / 1080);
+        y = clamp(height * .69, clearTop + w * 540 / 1918, clearBottom - w * 540 / 1918);
+      }
     }
+    const travel = flockTravel(index, state.progress);
+    x += travel.x * width;
+    // Keep the mobile flock inside the open space beneath its cloth panel.
+    y += travel.y * (width <= 650 ? Math.min(height, w * .4) : height);
+    w *= travel.scale;
     const h = w * 1080 / 1918;
     return [x - w / 2, y - h / 2, w, h];
   }
   function render() {
-    const rect = layout(), width = document.documentElement.clientWidth, height = innerHeight;
+    const width = document.documentElement.clientWidth, height = innerHeight;
     const dominant = state.layers.reduce((a, b) => a.opacity >= b.opacity ? a : b);
+    const rect = layout(dominant.index);
     const selected = assets[dominant.index];
     const fallback = !gl || lost || !selected.ready || selected.failed;
     canvas.dataset.flightMode = fallback ? 'painted-poster' : 'generated-video';
@@ -129,6 +141,7 @@ export function createVideoFlock(canvas, poster) {
     for (const layer of state.layers) {
       const asset = assets[layer.index];
       if (!asset.ready || layer.opacity <= 0) continue;
+      gl.uniform4f(uniforms.uRect, ...layout(layer.index));
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, asset.texture);
       gl.uniform1f(uniforms.uOpacity, layer.opacity); gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
