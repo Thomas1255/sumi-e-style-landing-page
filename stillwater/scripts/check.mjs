@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength, flockTravel } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
-import { INK_CLOUD_LAYERS, inkCloudFrame } from '../dist/ink-clouds.js';
+import { INK_CLOUD_LAYERS, INK_CLOUD_SCROLL_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const html = await readFile(path.join(root, 'index.html'), 'utf8');
@@ -67,15 +67,19 @@ for(const cut of SCENE_CUTS){
 for(const p of [0,.3,.55,.9,1])assert.equal(sceneCloudStrength(p),0,'Ambient scenes must remain clear');
 assert.equal(INK_CLOUD_LAYERS.length,6,'Each side needs three independently painted cloud planes');
 assert.equal(new Set(INK_CLOUD_LAYERS.map(layer=>layer.src)).size,6,'Cloud layers must use six distinct artworks');
+assert(INK_CLOUD_SCROLL_SPAN>=SCENE_DISSOLVE*2,'Cloud transitions need at least twice the scroll distance of the landscape dissolve');
+assert(SCENE_CUTS.slice(1).every((cut,index)=>cut-SCENE_CUTS[index]>INK_CLOUD_SCROLL_SPAN),'Cloud sequences must leave clear space between scenes');
 for(const viewport of [[1280,720],[390,844],[2560,1080]]){
   const sample=SCENE_CUTS.flatMap(cut=>[-.05,-.025,0,.025,.05].map(offset=>cut+offset));
   assert.deepEqual(sample.map(p=>inkCloudFrame(p,...viewport)),[...sample].reverse().map(p=>inkCloudFrame(p,...viewport)).reverse(),'Cloud layers must retrace on reverse scroll');
   for(const cut of SCENE_CUTS){
     assert(inkCloudFrame(cut,...viewport).layers.every(layer=>layer.closure===1),'All cloud planes must overlap at every perspective cut');
     assert.equal(inkCloudFrame(cut,...viewport,true).active,false,'Reduced motion must leave the clouds offscreen');
-    const entering=inkCloudFrame(cut-.02,...viewport).layers;
+    for(const offset of [-SCENE_DISSOLVE/2-.005,SCENE_DISSOLVE/2+.005])assert(inkCloudFrame(cut+offset,...viewport).active,'Cloud travel must extend beyond the short scene dissolve');
+    for(const offset of [-.005,.015])assert(inkCloudFrame(cut+offset,...viewport).layers.every(layer=>layer.closure===1),'Closed clouds must hold while the user keeps scrolling across the cut');
+    const entering=inkCloudFrame(cut-.04,...viewport).layers;
     assert(entering[0].closure>entering[2].closure && entering[2].closure>entering[4].closure,'Rear, middle and front clouds need staggered arrival');
-    const leaving=inkCloudFrame(cut+.018,...viewport).layers;
+    const leaving=inkCloudFrame(cut+.05,...viewport).layers;
     assert(leaving[4].closure<leaving[2].closure && leaving[2].closure<leaving[0].closure,'Foreground clouds must clear ahead of the slower rear planes');
   }
   for(const p of [0,.3,.55,.9,1]){
