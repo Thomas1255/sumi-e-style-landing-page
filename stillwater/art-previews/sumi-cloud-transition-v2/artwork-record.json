@@ -1,0 +1,161 @@
+{
+  "status": "preview-awaiting-user-approval",
+  "generated_date": "2026-10-28",
+  "tool": "built-in image_gen.imagegen",
+  "intent": "Six independently movable sumi-e PNG layers: rear, middle and foreground for each side, with different original silhouettes and wash patterns. No animation implementation in this artwork revision.",
+  "previous_study": "../sumi-cloud-transition-v1/",
+  "reference": "../continuous-landscape-perspectives-v2/01-wetlands-rear-follow.png",
+  "references_policy": "Each layer generated separately using only the landscape as style/palette reference. No left asset was used to generate its right partner, and no generated image was mirrored or transformed.",
+  "animation_notes": {
+    "status": "proposal-only; implement and visually tune after approval",
+    "rear": "Light distant banks enter first, moving slowly.",
+    "middle": "Dense cover banks overlap near the center to hide each scene cut.",
+    "foreground": "Larger forms cross faster, overlapping the slower planes to create depth.",
+    "speed_values": "Relative suggestions only; not tested motion timings.",
+    "coverage": "Viewport fitting and complete scene-cut coverage still require implementation and browser verification."
+  },
+  "assets": [
+    {
+      "file": "left-01-rear-wisps.png",
+      "side": "left",
+      "depth": "rear",
+      "design": "Long high streamers and a low trailing veil",
+      "proposed_speed_multiplier": 0.65,
+      "generated_source": "C:/Users/tf156/.codex/generated_images/01a17b14-aeeb-77e2-ab65-a581f6bd7af8/exec-3d5edd17-1933-47f1-86f1-c28153b9ac24.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE independently movable transparent PNG cloud layer for a sumi-e landscape website transition.\nReference image: the existing landscape is ONLY a palette and painterly-medium reference. Do not reproduce scenery.\nStyle: neo-traditional Japanese sumi-e and watercolor, warm ivory/cloud-white, subtle celadon, charcoal-gray ink diluted into soft washes. Express cloud volume through overlapping lobes, luminous faces and gentle ink-wash shadows underneath; retain a hand-painted 2D scroll illustration aesthetic. Feathered dry-brush fringes, graceful organic shapes, selective broken ink strokes. Actual alpha transparency around the cloud, including fine semi-transparent mist edges. No rectangular paper or solid background.\nCritical: This is a SEPARATE animation layer, not a composite of all depth planes, not a sprite sheet. Do not copy, flip or mirror any cloud image. Paint an original asymmetric silhouette and original brush patterns. No repeating wallpaper motifs, uniform rows, obvious spiral stamps, dark uniform outlines, 3D rendering, photographic fog, cartoon bubbles, scenery, birds, mountains, sun, text, seals, watermarks, frames, or painted checkerboard.\nLayer: LEFT REAR / distant, slowest.\nComposition: wide landscape canvas, one elongated airy bank stretched horizontally. Origin is the LEFT edge. Several long unequal brush-swept mist streamers reach toward the RIGHT around the upper-middle of the canvas, with a thin low trailing veil. A delicate high crest is near the left third; much of the lower-right is empty transparency. One coherent flowing bank, not scattered tiny cloud icons.\nShape language: slender tapered ribbons and soft elongated lenticular cloud forms. NO circular scroll curls, NO repeated scallops. Pale cool gray/celadon shadow staining only underneath the upper ribbons, subtle cream-white soft bodies. Lightest, most distant of the three planes. Leave large transparent margins top and bottom so this can float over other cloud layers.",
+      "validation": {
+        "dimensions": [
+          2045,
+          769
+        ],
+        "mode": "RGBA",
+        "sha256": "b49d9b4e1ca6f090735aea0bd71ea2a9f27f6a19e8ef1604b3263c02212a60f5",
+        "transparent_percent": 61.65,
+        "near_opaque_alpha_245_plus_percent": 17.9,
+        "original_generated_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-01-rear-plumes.png",
+      "side": "right",
+      "depth": "rear",
+      "design": "Tall rising plumes with a descending diagonal fringe",
+      "proposed_speed_multiplier": 0.75,
+      "generated_source": "C:/Users/tf156/.codex/generated_images/01a17b14-aeeb-77e2-ab65-a581f6bd7af8/exec-0adbc622-3980-4122-84b5-d55003e9b20e.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE independently movable transparent PNG cloud layer for a sumi-e landscape website transition.\nReference image: the existing landscape is ONLY a palette and painterly-medium reference. Do not reproduce scenery.\nStyle: neo-traditional Japanese sumi-e and watercolor, warm ivory/cloud-white, subtle celadon, charcoal-gray ink diluted into soft washes. Express cloud volume through overlapping lobes, luminous faces and gentle ink-wash shadows underneath; retain a hand-painted 2D scroll illustration aesthetic. Feathered dry-brush fringes, graceful organic shapes, selective broken ink strokes. Actual alpha transparency around the cloud, including fine semi-transparent mist edges. No rectangular paper or solid background.\nCritical: This is a SEPARATE animation layer, not a composite of all depth planes, not a sprite sheet. Do not copy, flip or mirror any cloud image. Paint an original asymmetric silhouette and original brush patterns. No repeating wallpaper motifs, uniform rows, obvious spiral stamps, dark uniform outlines, 3D rendering, photographic fog, cartoon bubbles, scenery, birds, mountains, sun, text, seals, watermarks, frames, or painted checkerboard.\nLayer: RIGHT REAR / distant, slow.\nComposition: wide landscape canvas. An original asymmetrical cloud plume originates from the RIGHT edge and wafts toward the LEFT. Its tallest feathery crest is at the upper-right; the silhouette descends diagonally through the center toward a low thin leftward mist tongue. Use several soft upright brush plumes and ragged descending edges, with a few gaps between the far fringes. Leave broad genuine transparent margins above and below.\nShape language: upright uneven plumes, long downward-pointing fine mist fringe and one gentle diagonal sweep. NOT long parallel streamers, NOT a mirrored left bank, NO repeated circular curls. Pale cool gray/celadon wash and luminous ivory cloud faces; light atmospheric density, subtle tonal volume. One cloud layer only.",
+      "validation": {
+        "dimensions": [
+          2024,
+          777
+        ],
+        "mode": "RGBA",
+        "sha256": "b8fba21509b98718777b21a3a1293d39da6429b65eae54868dc7c30ee4e55cd2",
+        "transparent_percent": 59.87,
+        "near_opaque_alpha_245_plus_percent": 23.74,
+        "original_generated_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-02-middle-bank.png",
+      "side": "left",
+      "depth": "middle",
+      "design": "Three broad uneven rolling domes with a projecting central shelf",
+      "proposed_speed_multiplier": 1,
+      "generated_source": "C:/Users/tf156/.codex/generated_images/01a17b14-aeeb-77e2-ab65-a581f6bd7af8/exec-0626d3d4-4315-4b67-baa9-4b7f47f3a744.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE independently movable transparent PNG cloud layer for a sumi-e landscape website transition.\nReference image: the existing landscape is ONLY a palette and painterly-medium reference. Do not reproduce scenery.\nStyle: neo-traditional Japanese sumi-e and watercolor, warm ivory/cloud-white, subtle celadon, charcoal-gray ink diluted into soft washes. Express cloud volume through overlapping lobes, luminous faces and gentle ink-wash shadows underneath; retain a hand-painted 2D scroll illustration aesthetic. Feathered dry-brush fringes, graceful organic shapes, selective broken ink strokes. Actual alpha transparency around the cloud, including fine semi-transparent mist edges. No rectangular paper or solid background.\nCritical: This is a SEPARATE animation layer, not a composite of all depth planes, not a sprite sheet. Do not copy, flip or mirror any cloud image. Paint an original asymmetric silhouette and original brush patterns. No repeating wallpaper motifs, uniform rows, obvious spiral stamps, dark uniform outlines, 3D rendering, photographic fog, cartoon bubbles, scenery, birds, mountains, sun, text, seals, watermarks, frames, or painted checkerboard.\nLayer: LEFT MIDDLE / principal scene-covering bank.\nComposition: approximately square canvas. A substantial continuous ivory cloud mass fills the LEFT border and continues beyond TOP and BOTTOM on the left. Its leading edge billows toward the RIGHT, through three broad irregular rounded domes: a smaller high lobe, one strongly projecting middle shelf, and a wider low rounded shoulder. Vary their sizes and vertical spacing markedly. The outermost right 15-25 percent opens to true transparency with misty ragged edges.\nShape language: broad calm rolling domes, large luminous planes, soft overlapping gray-celadon shadow basins underneath. Only ONE subtle broken brush curl in the upper third; mostly open brush-wash shapes, not ornament. Main body must be nearly opaque warm ivory with no transparent holes so it can conceal a scene when the two middle banks overlap. It is a single mid-distance layer; do not add separately floating foreground clouds.",
+      "validation": {
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "sha256": "bc096b71fd26b355d60eb54fa8689650d9aa1efb7ae6246e01be23960d0e3bec",
+        "transparent_percent": 26.95,
+        "near_opaque_alpha_245_plus_percent": 60.08,
+        "original_generated_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-02-middle-bank.png",
+      "side": "right",
+      "depth": "middle",
+      "design": "Stepped towering cloud with a high hooked overhang and low taper",
+      "proposed_speed_multiplier": 1.12,
+      "generated_source": "C:/Users/tf156/.codex/generated_images/01a17b14-aeeb-77e2-ab65-a581f6bd7af8/exec-69c1e36d-fdf7-4f0f-aeb1-e1fde173e41b.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE independently movable transparent PNG cloud layer for a sumi-e landscape website transition.\nReference image: the existing landscape is ONLY a palette and painterly-medium reference. Do not reproduce scenery.\nStyle: neo-traditional Japanese sumi-e and watercolor, warm ivory/cloud-white, subtle celadon, charcoal-gray ink diluted into soft washes. Express cloud volume through overlapping lobes, luminous faces and gentle ink-wash shadows underneath; retain a hand-painted 2D scroll illustration aesthetic. Feathered dry-brush fringes, graceful organic shapes, selective broken ink strokes. Actual alpha transparency around the cloud, including fine semi-transparent mist edges. No rectangular paper or solid background.\nCritical: This is a SEPARATE animation layer, not a composite of all depth planes, not a sprite sheet. Do not copy, flip or mirror any cloud image. Paint an original asymmetric silhouette and original brush patterns. No repeating wallpaper motifs, uniform rows, obvious spiral stamps, dark uniform outlines, 3D rendering, photographic fog, cartoon bubbles, scenery, birds, mountains, sun, text, seals, watermarks, frames, or painted checkerboard.\nLayer: RIGHT MIDDLE / principal scene-covering bank.\nComposition: approximately square canvas. Dense continuous ivory cloud mass anchored to the RIGHT border, extending beyond top and bottom on the right. The leading LEFT edge has a totally different structure from a rounded three-dome bank: a tall stepped cloud tower at the upper-right, a broad hooked overhang jutting far LEFT in the upper third, a receding narrow waist halfway down, and a long low taper advancing left near the bottom. Make the asymmetry strong. Leftmost 15-25 percent is genuinely transparent around organic mist fringes.\nShape language: angular-soft broken cloud shelves and an uneven hooked high crest, flatter stretched lower lobes. Several long diagonal dry-brush strokes and pale charcoal pooling along the inner folds; subtle celadon underpainting. NO regular scalloped rows, NO repeated circular spirals, NO three equally sized domes. Dense warm ivory body, no transparent holes in the main mass. Gentle painted volume, one middle layer only.",
+      "validation": {
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "sha256": "ae8fe4b19ec6e84bb12b7d9acf63cb290bcf8b28f0a50189c257dbcbdfaa85b2",
+        "transparent_percent": 45.93,
+        "near_opaque_alpha_245_plus_percent": 42.16,
+        "original_generated_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-03-front-billow.png",
+      "side": "left",
+      "depth": "front",
+      "design": "Large low billow with a rising wedge and broad dark underside",
+      "proposed_speed_multiplier": 1.4,
+      "generated_source": "C:/Users/tf156/.codex/generated_images/01a17b14-aeeb-77e2-ab65-a581f6bd7af8/exec-84479c83-fdf8-46dd-bbcf-2f3e3e41c216.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE independently movable transparent PNG cloud layer for a sumi-e landscape website transition.\nReference image: the existing landscape is ONLY a palette and painterly-medium reference. Do not reproduce scenery.\nStyle: neo-traditional Japanese sumi-e and watercolor, warm ivory/cloud-white, subtle celadon, charcoal-gray ink diluted into soft washes. Express cloud volume through overlapping lobes, luminous faces and gentle ink-wash shadows underneath; retain a hand-painted 2D scroll illustration aesthetic. Feathered dry-brush fringes, graceful organic shapes, selective broken ink strokes. Actual alpha transparency around the cloud, including fine semi-transparent mist edges. No rectangular paper or solid background.\nCritical: This is a SEPARATE animation layer, not a composite of all depth planes, not a sprite sheet. Do not copy, flip or mirror any cloud image. Paint an original asymmetric silhouette and original brush patterns. No repeating wallpaper motifs, uniform rows, obvious spiral stamps, dark uniform outlines, 3D rendering, photographic fog, cartoon bubbles, scenery, birds, mountains, sun, text, seals, watermarks, frames, or painted checkerboard.\nLayer: LEFT FOREGROUND / closest, fastest.\nComposition: wide landscape canvas. One large sculptural cloud billow emerges from the LOWER-LEFT edge. Its lower mass extends beyond left and bottom. A huge luminous low rounded shoulder occupies the lower-left, rising as an uneven diagonal wedge toward the middle-right, ending in two unequal soft pointed cloud tongues. Upper third and far right remain true transparency. The form is cropped as a sweeping foreground piece, not a small isolated puff.\nShape language: huge organic swelling lobes and two broad sweeping brush contours, no little repeating cloud curls, no stacked tiers. More visible warm-gray and charcoal diluted ink shading beneath the lower rim, ivory highlight wash on the upper face and sparse celadon staining. The main foreground belly is near opaque, with ragged delicate semi-transparent fringes. Clear tonal depth while remaining traditional 2D ink painting. Distinct from all rear and middle forms.",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "9b367ed2cdf2b79734a8a5940edd7cebfd4b62789a956f1d131d6b6280bfe8b9",
+        "transparent_percent": 42.34,
+        "near_opaque_alpha_245_plus_percent": 43.2,
+        "original_generated_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-03-front-roll.png",
+      "side": "right",
+      "depth": "front",
+      "design": "High broad arch and long downward-left trailing folds",
+      "proposed_speed_multiplier": 1.55,
+      "generated_source": "C:/Users/tf156/.codex/generated_images/01a17b14-aeeb-77e2-ab65-a581f6bd7af8/exec-3a4c4d9e-f11d-4b64-8a95-7b6924daefc7.png",
+      "prompt": "Use case: stylized-concept\nAsset type: ONE independently movable transparent PNG cloud layer for a sumi-e landscape website transition.\nReference image: the existing landscape is ONLY a palette and painterly-medium reference. Do not reproduce scenery.\nStyle: neo-traditional Japanese sumi-e and watercolor, warm ivory/cloud-white, subtle celadon, charcoal-gray ink diluted into soft washes. Express cloud volume through overlapping lobes, luminous faces and gentle ink-wash shadows underneath; retain a hand-painted 2D scroll illustration aesthetic. Feathered dry-brush fringes, graceful organic shapes, selective broken ink strokes. Actual alpha transparency around the cloud, including fine semi-transparent mist edges. No rectangular paper or solid background.\nCritical: This is a SEPARATE animation layer, not a composite of all depth planes, not a sprite sheet. Do not copy, flip or mirror any cloud image. Paint an original asymmetric silhouette and original brush patterns. No repeating wallpaper motifs, uniform rows, obvious spiral stamps, dark uniform outlines, 3D rendering, photographic fog, cartoon bubbles, scenery, birds, mountains, sun, text, seals, watermarks, frames, or painted checkerboard.\nLayer: RIGHT FOREGROUND / closest, fastest.\nComposition: wide landscape canvas. One expansive cloud roll sweeps in from the UPPER-RIGHT edge, extending beyond right and top, occupying mainly the upper two-thirds. A broad high arch is offset toward the right; underneath it, two long unequal undulating folds trail DOWN and LEFT to tapered wisps. Bottom-left and much of the lower third are genuine transparency. The cloud reaches left most strongly in the upper half.\nShape language: a high arch and long hanging brushed folds, NOT a low rounded mound or a mirrored left wedge, NOT an array of spiral ornaments. Luminous near-opaque warm ivory face, subtly darker gray-celadon ink wash tucked under the hanging folds, broad expressive broken brush sweeps. Let one narrow open-ended hook accent the tip; all other contours are sweeping irregular organic lobes. Strong soft tonal volume yet flat hand-painted sumi-e medium. One foreground layer only.",
+      "validation": {
+        "dimensions": [
+          1671,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "a97640db238edcfbc677b0431a240abb65590715dbc8caa38e770e691789bfed",
+        "transparent_percent": 56.06,
+        "near_opaque_alpha_245_plus_percent": 33.27,
+        "original_generated_bytes_preserved": true
+      }
+    }
+  ],
+  "validation": {
+    "transparent_png_checks": "passed",
+    "unique_originals": 6,
+    "left_right_mirror_checks": [
+      {
+        "depth": "rear",
+        "mirrored_silhouette_alpha_mae_0_to_255": 61.26,
+        "identical_or_mirrored": false
+      },
+      {
+        "depth": "middle",
+        "mirrored_silhouette_alpha_mae_0_to_255": 59.68,
+        "identical_or_mirrored": false
+      },
+      {
+        "depth": "front",
+        "mirrored_silhouette_alpha_mae_0_to_255": 105.31,
+        "identical_or_mirrored": false
+      }
+    ],
+    "runtime_integration": "not performed; awaiting artwork approval"
+  }
+}
