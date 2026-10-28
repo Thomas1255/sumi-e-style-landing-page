@@ -92,7 +92,8 @@ export function createVideoFlock(canvas, poster) {
   }
   function layout(index) {
     const width = document.documentElement.clientWidth, height = innerHeight;
-    const forest = clamp((state.progress - .34) / .10) * (1 - clamp((state.progress - .60) / .10));
+    // Each perspective stays beside its own cloth and fades out in place.
+    const forest = index === 2 ? 1 : 0;
     let w = Math.min(width * (.58 - forest * .03), height * 1.45), x = width * (.69 - forest * .37), y = height * .49;
     if (width <= 650) {
       const footerTop = document.querySelector('.flight-controls').getBoundingClientRect().top;
