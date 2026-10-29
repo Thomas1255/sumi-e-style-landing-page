@@ -4,23 +4,91 @@ const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
 const grain = seed => { const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453; return value - Math.floor(value); };
 const circles = new WeakMap();
 const BRUSH_START = 2.04, BRUSH_SPAN = TAU - .73;
+const mix = (a, b, t) => a + (b - a) * t;
+function paperHash(x, y) {
+  let value = (Math.imul(x, 374761393) + Math.imul(y, 668265263)) | 0;
+  value = Math.imul(value ^ (value >>> 13), 1274126177);
+  return ((value ^ (value >>> 16)) >>> 0) / 4294967295;
+}
+function paperNoise(x, y) {
+  const ix = Math.floor(x), iy = Math.floor(y);
+  const fx = smooth(x - ix), fy = smooth(y - iy);
+  return mix(mix(paperHash(ix, iy), paperHash(ix + 1, iy), fx), mix(paperHash(ix, iy + 1), paperHash(ix + 1, iy + 1), fx), fy);
+}
 
-// Original brush geometry: broad pigment at the lower-left start, long dry
-// bristle channels, an uneven rim and a tapered finish around an open lower gap.
+// Pigment is deposited into an original, transparent brush impression. Noise
+// has fixed paper coordinates, so pores and torn edges never flicker in motion.
+function paintBrushTexture(context, size, extent, radius, density) {
+  const pixels = context.createImageData(size, size);
+  const data = pixels.data;
+  for (let py = 0; py < size; py++) {
+    for (let px = 0; px < size; px++) {
+      const dx = (px + .5) / density - extent, dy = ((py + .5) / density - extent) / 1.025;
+      const distance = Math.hypot(dx, dy) / radius;
+      if (distance < .62 || distance > 1.4) continue;
+      const angle = Math.atan2(dy, dx);
+      let arc = (angle - BRUSH_START + TAU * 2) % TAU;
+      if (arc > TAU - .36) arc -= TAU;
+      const t = arc / BRUSH_SPAN;
+      if (t < -.065 || t > 1.01) continue;
+      // Normalize the paper grain to CSS size, independent of pixel density.
+      const x = dx * 72 / radius + 137, y = dy * 72 / radius + 231;
+      const cloud = paperNoise(x * .13, y * .13);
+      const fiber = paperNoise(x * 1.7, y * 1.7);
+      const edge = (paperNoise(x * .52, y * .52) - .5) * .25 + (fiber - .5) * .17;
+      const center = 1 + .014 * Math.sin(angle * 3) + .009 * Math.sin(angle * 7 + .8);
+      const travel = clamp(t);
+      const pressure = (1.2 - .36 * travel + .15 * Math.sin(angle * 1.4)) * (1 - .68 * smooth((travel - .82) / .18));
+      const halfWidth = .205 * pressure;
+      const across = (distance - center) / halfWidth;
+      const heel = t < 0 ? t / (.046 + .012 * cloud) : 0;
+      const outline = Math.hypot(across, heel);
+      let coverage = clamp((1 - outline + edge) / .085);
+      if (!coverage) continue;
+      // Dry brush rakes wander, widen, split and reconnect rather than tracing
+      // two perfectly parallel circular lines.
+      const rake = .17 + .08 * Math.sin(t * 14 + .4) + (paperNoise(t * 34, 2) - .5) * .16;
+      const lane = .065 + paperNoise(t * 47, 7) * .105;
+      const dry = smooth((t - .09) / .09) * (1 - smooth((t - .94) / .065));
+      coverage *= 1 - dry * clamp((lane - Math.abs(across - rake) + (fiber - .5) * .08) / .055);
+      const outerRake = .64 + .06 * Math.sin(t * 19) + (cloud - .5) * .16;
+      coverage *= 1 - dry * .95 * clamp((.052 - Math.abs(across - outerRake) + (fiber - .5) * .06) / .035);
+      const bristles = paperNoise(across * 45 + paperNoise(t * 35, 17) * 1.6, t * 8);
+      const pores = paperNoise(x * 2.8, y * 2.8);
+      const worn = smooth((Math.abs(across) - .55) / .45);
+      const tail = smooth((t - .72) / .28);
+      coverage *= 1 - smooth((pores - (.8 - .18 * worn - .16 * tail)) / .15);
+      coverage *= 1 - tail * smooth((paperNoise(x * .85, y * .85) - .48) / .25);
+      // Mottled wet pigment and thin, grey bristle washes within the same mark.
+      const pigment = clamp(.72 + .24 * cloud + .1 * bristles - .12 * tail);
+      const index = (py * size + px) * 4;
+      const shade = Math.round(17 + (1 - cloud) * 17 + (1 - bristles) * 10);
+      data[index] = shade; data[index + 1] = shade; data[index + 2] = shade - 2;
+      data[index + 3] = Math.round(255 * coverage * pigment);
+    }
+  }
+  context.putImageData(pixels, 0, 0);
+}
+
+// Broad pigment at the lower-left start, torn bristle channels, porous edges
+// and a tapering finish around an open lower gap.
 // No pixels from a supplied reference are used or loaded by the page.
 export function paintInkCircle(context, x, y, radius, progress, opacity = 1) {
   if (progress <= 0 || opacity <= 0) return;
   const density = Math.min(2, Math.max(1, Math.abs(context.getTransform?.()?.a || 1)));
   let brush = circles.get(context);
   if (!brush || brush.radius !== radius || brush.density !== density) {
-    const extent = Math.ceil(radius * 1.3), size = Math.ceil(extent * 2 * density);
-    const canvas = context.canvas?.ownerDocument?.createElement('canvas') ?? (typeof OffscreenCanvas === 'function' ? new OffscreenCanvas(size, size) : null);
+    const extent = Math.ceil(radius * 1.42), size = Math.ceil(extent * 2 * density);
+    let canvas = context.canvas?.ownerDocument?.createElement('canvas') ?? (typeof OffscreenCanvas === 'function' ? new OffscreenCanvas(size, size) : null);
+    // Native canvas implementations can also render local artwork studies.
+    if (!canvas && typeof context.canvas?.getContext === 'function') {
+      try { canvas = new context.canvas.constructor(size, size); } catch { /* Use geometry fallback. */ }
+    }
     if (canvas) {
       canvas.width = canvas.height = size;
       const ink = canvas.getContext('2d');
       if (ink) {
-        ink.setTransform(density, 0, 0, density, 0, 0);
-        paintBrush(ink, extent, extent, radius, 1, 1);
+        paintBrushTexture(ink, size, extent, radius, density);
         brush = { canvas, radius, density, extent }; circles.set(context, brush);
       }
     }
@@ -31,7 +99,7 @@ export function paintInkCircle(context, x, y, radius, progress, opacity = 1) {
   context.save(); context.globalAlpha *= opacity;
   if (progress < 1) {
     context.beginPath(); context.moveTo(x, y);
-    context.arc(x, y, radius * 1.4, BRUSH_START - .04 * BRUSH_SPAN, BRUSH_START + clamp(progress) * BRUSH_SPAN);
+    context.arc(x, y, radius * 1.5, BRUSH_START - .065 * BRUSH_SPAN, BRUSH_START + clamp(progress) * BRUSH_SPAN);
     context.closePath(); context.clip();
   }
   context.drawImage(brush.canvas, x - brush.extent, y - brush.extent, brush.extent * 2, brush.extent * 2);

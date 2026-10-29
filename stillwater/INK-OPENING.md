@@ -4,7 +4,7 @@ The user chose the Ink Bloom direction and supplied local motion and brush-circl
 
 ## Sequence
 
-1. A charcoal enso paints clockwise from its heavy lower-left start on warm washi. Seventy-six uneven bristle tracks, long unpainted channels, scattered pigment fibers and a tapering finish leave an open lower gap. Its progress follows four settled first-scene tasks: the opening landscape, crane poster, document fonts and first film frame (or its painted fallback). The minimum loading passage is 1.5 seconds; asset readiness never waits indefinitely.
+1. A charcoal enso paints clockwise from its heavy lower-left start on warm washi. An irregular pigment impression replaces smooth parallel strokes: ragged inner and outer edges, wandering dry-brush channels, uneven grey washes, uninked pores and a broken taper leave an open lower gap. Its progress follows four settled first-scene tasks: the opening landscape, crane poster, document fonts and first film frame (or its painted fallback). The minimum loading passage is 1.5 seconds; asset readiness never waits indefinitely.
 2. The completed circle rests for 160 ms and stays in place. A slightly tilted vermilion 水 seal presses into its center over 300 ms, compressing briefly before settling to its final size. The seal echoes the existing header logo, with a pale border and tiny uninked fibers.
 3. The stamp impression holds for 380 ms and sends out three faint, slightly irregular water rings. A feathered circular aperture expands from exactly the center, dissolving the seal and enso as it opens.
 4. The actual page appears through that aperture with a 26 px blur and restrained 3.5% landscape magnification, resolving to full focus over 1.95 seconds. The cover, blur, magnification, event handlers and temporary input lock are then removed.
@@ -21,7 +21,7 @@ The opening replaces the initial scroll-controlled cloud cover. The three later 
 
 The blur targets only the visible opening elements and stage, so it does not rasterize the full long-scroll document. The effect stops drawing when complete. Skip opening and Escape release it immediately; users with reduced motion, direct chapter links, restored scroll positions or back/forward navigation see the page immediately. Failed assets use the existing scene/poster fallbacks. A maximum asset wait, controller deadline and independent boot deadline prevent an inaccessible loading cover. Hidden document content regains its prior input state, and keyboard focus returns to the brand when a focused skip control disappears.
 
-The detailed brush is baked once into a small transparent canvas at the current display density. A radial clip advances the loading stroke; its bristles are not rebuilt on every browser frame. Geometry painting remains available when an offscreen canvas cannot be created.
+The detailed brush is baked once into a small transparent canvas at the current display density. Original procedural pigment fields control pressure, dry channels, torn contours and paper absorption. Their fixed coordinates keep the texture stable throughout loading. A radial clip advances the loading stroke; its pixels are not rebuilt on every browser frame. Geometry painting remains available when an offscreen canvas cannot be created. No supplied reference pixels are sampled, embedded or uploaded.
 
 ## Verification
 
