@@ -8,7 +8,7 @@ This replaces the artwork for the final scene change only (68%, autumn temples t
 - [Six individual transparent layers](layers.html)
 - [Exact generation prompts](PROMPTS.md)
 - [Artwork records and static composition coordinates](artwork-record.json)
-- [Rejected closed-view reference](reference-rejected-closed-view.png)
+- The user-supplied closed-view reference is retained only in ignored `.local/private-references/`.
 
 | Depth | Left | Right |
 | --- | --- | --- |

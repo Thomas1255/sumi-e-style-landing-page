@@ -1,6 +1,6 @@
 # Ink circle → drop → ripple opening
 
-The user chose the Ink Bloom direction and supplied the video described in `art-previews/ink-opening-reference-v1/README.md`. The reference opens outward from the center, briefly shows a strongly blurred scene, then settles into focus. The requested sumi-e treatment adds a painted ink-circle loader and one central drop before that reveal. The reference video is retained locally in the ignored `.local/private-references/` folder and excluded from GitHub.
+The user chose the Ink Bloom direction and supplied a local motion reference. It opens outward from the center, briefly shows a strongly blurred scene, then settles into focus. The requested sumi-e treatment adds a painted ink-circle loader and one central drop before that reveal. The reference video and its source notes are retained only in the ignored `.local/private-references/` folder.
 
 ## Sequence
 

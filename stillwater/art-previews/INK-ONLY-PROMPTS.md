@@ -6,7 +6,7 @@ Created with the built-in ImageGen tool, inspired by the user's crane painting. 
 
 - Transparent RGBA PNG: `crane-flock-ink-only-v1.png` (1774 x 887, verified alpha range 0–255).
 - Landscape preview: `crane-flock-ink-only-on-wetlands-v1.png`.
-- Preserved user style reference: `ink-crane-style-reference.png`.
+- User style reference retained only in ignored `.local/private-references/`.
 
 ## Previous watercolor option — preserved
 

@@ -9,6 +9,7 @@ The user wants project work committed as it progresses, including work in other 
 - `stillwater/dist/` contains the maintained, deployable site source and artwork. Keep these files tracked.
 - Run `npm run dev` to preview the site and `npm run build` to validate changes.
 - Preserve artwork, reference studies, and prompt records. Deployment archives, local QA captures, dependencies, and secrets do not belong in commits.
+- Keep all user-supplied reference files and raw attachments local, under ignored `.local/private-references/` when a workspace copy is needed. Do not commit, push, deploy, or upload them to external services. Generated artwork and approved runtime assets remain tracked.
 
 ## Git workflow
 

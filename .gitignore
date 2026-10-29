@@ -1,5 +1,6 @@
 node_modules/
 .local/
+# User-supplied references belong only in .local/private-references/.
 *.log
 *.tar
 *.tar.gz
