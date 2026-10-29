@@ -62,12 +62,12 @@ const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
 const interval = (value, [start, end]) => ease((value - start) / (end - start));
 
 // Position depends only on scroll: reversing or jumping cannot leave a timed animation behind.
-export function inkCloudFrame(progress, viewportWidth, viewportHeight, reducedMotion = false) {
+export function inkCloudFrame(progress, viewportWidth, viewportHeight, reducedMotion = false, openingEnabled = true) {
   const p = reducedMotion ? 0 : clamp(Number.isFinite(progress) ? progress : 0);
   const halfSpan = INK_CLOUD_SCROLL_SPAN / 2;
   const cutIndex = SCENE_CUTS.findIndex(center => p > center - halfSpan && p < center + halfSpan);
   const cut = SCENE_CUTS[cutIndex];
-  const intro = !reducedMotion && p < INK_CLOUD_INTRO_SPAN;
+  const intro = openingEnabled && !reducedMotion && p < INK_CLOUD_INTRO_SPAN;
   const setIndex = intro ? 0 : Math.max(0, cutIndex + 1);
   const variant = INK_CLOUD_VARIANTS[setIndex];
   // The layers already ease their own motion; a linear phase avoids accelerating twice.
@@ -99,7 +99,7 @@ export function inkCloudFrame(progress, viewportWidth, viewportHeight, reducedMo
   };
 }
 
-export function mountInkClouds(after) {
+export function mountInkClouds(after, { openingEnabled = true } = {}) {
   const root = document.createElement('div');
   root.className = 'ink-cloud-transition';
   root.setAttribute('aria-hidden', 'true');
@@ -139,7 +139,7 @@ export function mountInkClouds(after) {
   const renderer = createInkCloudRenderer(surface,render);
 
   function render() {
-    const frame = inkCloudFrame(progress, innerWidth, innerHeight, reduced);
+    const frame = inkCloudFrame(progress, innerWidth, innerHeight, reduced, openingEnabled);
     const bank = banks[frame.setIndex];
     banks.forEach(candidate => { candidate.element.hidden = candidate !== bank || !frame.active; });
     root.dataset.cloudState = bank.state;

@@ -17,9 +17,9 @@ execFileSync(process.execPath, ['--check', path.join(root, 'app.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'flight-model.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'clouds.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'page-clouds.js')]);
-for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','ink-cloud-renderer.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
+for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
 // Resolve all relative module imports, including assets loaded from JavaScript.
-for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','page-cloth.js','page-clouds.js','ink-clouds.js','ink-cloud-renderer.js']) {
+for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','page-cloth.js','page-clouds.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js']) {
   const module = await readFile(path.join(root, filename), 'utf8');
   for (const match of module.matchAll(/(?:from\s+|import\s+)['"](\.\/[^'"]+)['"]/g)) await access(path.resolve(root, match[1]));
   for (const match of module.matchAll(/['"](assets\/[^'"]+)['"]/g)) await access(path.join(root,match[1]));
@@ -111,6 +111,8 @@ for(const viewport of [[1280,720],[390,844],[2560,1080]]){
   const arrivals=SCENE_CUTS.map(cut=>inkCloudFrame(cut-.04,...viewport).layers.map(layer=>layer.closure));
   assert.equal(new Set(arrivals.map(value=>JSON.stringify(value))).size,3,'Each scene change needs its own staggered choreography');
   const opening=inkCloudFrame(0,...viewport);
+  assert.equal(inkCloudFrame(0,...viewport,false,false).active,false,'The ink bloom opening must reveal the page without a second closed cloud cover');
+  for(const cut of SCENE_CUTS)assert.deepEqual(inkCloudFrame(cut,...viewport,false,false),inkCloudFrame(cut,...viewport),'The new page opening must preserve every scene-to-scene cloud transition');
   assert(opening.active && opening.intro && opening.strength===1,'The first view must start with the cloud banks fully closed');
   assert(opening.layers.every(layer=>layer.closure===1),'All six clouds must cover the opening');
   const introPoints=[0,.01,.02,.03,.04,INK_CLOUD_INTRO_SPAN];
@@ -151,5 +153,6 @@ assert.deepEqual(routeCamera(.2,true),routeCamera(.9,true),'Reduced motion must 
 assert.deepEqual([0,.30,.55,.9].map(p=>routeCamera(p).index),[0,1,2,3],'The flight must visit all four landscapes');
 for(const scene of SCENES)await access(path.join(root,scene));
 assert.equal((html.match(/data-cloth/g)||[]).length,5,'Every story panel must have cloth');
+await import('./ink-opening-check.mjs');
 await import('./server-check.mjs');
 console.log('Verified assets, reversible video frames, four synchronized landscapes, 24 unique PNGs in four staggered cloud sets, five cloth panels, reduced motion, and HTTP video seeking.');

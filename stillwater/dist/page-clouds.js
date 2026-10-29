@@ -24,7 +24,7 @@ export function mountPageClouds(output) {
   if (!output) return null;
   const smallScreen = matchMedia('(max-width: 650px)');
   const source = document.createElement('canvas');
-  const transition = mountInkClouds(output);
+  const transition = mountInkClouds(output, { openingEnabled: false });
   let instance = null;
   let contextLost = false;
   let disposed = false;

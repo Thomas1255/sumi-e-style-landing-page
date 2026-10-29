@@ -3,12 +3,15 @@ import { createVideoFlock } from './video-flock.js';
 import { createTerrain, SCENES, routeCamera } from './terrain.js';
 import { mountStoryCloth } from './page-cloth.js';
 import { mountPageClouds } from './page-clouds.js';
+import { mountInkOpening, openingMediaReady } from './ink-opening.js';
 import './audio.js';
+const opening=mountInkOpening();
 const birdCanvas=document.querySelector('#flight-canvas'),terrainCanvas=document.querySelector('#terrain-canvas');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const flock=createVideoFlock(birdCanvas,document.querySelector('#flight-poster'));
 const clouds=mountPageClouds(document.querySelector('#clouds-canvas'));
 const terrainImages=SCENES.map(src=>{const image=new Image();image.src=src;return image;});
+const terrainReady=terrainImages.map(image=>image.decode());
 const controls=document.querySelector('#flight-timeline'),progressBar=document.querySelector('.reading-progress'),percentLabel=document.querySelector('#flight-percent');
 const panels=[...document.querySelectorAll('.panel')],navLinks=[...document.querySelectorAll('.chapter-nav a')];
 const names=['THE LOTUS WETLANDS','THE GOLDEN TERRACES','BAMBOO & AUTUMN','THE HIGH PEAKS'];
@@ -42,10 +45,11 @@ function update(){
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(update);}}
 function resize(){update();}
 function setupTerrain(){try{terrain=createTerrain(terrainCanvas,terrainImages);}catch(error){console.warn('Terrain fallback:',error.message);terrain=null;}terrainCanvas.hidden=!terrain;resize();}
-Promise.all(terrainImages.map(image=>image.decode())).then(setupTerrain).catch(()=>{fallbackTerrain(0);schedule();});
+Promise.all(terrainReady).then(setupTerrain).catch(()=>{fallbackTerrain(0);schedule();});
 terrainCanvas.addEventListener('webglcontextlost',event=>{event.preventDefault();contextLost=true;fallbackTerrain(Number(controls.value)/1000);});
 terrainCanvas.addEventListener('webglcontextrestored',()=>{contextLost=false;setupTerrain();});
 addEventListener('scroll',schedule,{passive:true});addEventListener('resize',resize,{passive:true});reduced.addEventListener('change',schedule);
 controls.addEventListener('input',()=>{scrollTo({top:Number(controls.value)/1000*(document.documentElement.scrollHeight-innerHeight),behavior:'instant'});update();});
 resize();
 mountStoryCloth();
+opening.waitFor([terrainReady[0],document.querySelector('#flight-poster').decode(),document.fonts.ready,openingMediaReady(document.querySelector('.flight-decoder[data-clip="0"]'))]);
