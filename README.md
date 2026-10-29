@@ -9,3 +9,5 @@ Run `npm run dev` and open http://localhost:5173. No dependency installation is 
 Current implementation details are in `stillwater/REDESIGN.md`. Selected artwork and exact built-in ImageGen prompts are in `stillwater/FLOCK-ARTWORK.md`. Earlier art studies and prompts are retained separately.
 
 Repository: [Thomas1255/sumi-e-style-landing-page](https://github.com/Thomas1255/sumi-e-style-landing-page). The Git repository covers this entire workspace, with the site in `stillwater/`. Project work should be checked, committed, and pushed as described in `AGENTS.md`.
+
+For Vercel, import this repository with Root Directory set to the repository root (leave it blank), and deploy the latest `main` commit. `vercel.json` selects the Other framework preset, runs `npm run build`, and serves `stillwater/dist` as static files. `server.mjs` is only for local previews; this site does not require a production server or serverless function.
