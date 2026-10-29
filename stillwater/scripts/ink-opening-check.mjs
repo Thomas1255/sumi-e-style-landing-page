@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { INK_OPENING_TIMING, inkOpeningFrame, shouldPlayInkOpening } from '../dist/ink-opening-model.js';
 import { mountInkOpening, openingMediaReady } from '../dist/ink-opening.js';
-import { CANVAS_RIPPLE_OPTIONS, canvasRippleGeometry, setCanvasRipple, canvasRippleState, bindCanvasRipple } from '../dist/canvas-ripple.js';
+import { CANVAS_RIPPLE_OPTIONS, canvasRippleGeometry, setCanvasRipple, canvasRippleState, bindCanvasRipple, createCanvasRippleSurface } from '../dist/canvas-ripple.js';
 
 assert(shouldPlayInkOpening());
 for (const options of [{ reducedMotion: true }, { hash: '#passage-two' }, { scrollPosition: 500 }, { navigationType: 'back_forward' }]) assert(!shouldPlayInkOpening(options),'Restored, anchored and reduced-motion visits must open immediately');
@@ -19,11 +19,14 @@ for(const [width,height] of [[1280,720],[390,844],[2560,1080]]){
   assert.equal(seal.ringRadius,start.ringRadius,'The completed enso must frame the seal without contracting into a drop');
   assert.equal(seal.washOpacity,1,'The seal impression must hold before the page fades in');
   assert.equal(seal.sealOffsetY,0);
+  const heldSeal=inkOpeningFrame(INK_OPENING_TIMING.stamp+1000,width,height);
+  assert.equal(heldSeal.phase,'seal');assert.equal(heldSeal.sealOpacity,1);assert.equal(heldSeal.ringOpacity,1);
+  assert.equal(heldSeal.washOpacity,1);assert.equal(heldSeal.coverBlur,0,'The completed reference frame must remain crisp through its longer hold');
   const revealStart=inkOpeningFrame(bloomStart,width,height);
   assert.equal(revealStart.blur,26);assert.equal(revealStart.rippleAge,0);assert.equal(revealStart.washOpacity,1);
   assert.equal(revealStart.coverBlur,0);
   const sealFade=inkOpeningFrame(bloomStart+250,width,height);
-  assert(sealFade.coverBlur>0&&sealFade.washOpacity>0&&sealFade.washOpacity<1,'The completed circle and seal must soften as the synchronized reveal begins');
+  assert(sealFade.coverBlur>0&&sealFade.washOpacity===1&&sealFade.sealOpacity===1&&sealFade.ringOpacity===1,'The circle and seal must remain visible while the ripple and blur begin');
   let previousWash=1,previousBlur=26;
   for(let time=bloomStart;time<=total;time+=10){
     const frame=inkOpeningFrame(time,width,height);
@@ -39,11 +42,12 @@ for(const [width,height] of [[1280,720],[390,844],[2560,1080]]){
   assert(geometry.speed*end.rippleDuration*.9-2*geometry.bandWidth>=geometry.radius,'Trailing crests must cross all corners before cleanup');
   setCanvasRipple(inkOpeningFrame(bloomStart+cornerAge*1000,width,height),width,height);
   assert.equal(canvasRippleState().amplitude,CANVAS_RIPPLE_OPTIONS.amplitude,'The splash must retain its full configured amplitude as it reaches the corners');
-  const clear=inkOpeningFrame(bloomStart+INK_OPENING_TIMING.reveal*.5,width,height);
-  assert.equal(clear.washOpacity,0,'The whole page must be visible while the Canvas UI wave crosses it');
+  const overlap=inkOpeningFrame(bloomStart+INK_OPENING_TIMING.ripple*.5,width,height);
+  assert(overlap.washOpacity>0&&overlap.washOpacity<1&&overlap.coverBlur>0,'The opening frame must overlap the ripple rather than disappear before it');
   const waveEnd=inkOpeningFrame(bloomStart+INK_OPENING_TIMING.ripple,width,height);
   setCanvasRipple(waveEnd,width,height);
   assert.equal(waveEnd.phase,'focus');assert(waveEnd.blur>0&&!waveEnd.done,'The page must continue focusing after refraction stops');
+  assert.equal(waveEnd.washOpacity,0,'The held opening artwork must clear when its ripple ends');
   assert.equal(canvasRippleState().amplitude,0,'The blur tail must not extend or restart the ripple');
   const tail=inkOpeningFrame(total-500,width,height);
   assert(tail.blur>0&&tail.blur<waveEnd.blur&&!tail.done,'Focus must continue smoothly through the extra second');
@@ -68,6 +72,26 @@ const geometry=canvasRippleGeometry(1280,720);
 assert.deepEqual(calls.get('uCanvasRippleWave'),[geometry.speed,geometry.wavelength,geometry.bandWidth,1]);
 setCanvasRipple();surface();cloth();assert.equal(boundsReads,2,'Completed ripples must not add layout work');assert.equal(calls.get('uCanvasRipple')[3],0);
 
+// The opening refraction consumes the actual painted canvas, retains its alpha
+// and releases every GPU resource. No separate RAF or reference image is used.
+let coverDraws=0,coverLost=false;const uploads=[],released=[];
+const coverGL=new Proxy({
+  isContextLost:()=>coverLost,
+  createShader:()=>({kind:'shader'}),createProgram:()=>({kind:'program'}),createBuffer:()=>({kind:'buffer'}),createTexture:()=>({kind:'texture'}),
+  getShaderParameter:()=>true,getProgramParameter:()=>true,getUniformLocation:(_,name)=>name,
+  texImage2D:(...args)=>uploads.push(args.at(-1)),drawArrays:()=>coverDraws++,
+  deleteShader:value=>released.push(value),deleteProgram:value=>released.push(value),deleteBuffer:value=>released.push(value),deleteTexture:value=>released.push(value)
+},{get:(target,key)=>key in target?target[key]:()=>{}});
+const coverSource={width:2560,height:1440};
+const coverOutput={width:1,height:1,getContext:()=>coverGL,getBoundingClientRect:()=>({left:0,top:0,width:1280,height:720})};
+const coverSurface=createCanvasRippleSurface(coverOutput,coverSource);
+setCanvasRipple(inkOpeningFrame(bloomStart+250,1280,720),1280,720);
+assert(coverSurface.render());assert.equal(uploads[0],coverSource);assert.equal(coverDraws,1);assert.equal(coverOutput.width,coverSource.width);assert.equal(coverOutput.height,coverSource.height);
+coverLost=true;assert(!coverSurface.render());assert.equal(coverDraws,1,'A lost opening context must fall back without another draw');
+coverSurface.destroy();coverSurface.destroy();assert.equal(released.length,5,'Destroy must release two shaders, a program, a buffer and a texture exactly once');
+assert(!coverSurface.render());assert.equal(createCanvasRippleSurface({getContext:()=>null},coverSource),null);
+setCanvasRipple();
+
 // Exercise the real controller through asset failures, timeouts, skips and a
 // preference change. These checks protect document visibility and input release.
 function environment({reducedMotion=false,hash='',navigationType='navigate'}={}){
@@ -75,11 +99,12 @@ function environment({reducedMotion=false,hash='',navigationType='navigate'}={})
   const frames=new Map(),timers=new Map(),events=new Map(),motionEvents=new Map();
   const classes=new Set(['ink-opening-pending']);
   function element(){const listeners=new Map(),attributes=new Map(),properties=new Map();return {hidden:true,inert:false,dataset:{},style:{opacity:'',setProperty:(key,value)=>properties.set(key,value),removeProperty:key=>properties.delete(key),getPropertyValue:key=>properties.get(key)},classList:{add:(...values)=>values.forEach(v=>classes.add(v)),remove:(...values)=>values.forEach(v=>classes.delete(v)),contains:value=>classes.has(value)},addEventListener:(name,callback)=>listeners.set(name,callback),removeEventListener:name=>listeners.delete(name),setAttribute:(name,value)=>attributes.set(name,value),getAttribute:name=>attributes.get(name),listeners,focus(){this.focused=true}}}
-  const root=element(),html=element(),skip=element(),label=element(),caption=element(),progress=element(),brand=element(),canvas=element();
+  const root=element(),html=element(),skip=element(),label=element(),caption=element(),progress=element(),brand=element(),canvas=element(),rippleCanvas=element();
   const page=[element(),element(),element(),element()];
   const context=new Proxy({createRadialGradient:()=>({addColorStop(){}})},{get(target,key){if(key in target)return target[key];return ()=>{drawCalls++}},set(target,key,value){target[key]=value;return true}});
   canvas.getContext=()=>context;
-  root.querySelector=selector=>({'canvas':canvas,'.ink-opening-label':label,'[role=status]':caption,'[role=progressbar]':progress,'button':skip})[selector];
+  rippleCanvas.getContext=()=>null;
+  root.querySelector=selector=>({'canvas':canvas,'.ink-opening-ripple':rippleCanvas,'.ink-opening-label':label,'[role=status]':caption,'[role=progressbar]':progress,'button':skip})[selector];
   root.contains=element=>element===skip;
   const document={documentElement:html,activeElement:null,querySelector:selector=>selector==='#ink-opening'?root:selector==='.brand'?brand:null,querySelectorAll:()=>page};
   const motion={matches:reducedMotion,addEventListener:(name,callback)=>motionEvents.set(name,callback),removeEventListener:name=>motionEvents.delete(name)};
@@ -89,7 +114,7 @@ function environment({reducedMotion=false,hash='',navigationType='navigate'}={})
     addEventListener:(name,callback)=>events.set(name,callback),removeEventListener:name=>events.delete(name),dispatchEvent:event=>events.get(event.type)?.(event)};
   const previous=new Map(Object.keys(replacements).map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
   for(const [key,value] of Object.entries(replacements))Object.defineProperty(globalThis,key,{value,configurable:true,writable:true});
-  return {root,html,page,skip,brand,document,progress,caption,classes,frames,events,motion,motionEvents,drawCalls:()=>drawCalls,
+  return {root,html,page,skip,brand,document,progress,caption,rippleCanvas,classes,frames,events,motion,motionEvents,drawCalls:()=>drawCalls,
     advanceTo(target,step=16){while(clock<target){clock=Math.min(target,clock+step);for(const [key,timer] of [...timers])if(timer.at<=clock){timers.delete(key);timer.callback()}const current=[...frames];frames.clear();for(const [,callback] of current)callback(clock)}},
     restore(){for(const [key,descriptor] of previous){if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key]}}
   };
@@ -104,15 +129,18 @@ try{
   await Promise.resolve();await Promise.resolve();
   env.advanceTo(2100);assert.equal(env.root.dataset.phase,'stamp');assert.equal(env.progress.getAttribute('aria-valuenow'),'100');
   assert.equal(redraws,0,'The water surface must wait for the seal to finish');
-  env.advanceTo(3200);assert.equal(env.root.dataset.phase,'bloom');assert(env.classes.has('ink-revealing'));assert(env.drawCalls()>0);
+  env.advanceTo(3200);assert.equal(env.root.dataset.phase,'seal');assert.equal(redraws,0);
+  env.advanceTo(4000);assert.equal(env.root.dataset.phase,'bloom');assert(env.classes.has('ink-revealing'));assert(env.drawCalls()>0);
   assert(redraws>0&&canvasRippleState().amplitude>0,'The opening must drive Canvas UI refraction while revealing');
-  env.advanceTo(5000);assert.equal(env.root.dataset.phase,'focus');assert(!env.root.hidden);
+  assert.equal(env.root.dataset.rippleRenderer,'painted-fallback','Unsupported opening WebGL must preserve the painted cover and continue the reveal');
+  env.advanceTo(5800);assert.equal(env.root.dataset.phase,'focus');assert(!env.root.hidden);
   assert.equal(canvasRippleState().amplitude,0);assert(parseFloat(env.html.style.getPropertyValue('--ink-reveal-blur'))>0);
-  const waveRedraws=redraws;env.advanceTo(5200);assert.equal(redraws,waveRedraws,'The blur-only tail must not keep redrawing the water shaders');
-  env.advanceTo(6000);assert.equal(env.root.dataset.phase,'complete');assert(env.root.hidden);
+  const waveRedraws=redraws;env.advanceTo(6000);assert.equal(redraws,waveRedraws,'The blur-only tail must not keep redrawing the water shaders');
+  env.advanceTo(7000);assert.equal(env.root.dataset.phase,'complete');assert(env.root.hidden);
   assert(env.page.every(element=>!element.inert));assert(!env.classes.has('ink-opening-pending'));assert(!env.classes.has('ink-revealing'));assert.equal(env.frames.size,0);
   assert.equal(env.html.style.getPropertyValue('--ink-reveal-blur'),undefined);
   assert.equal(env.html.style.getPropertyValue('--ink-cover-blur'),undefined);
+  assert(env.rippleCanvas.hidden);assert.equal(env.rippleCanvas.listeners.size,0);
   assert.equal(canvasRippleState().amplitude,0,'Finish must clear the shared ripple on every surface');
   const stopped=redraws;env.advanceTo(9000);assert.equal(redraws,stopped,'No ripple redraws may continue after completion');
   opening.destroy();assert.equal(env.root.dataset.phase,'complete','Cleanup must be idempotent');
@@ -130,13 +158,13 @@ try{
 env=environment();
 try{
   mountInkOpening().waitFor([new Promise(()=>{})]);
-  env.advanceTo(10500);assert.equal(env.root.dataset.phase,'complete','A stalled asset must fall back and release the page');
+  env.advanceTo(11500);assert.equal(env.root.dataset.phase,'complete','A stalled asset must fall back and release the page after the full held-frame transition');
   assert(env.page.every(element=>!element.inert));
 }finally{env.restore()}
 
 env=environment();
 try{
-  const opening=mountInkOpening();opening.waitFor([]);env.advanceTo(3200);
+  const opening=mountInkOpening();opening.waitFor([]);env.advanceTo(4000);
   assert(canvasRippleState().amplitude>0);env.document.activeElement=env.skip;
   env.skip.listeners.get('click')();
   assert.equal(env.root.dataset.phase,'skipped');assert(env.root.hidden);assert(env.brand.focused);assert.equal(env.frames.size,0);assert(env.page.every(element=>!element.inert));

@@ -1,6 +1,6 @@
 import { INK_OPENING_TIMING, inkOpeningFrame, shouldPlayInkOpening } from './ink-opening-model.js';
 import { paintInkOpening } from './ink-opening-paint.js';
-import { setCanvasRipple } from './canvas-ripple.js';
+import { setCanvasRipple, createCanvasRippleSurface } from './canvas-ripple.js';
 
 export function openingMediaReady(media, timeout = 4200) {
   if (!media || media.readyState >= 2 || media.error) return Promise.resolve();
@@ -24,6 +24,7 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
     return noop;
   }
   const label = root.querySelector('.ink-opening-label');
+  const rippleCanvas = root.querySelector('.ink-opening-ripple');
   const caption = root.querySelector('[role=status]'), progressBar = root.querySelector('[role=progressbar]');
   const skip = root.querySelector('button');
   const content = [...document.querySelectorAll('.skip-link,.site-header,#flight-story,.flight-controls')].map(element => ({ element, wasInert: element.inert }));
@@ -33,6 +34,7 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
   let disposed = false, raf = 0, width = 1, height = 1;
   let assetProgress = 0, shownProgress = 0, transitionStart = null, fullSince = null;
   let started = false, lastPhase = 'loading', lastPercent = -1, rippleActive = false;
+  let rippleSurface = null, rippleSurfaceFailed = false;
   const mountedAt = performance.now();
   let lastTime = mountedAt;
 
@@ -40,6 +42,9 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
     if (disposed) return;
     disposed = true; cancelAnimationFrame(raf); clearTimeout(safety);
     setCanvasRipple();
+    rippleSurface?.destroy(); rippleSurface = null;
+    if (rippleCanvas) { rippleCanvas.hidden = true; rippleCanvas.removeEventListener('webglcontextlost', onSurfaceLost); }
+    canvas.style.removeProperty('visibility');
     const hadFocus = root.contains(document.activeElement);
     html.classList.remove('ink-opening-pending', 'ink-revealing');
     html.style.removeProperty('--ink-reveal-blur'); html.style.removeProperty('--ink-reveal-scale');
@@ -61,12 +66,30 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
   function onPageHide() { finish('restored'); }
   function onTimeout() { finish('timeout'); }
   function onMotion(event) { if (event.matches) finish('reduced-motion'); }
+  function onSurfaceLost(event) {
+    event?.preventDefault(); rippleSurface?.destroy(); rippleSurface = null; rippleSurfaceFailed = true;
+    if (rippleCanvas) rippleCanvas.hidden = true;
+    canvas.style.removeProperty('visibility'); root.dataset.rippleRenderer = 'painted-fallback';
+  }
+  function refractCover(frame) {
+    if (!rippleCanvas || rippleSurfaceFailed) return;
+    if (frame.rippleProgress<=0 || frame.washOpacity<=0) {
+      rippleCanvas.hidden = true; canvas.style.removeProperty('visibility'); return;
+    }
+    try {
+      rippleSurface ??= createCanvasRippleSurface(rippleCanvas,canvas);
+      rippleCanvas.hidden = false;
+      if (!rippleSurface?.render()) { onSurfaceLost(); return; }
+      canvas.style.setProperty('visibility','hidden'); root.dataset.rippleRenderer = 'canvas-ui';
+    } catch { onSurfaceLost(); }
+  }
 
   function resize() {
     width = innerWidth; height = innerHeight;
     const ratio = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.ceil(width * ratio); canvas.height = Math.ceil(height * ratio);
     canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
+    if (rippleCanvas) { rippleCanvas.style.width = `${width}px`; rippleCanvas.style.height = `${height}px`; }
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
   }
   function tick(now) {
@@ -107,13 +130,15 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
         html.style.setProperty('--ink-cover-blur', `${frame.coverBlur.toFixed(2)}px`);
         html.style.setProperty('--ink-reveal-scale', frame.zoom.toFixed(5));
         paintInkOpening(context, width, height, { frame });
+        refractCover(frame);
         if (rippleActive || wasRippleActive) onRippleFrame();
         if (frame.done) { finish(); return; }
       }
       raf = requestAnimationFrame(tick);
     } catch { finish('fallback'); }
   }
-  const safety = setTimeout(onTimeout, 11000);
+  const safety = setTimeout(onTimeout, INK_OPENING_TIMING.maximumLoading + INK_OPENING_TIMING.completeHold + INK_OPENING_TIMING.stamp + INK_OPENING_TIMING.stampHold + INK_OPENING_TIMING.reveal + 2000);
+  rippleCanvas?.addEventListener('webglcontextlost',onSurfaceLost);
   skip.addEventListener('click', onSkip);
   addEventListener('keydown', onKey);
   addEventListener('resize', resize, { passive: true });

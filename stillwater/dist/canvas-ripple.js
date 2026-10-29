@@ -80,3 +80,73 @@ export function bindCanvasRipple(gl, program, canvas) {
     gl.uniform3f(loc.uCanvasRippleOpt, options.refraction, options.dispersion, options.shine);
   };
 }
+
+// Refract the painted opening frame with the same wave used by the landscape,
+// flock and cloth. The source is our live drawing, never a reference screenshot.
+// Its owner drives rendering and lifetime; this creates no animation loop.
+export function createCanvasRippleSurface(output, source) {
+  const gl = output.getContext('webgl2', { alpha: true, depth: false, stencil: false, antialias: false, premultipliedAlpha: true });
+  if (!gl || gl.isContextLost()) return null;
+  const shaders = [];
+  let program = null, quad = null, texture = null, destroyed = false;
+  function destroy() {
+    if (destroyed) return;
+    destroyed = true;
+    if (texture) gl.deleteTexture(texture);
+    if (quad) gl.deleteBuffer(quad);
+    if (program) gl.deleteProgram(program);
+    for (const shader of shaders) gl.deleteShader(shader);
+  }
+  function compile(type, text) {
+    const shader = gl.createShader(type); shaders.push(shader);
+    gl.shaderSource(shader, text); gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader));
+    return shader;
+  }
+  try {
+    const vertex = compile(gl.VERTEX_SHADER, `#version 300 es
+      precision highp float;
+      layout(location=0) in vec2 aPos;
+      out vec2 vUv;
+      void main(){vUv=vec2(aPos.x*.5+.5,.5-aPos.y*.5);gl_Position=vec4(aPos,0.0,1.0);}`);
+    const fragment = compile(gl.FRAGMENT_SHADER, `#version 300 es
+      precision highp float;
+      in vec2 vUv;
+      out vec4 outColor;
+      uniform sampler2D uInk;
+      ${CANVAS_RIPPLE_GLSL}
+      void main(){
+        vec2 grad=canvasRippleGradient();
+        vec2 size=uCanvasRippleViewport.zw;
+        vec4 ink=texture(uInk,clamp(canvasRippleUv(vUv,grad,size,1.0),vec2(0.0),vec2(1.0)));
+        float d=canvasRippleDispersion();
+        if(d>.001){
+          ink.r=texture(uInk,clamp(canvasRippleUv(vUv,grad,size,1.0+d),vec2(0.0),vec2(1.0))).r;
+          ink.b=texture(uInk,clamp(canvasRippleUv(vUv,grad,size,1.0-d),vec2(0.0),vec2(1.0))).b;
+        }
+        outColor=vec4(canvasRippleLight(ink.rgb/max(ink.a,.001),grad)*ink.a,ink.a);
+      }`);
+    program = gl.createProgram(); gl.attachShader(program, vertex); gl.attachShader(program, fragment); gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
+    quad = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    texture = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    const ripple = bindCanvasRipple(gl,program,output), ink = gl.getUniformLocation(program,'uInk');
+    return {
+      render() {
+        if (destroyed || gl.isContextLost()) return false;
+        if (output.width!==source.width || output.height!==source.height) { output.width=source.width; output.height=source.height; }
+        gl.viewport(0,0,output.width,output.height); gl.useProgram(program);
+        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,texture);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
+        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,source);
+        gl.uniform1i(ink,0); ripple(); gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+        return true;
+      },
+      destroy
+    };
+  } catch (error) { destroy(); throw error; }
+}
