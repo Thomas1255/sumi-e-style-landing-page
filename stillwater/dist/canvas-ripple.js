@@ -17,12 +17,13 @@ export function canvasRippleGeometry(width, height, duration = 1.95) {
 }
 
 export function setCanvasRipple(frame = null, width = 0, height = 0) {
-  const end = frame ? Math.max(0, Math.min(1, (frame.bloom - .9) / .1)) : 1;
-  current = frame && frame.bloom > 0 && !frame.done ? {
+  const end = frame ? Math.max(0, Math.min(1, (frame.rippleProgress - .9) / .1)) : 1;
+  current = frame && frame.rippleProgress > 0 && frame.rippleProgress < 1 && !frame.done ? {
     x: width / 2, y: height / 2, age: frame.rippleAge,
-    ...canvasRippleGeometry(width, height, frame.revealDuration),
+    ...canvasRippleGeometry(width, height, frame.rippleDuration),
     amplitude: CANVAS_RIPPLE_OPTIONS.amplitude * (1 - end * end * (3 - 2 * end))
   } : OFF;
+  return current.amplitude > 0;
 }
 export function canvasRippleState() { return { ...current }; }
 

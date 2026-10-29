@@ -8,6 +8,7 @@ for (const options of [{ reducedMotion: true }, { hash: '#passage-two' }, { scro
 assert(shouldPlayInkOpening({hash:'#top'}));
 const bloomStart=INK_OPENING_TIMING.stamp+INK_OPENING_TIMING.stampHold;
 const total=bloomStart+INK_OPENING_TIMING.reveal;
+assert.equal(INK_OPENING_TIMING.reveal-INK_OPENING_TIMING.ripple,1000,'Focus must finish exactly one second after the Canvas UI ripple');
 for(const [width,height] of [[1280,720],[390,844],[2560,1080]]){
   const start=inkOpeningFrame(0,width,height);
   assert.equal(start.phase,'stamp');assert.equal(start.sealOpacity,0);
@@ -18,24 +19,36 @@ for(const [width,height] of [[1280,720],[390,844],[2560,1080]]){
   assert.equal(seal.ringRadius,start.ringRadius,'The completed enso must frame the seal without contracting into a drop');
   assert.equal(seal.washOpacity,1,'The seal impression must hold before the page fades in');
   assert.equal(seal.sealOffsetY,0);
+  const revealStart=inkOpeningFrame(bloomStart,width,height);
+  assert.equal(revealStart.blur,26);assert.equal(revealStart.rippleAge,0);assert.equal(revealStart.washOpacity,1);
+  assert.equal(revealStart.coverBlur,0);
+  const sealFade=inkOpeningFrame(bloomStart+250,width,height);
+  assert(sealFade.coverBlur>0&&sealFade.washOpacity>0&&sealFade.washOpacity<1,'The completed circle and seal must soften as the synchronized reveal begins');
   let previousWash=1,previousBlur=26;
   for(let time=bloomStart;time<=total;time+=10){
     const frame=inkOpeningFrame(time,width,height);
     assert(frame.washOpacity<=previousWash && frame.blur<=previousBlur,'The full cover must dissolve while the page settles into focus');
     previousWash=frame.washOpacity;previousBlur=frame.blur;
-    assert(frame.rippleAge>=0&&frame.rippleAge<=INK_OPENING_TIMING.reveal/1000);
+    assert(frame.rippleAge>=0&&frame.rippleAge<=INK_OPENING_TIMING.ripple/1000);
   }
   const end=inkOpeningFrame(total,width,height);
   assert(end.done);
-  const geometry=canvasRippleGeometry(width,height,end.revealDuration);
+  const geometry=canvasRippleGeometry(width,height,end.rippleDuration);
   const cornerAge=geometry.radius/geometry.speed;
-  assert(cornerAge<end.revealDuration*.9,'The Canvas UI crest must reach every corner before its final fade');
-  assert(geometry.speed*end.revealDuration*.9-2*geometry.bandWidth>=geometry.radius,'Trailing crests must cross all corners before cleanup');
+  assert(cornerAge<end.rippleDuration*.9,'The Canvas UI crest must reach every corner before its final fade');
+  assert(geometry.speed*end.rippleDuration*.9-2*geometry.bandWidth>=geometry.radius,'Trailing crests must cross all corners before cleanup');
   setCanvasRipple(inkOpeningFrame(bloomStart+cornerAge*1000,width,height),width,height);
   assert.equal(canvasRippleState().amplitude,CANVAS_RIPPLE_OPTIONS.amplitude,'The splash must retain its full configured amplitude as it reaches the corners');
   const clear=inkOpeningFrame(bloomStart+INK_OPENING_TIMING.reveal*.5,width,height);
   assert.equal(clear.washOpacity,0,'The whole page must be visible while the Canvas UI wave crosses it');
+  const waveEnd=inkOpeningFrame(bloomStart+INK_OPENING_TIMING.ripple,width,height);
+  setCanvasRipple(waveEnd,width,height);
+  assert.equal(waveEnd.phase,'focus');assert(waveEnd.blur>0&&!waveEnd.done,'The page must continue focusing after refraction stops');
+  assert.equal(canvasRippleState().amplitude,0,'The blur tail must not extend or restart the ripple');
+  const tail=inkOpeningFrame(total-500,width,height);
+  assert(tail.blur>0&&tail.blur<waveEnd.blur&&!tail.done,'Focus must continue smoothly through the extra second');
   assert.equal(end.blur,0);assert.equal(end.zoom,1);assert.equal(end.washOpacity,0);
+  assert.equal(end.coverBlur,0);
   assert(inkOpeningFrame(0,width,height,true).done,'Reduced motion must never start the ripple');
 }
 
@@ -93,9 +106,13 @@ try{
   assert.equal(redraws,0,'The water surface must wait for the seal to finish');
   env.advanceTo(3200);assert.equal(env.root.dataset.phase,'bloom');assert(env.classes.has('ink-revealing'));assert(env.drawCalls()>0);
   assert(redraws>0&&canvasRippleState().amplitude>0,'The opening must drive Canvas UI refraction while revealing');
+  env.advanceTo(5000);assert.equal(env.root.dataset.phase,'focus');assert(!env.root.hidden);
+  assert.equal(canvasRippleState().amplitude,0);assert(parseFloat(env.html.style.getPropertyValue('--ink-reveal-blur'))>0);
+  const waveRedraws=redraws;env.advanceTo(5200);assert.equal(redraws,waveRedraws,'The blur-only tail must not keep redrawing the water shaders');
   env.advanceTo(6000);assert.equal(env.root.dataset.phase,'complete');assert(env.root.hidden);
   assert(env.page.every(element=>!element.inert));assert(!env.classes.has('ink-opening-pending'));assert(!env.classes.has('ink-revealing'));assert.equal(env.frames.size,0);
   assert.equal(env.html.style.getPropertyValue('--ink-reveal-blur'),undefined);
+  assert.equal(env.html.style.getPropertyValue('--ink-cover-blur'),undefined);
   assert.equal(canvasRippleState().amplitude,0,'Finish must clear the shared ripple on every surface');
   const stopped=redraws;env.advanceTo(9000);assert.equal(redraws,stopped,'No ripple redraws may continue after completion');
   opening.destroy();assert.equal(env.root.dataset.phase,'complete','Cleanup must be idempotent');
@@ -141,4 +158,4 @@ try{
   const ready=openingMediaReady(media);assert(media.listeners.has('loadeddata'));
   media.listeners.get('loadeddata')();await ready;assert.equal(media.listeners.size,0,'Readiness listeners must be released');
 }finally{env.restore()}
-console.log('Verified ink opening: seal timing, full-screen Canvas UI wave coverage, surface alignment, uniform cover fade, idle cleanup, blur settlement, failed/stalled assets, skip/focus, history, and reduced motion.');
+console.log('Verified ink opening: synchronized seal reveal, 1.95-second ripple, one-second focus tail, full-screen wave coverage, surface alignment, cleanup, asset fallbacks, skip/focus, history, and reduced motion.');

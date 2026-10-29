@@ -32,7 +32,7 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
   root.hidden = false; root.dataset.phase = 'loading';
   let disposed = false, raf = 0, width = 1, height = 1;
   let assetProgress = 0, shownProgress = 0, transitionStart = null, fullSince = null;
-  let started = false, lastPhase = 'loading', lastPercent = -1;
+  let started = false, lastPhase = 'loading', lastPercent = -1, rippleActive = false;
   const mountedAt = performance.now();
   let lastTime = mountedAt;
 
@@ -43,6 +43,7 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
     const hadFocus = root.contains(document.activeElement);
     html.classList.remove('ink-opening-pending', 'ink-revealing');
     html.style.removeProperty('--ink-reveal-blur'); html.style.removeProperty('--ink-reveal-scale');
+    html.style.removeProperty('--ink-cover-blur');
     root.hidden = true; root.dataset.phase = reason;
     try { onRippleFrame(); } catch { /* A failed renderer must not block input release. */ }
     content.forEach(({element,wasInert}) => { element.inert = wasInert; });
@@ -93,17 +94,20 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
         }
       } else {
         const frame = inkOpeningFrame(now - transitionStart, width, height);
-        setCanvasRipple(frame, width, height);
+        const wasRippleActive = rippleActive;
+        rippleActive = setCanvasRipple(frame, width, height);
         if (frame.phase !== lastPhase) {
           root.dataset.phase = frame.phase; lastPhase = frame.phase;
           if (frame.phase === 'stamp') caption.textContent = 'Sealed in ink';
           if (frame.phase === 'bloom') { html.classList.add('ink-revealing'); caption.textContent = 'The sky opens'; }
+          if (frame.phase === 'focus') { html.classList.add('ink-revealing'); caption.textContent = 'Settling into focus'; }
         }
         label.style.opacity = String(frame.labelOpacity);
         html.style.setProperty('--ink-reveal-blur', `${frame.blur.toFixed(2)}px`);
+        html.style.setProperty('--ink-cover-blur', `${frame.coverBlur.toFixed(2)}px`);
         html.style.setProperty('--ink-reveal-scale', frame.zoom.toFixed(5));
         paintInkOpening(context, width, height, { frame });
-        if (frame.bloom > 0 || frame.done) onRippleFrame();
+        if (rippleActive || wasRippleActive) onRippleFrame();
         if (frame.done) { finish(); return; }
       }
       raf = requestAnimationFrame(tick);
