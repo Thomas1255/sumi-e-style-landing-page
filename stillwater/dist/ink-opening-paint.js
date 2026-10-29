@@ -16,8 +16,8 @@ function paperNoise(x, y) {
   return mix(mix(paperHash(ix, iy), paperHash(ix + 1, iy), fx), mix(paperHash(ix, iy + 1), paperHash(ix + 1, iy + 1), fx), fy);
 }
 
-// Pigment is deposited into an original, transparent brush impression. Noise
-// has fixed paper coordinates, so pores and torn edges never flicker in motion.
+// A dense ink body carries the stroke. Texture is confined to the thin edge
+// and trailing bristles; fixed coordinates keep those details still in motion.
 function paintBrushTexture(context, size, extent, radius, density) {
   const pixels = context.createImageData(size, size);
   const data = pixels.data;
@@ -31,38 +31,32 @@ function paintBrushTexture(context, size, extent, radius, density) {
       if (arc > TAU - .36) arc -= TAU;
       const t = arc / BRUSH_SPAN;
       if (t < -.065 || t > 1.01) continue;
-      // Normalize the paper grain to CSS size, independent of pixel density.
+      // Keep the subtle edge and pigment variation independent of pixel density.
       const x = dx * 72 / radius + 137, y = dy * 72 / radius + 231;
       const cloud = paperNoise(x * .13, y * .13);
-      const fiber = paperNoise(x * 1.7, y * 1.7);
-      const edge = (paperNoise(x * .52, y * .52) - .5) * .25 + (fiber - .5) * .17;
+      const edge = (paperNoise(x * .52, y * .52) - .5) * .035 + (paperNoise(x * 1.7, y * 1.7) - .5) * .012;
       const center = 1 + .014 * Math.sin(angle * 3) + .009 * Math.sin(angle * 7 + .8);
       const travel = clamp(t);
-      const pressure = (1.2 - .36 * travel + .15 * Math.sin(angle * 1.4)) * (1 - .68 * smooth((travel - .82) / .18));
+      const pressure = (1.2 - .38 * travel + .13 * Math.sin(travel * TAU + .4)) * (1 - .96 * smooth((travel - .82) / .18));
       const halfWidth = .205 * pressure;
       const across = (distance - center) / halfWidth;
       const heel = t < 0 ? t / (.046 + .012 * cloud) : 0;
       const outline = Math.hypot(across, heel);
-      let coverage = clamp((1 - outline + edge) / .085);
+      let coverage = clamp((1 - outline + edge) / .045);
       if (!coverage) continue;
-      // Dry brush rakes wander, widen, split and reconnect rather than tracing
-      // two perfectly parallel circular lines.
-      const rake = .17 + .08 * Math.sin(t * 14 + .4) + (paperNoise(t * 34, 2) - .5) * .16;
-      const lane = .065 + paperNoise(t * 47, 7) * .105;
-      const dry = smooth((t - .09) / .09) * (1 - smooth((t - .94) / .065));
-      coverage *= 1 - dry * clamp((lane - Math.abs(across - rake) + (fiber - .5) * .08) / .055);
-      const outerRake = .64 + .06 * Math.sin(t * 19) + (cloud - .5) * .16;
-      coverage *= 1 - dry * .95 * clamp((.052 - Math.abs(across - outerRake) + (fiber - .5) * .06) / .035);
-      const bristles = paperNoise(across * 45 + paperNoise(t * 35, 17) * 1.6, t * 8);
-      const pores = paperNoise(x * 2.8, y * 2.8);
-      const worn = smooth((Math.abs(across) - .55) / .45);
-      const tail = smooth((t - .72) / .28);
-      coverage *= 1 - smooth((pores - (.8 - .18 * worn - .16 * tail)) / .15);
-      coverage *= 1 - tail * smooth((paperNoise(x * .85, y * .85) - .48) / .25);
-      // Mottled wet pigment and thin, grey bristle washes within the same mark.
-      const pigment = clamp(.72 + .24 * cloud + .1 * bristles - .12 * tail);
+      // Only the light finishing stroke splits into long, flowing bristles.
+      // The wet body stays solid: no stippling or pore mask through its center.
+      const dry = smooth((t - .53) / .23);
+      const rake = .24 + .035 * Math.sin(t * 14 + .4) + (paperNoise(t * 12, 2) - .5) * .04;
+      const lane = .045 + paperNoise(t * 16, 7) * .025;
+      coverage *= 1 - dry * clamp((lane - Math.abs(across - rake)) / .035);
+      const outerRake = .70 + .025 * Math.sin(t * 19);
+      coverage *= 1 - dry * .9 * clamp((.035 - Math.abs(across - outerRake)) / .025);
+      const bristles = paperNoise(across * 9 + .18 * Math.sin(t * 9), t * .8);
+      coverage *= 1 - smooth((t - .84) / .16) * smooth((bristles - .58) / .18);
+      const pigment = .985 + .015 * cloud;
       const index = (py * size + px) * 4;
-      const shade = Math.round(17 + (1 - cloud) * 17 + (1 - bristles) * 10);
+      const shade = Math.round(18 + (1 - cloud) * 4);
       data[index] = shade; data[index + 1] = shade; data[index + 2] = shade - 2;
       data[index + 3] = Math.round(255 * coverage * pigment);
     }
@@ -70,8 +64,8 @@ function paintBrushTexture(context, size, extent, radius, density) {
   context.putImageData(pixels, 0, 0);
 }
 
-// Broad pigment at the lower-left start, torn bristle channels, porous edges
-// and a tapering finish around an open lower gap.
+// Smooth, broad pigment at the lower-left start, restrained brush edges and
+// a split, tapering finish around an open lower gap.
 // No pixels from a supplied reference are used or loaded by the page.
 export function paintInkCircle(context, x, y, radius, progress, opacity = 1) {
   if (progress <= 0 || opacity <= 0) return;
