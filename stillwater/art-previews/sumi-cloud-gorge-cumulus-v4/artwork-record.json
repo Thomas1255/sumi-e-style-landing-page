@@ -1,0 +1,197 @@
+{
+  "status": "preview-awaiting-user-approval",
+  "tool": "built-in image_gen.imagegen",
+  "generated_date": "2026-10-28",
+  "title": "Gorge sky — cumulus clouds",
+  "target_transition": "Final transition at 68%: autumn temples to overhead gorge",
+  "replaces_if_approved": "sumi-cloud-transition-sets-v3/03-mountain-plumes",
+  "user_request": "I think this cloud transition specifically looks like waves instead of actual clouds when closed. regenerate this one",
+  "direction": "Luminous rounded atmospheric cloud volumes, pale cool-gray/celadon shadow pockets, fine sumi-e watercolor grain, horizontal feathered vapor. No wave crests, hooked curls, dark bands or hanging vertical curtains.",
+  "references": {
+    "rejected_closed_view": "reference-rejected-closed-view.png",
+    "style_reference": "left-rear.png; supplied only for the other five paintings, with a new silhouette required"
+  },
+  "assets": [
+    {
+      "file": "left-rear.png",
+      "side": "left",
+      "depth": "rear",
+      "design": "High rounded billows with drifting horizontal vapor",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e and watercolor website transition.\nPrimary request: paint actual airy CUMULUS CLOUDS, recognizable sky vapor with broad rounded billowing volumes and pale pooled shadows. A new original painting, not ocean waves or decorative wave motifs.\nSubject and medium: hand-painted 2D Japanese ink wash and watercolor, luminous warm ivory cloud interiors, extremely restrained pale cool gray and a trace of celadon in the soft interior shadow pockets. Fine crisp dry-brush detail in the painted body, softer translucent vapor at the outer edges. Calm, buoyant, weightless atmosphere. Irregular large and small rounded lobes, not a row of identical scallops. Gentle diffuse shading; no dark outlines, dark stripes, or charcoal cliff faces.\nLayer LEFT / REAR: wide landscape canvas. A loose, distant cloud group enters from beyond the LEFT edge. One large soft rounded puff sits in the upper-left, with two smaller unequal billows drifting horizontally toward the middle-right. Its lower edge dissolves into a few thin horizontal vapor wisps. The upper-right, far-right and lower-right are mostly genuine transparent alpha. Keep the group light and spacious, and make it an unmistakable bank of fluffy sky clouds. Native left-hand composition, never mirror a right cloud.\nOutput: one PNG with actual transparent alpha around the cloud; partly transparent vapor fringes and a substantial pale ivory painted body. Maximum clear brush detail, clean anti-aliased edges, no painted pixel blocks or global blur. No rectangular paper background, checkerboard, landscape, sea, water, mountains, buildings, birds, text, seals or borders. No breaking crests, curling hooks, spiral waves, foam, spray, waterfalls, vertical streaks or torn descending curtains. One cloud layer only; no contact sheet.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-941fd2fb-3b21-4eb5-b3bf-2bc3abe629ea.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "58880fc9fe307bfc8270f61e7214d58708403e38bd1911e75ae46213353d6747",
+        "transparent_percent": 60.73,
+        "near_opaque_alpha_245_plus_percent": 26.02,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-rear.png",
+      "side": "right",
+      "depth": "rear",
+      "design": "A low asymmetric group of detached soft billows",
+      "composition": "Layer RIGHT / REAR. Wide landscape canvas. A low airy bank enters from the RIGHT edge. Three unequal rounded puffs sit loosely across the middle and lower-right; a small disconnected soft vapor island floats above the leftmost puff. Thin horizontal wisps fade toward the LEFT. Upper-left and lower-left mostly transparent. Native right-sided composition with a very different lower, wider silhouette from the reference's tall upper-left mass. This distant cloud should stay pale and spacious.",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e and watercolor website transition.\nInput image role: STYLE AND PALETTE REFERENCE ONLY. Paint a NEW original cloud silhouette; do not copy, mirror, crop, tile, rearrange or trace the reference cloud. Match its light hand-painted atmosphere and pale shadow colors.\nPrimary subject: unmistakable airy CUMULUS CLOUDS, buoyant sky vapor with broad soft rounded billows, irregular overlapping puffs and shallow diffuse interior shadow pockets. A 2D Japanese sumi-e ink-wash watercolor illustration, warm ivory cloud bodies with very pale cool gray/celadon shadow washes. Sharp fine dry-brush grain within the painting; partly transparent feathered vapor at the outside. No heavy dark contour, no bands of charcoal and no repeated rows of scallops. Luminous, light, weightless, spacious, calm.\nLayer RIGHT / REAR. Wide landscape canvas. A low airy bank enters from the RIGHT edge. Three unequal rounded puffs sit loosely across the middle and lower-right; a small disconnected soft vapor island floats above the leftmost puff. Thin horizontal wisps fade toward the LEFT. Upper-left and lower-left mostly transparent. Native right-sided composition with a very different lower, wider silhouette from the reference's tall upper-left mass. This distant cloud should stay pale and spacious.\nOutput: one original PNG layer with actual transparent alpha around the cloud and real semi-transparent feathered edges. Preserve clear fine watercolor brush detail, no overall blur and no painted pixel blocks. No paper rectangle, checkerboard, scene, ground, horizon, sea, water, mountains, rocks, smoke, buildings, birds, text, seals, frames or borders. No breaking crests, curling hooks, spirals, wave motifs, foam, spray, waterfalls, vertical streaks, dripping ink or torn hanging curtains. Not photorealistic and not 3D. One cloud asset only, no sheet or diagram.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-8c4841fe-bbdf-422c-9bde-d50d9acf00f3.png",
+      "validation": {
+        "dimensions": [
+          1983,
+          793
+        ],
+        "mode": "RGBA",
+        "sha256": "d39810f64f2ce6afdfbeb817707c10438b72fd3b6dfe463e890cb08a21ac3179",
+        "transparent_percent": 60.63,
+        "near_opaque_alpha_245_plus_percent": 28.63,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-middle.png",
+      "side": "left",
+      "depth": "middle",
+      "design": "A broad upright rounded cloud cushion with an airy inlet",
+      "composition": "Layer LEFT / MIDDLE. Square canvas. A substantial almost-opaque ivory cumulus cushion is anchored beyond the LEFT edge and runs off the TOP-LEFT and BOTTOM-LEFT edges. Four unequal broad, softly rounded billows protrude into the center at different heights. One shallow airy inlet separates two of the billows near center-right. Its forward outline is irregular and relaxed, never a tight hook. A softly feathered light-gray underside and scattered small vapor puffs drift toward the RIGHT. Far-right third mostly genuine transparency. The main cloud body must be full and dense enough for overlapping screen-cover layers, yet clearly an atmospheric fluffy cloud.",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e and watercolor website transition.\nInput image role: STYLE AND PALETTE REFERENCE ONLY. Paint a NEW original cloud silhouette; do not copy, mirror, crop, tile, rearrange or trace the reference cloud. Match its light hand-painted atmosphere and pale shadow colors.\nPrimary subject: unmistakable airy CUMULUS CLOUDS, buoyant sky vapor with broad soft rounded billows, irregular overlapping puffs and shallow diffuse interior shadow pockets. A 2D Japanese sumi-e ink-wash watercolor illustration, warm ivory cloud bodies with very pale cool gray/celadon shadow washes. Sharp fine dry-brush grain within the painting; partly transparent feathered vapor at the outside. No heavy dark contour, no bands of charcoal and no repeated rows of scallops. Luminous, light, weightless, spacious, calm.\nLayer LEFT / MIDDLE. Square canvas. A substantial almost-opaque ivory cumulus cushion is anchored beyond the LEFT edge and runs off the TOP-LEFT and BOTTOM-LEFT edges. Four unequal broad, softly rounded billows protrude into the center at different heights. One shallow airy inlet separates two of the billows near center-right. Its forward outline is irregular and relaxed, never a tight hook. A softly feathered light-gray underside and scattered small vapor puffs drift toward the RIGHT. Far-right third mostly genuine transparency. The main cloud body must be full and dense enough for overlapping screen-cover layers, yet clearly an atmospheric fluffy cloud.\nOutput: one original PNG layer with actual transparent alpha around the cloud and real semi-transparent feathered edges. Preserve clear fine watercolor brush detail, no overall blur and no painted pixel blocks. No paper rectangle, checkerboard, scene, ground, horizon, sea, water, mountains, rocks, smoke, buildings, birds, text, seals, frames or borders. No breaking crests, curling hooks, spirals, wave motifs, foam, spray, waterfalls, vertical streaks, dripping ink or torn hanging curtains. Not photorealistic and not 3D. One cloud asset only, no sheet or diagram.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-14849ddf-f345-49ad-b14a-e57e957a1f87.png",
+      "validation": {
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "sha256": "7ba19d2d5c53d109b4766d39d075cbad3e4f38aa81c26be2455ae6a2c8c67823",
+        "transparent_percent": 40.69,
+        "near_opaque_alpha_245_plus_percent": 44.56,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-middle.png",
+      "side": "right",
+      "depth": "middle",
+      "design": "Two offset floating cloud pillows over a smaller pale puff",
+      "composition": "Layer RIGHT / MIDDLE. Square canvas. A full warm-ivory cloud bank enters from beyond the RIGHT edge, filling most of the right two-thirds. Two large offset rounded cloud pillows overlap above one smaller low puff, leaving a shallow transparent bay near the lower-left. The silhouette extends in a long soft horizontal shoulder toward the LEFT, with one detached tiny vapor puff ahead of it. Broad gently rounded volumes and pale diffuse cool-gray shadow pockets, not vertical columns and not ornamental curls. Main body almost opaque; fringes partly transparent. Different silhouette and arrangement from the reference and left bank, never mirrored.",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e and watercolor website transition.\nInput image role: STYLE AND PALETTE REFERENCE ONLY. Paint a NEW original cloud silhouette; do not copy, mirror, crop, tile, rearrange or trace the reference cloud. Match its light hand-painted atmosphere and pale shadow colors.\nPrimary subject: unmistakable airy CUMULUS CLOUDS, buoyant sky vapor with broad soft rounded billows, irregular overlapping puffs and shallow diffuse interior shadow pockets. A 2D Japanese sumi-e ink-wash watercolor illustration, warm ivory cloud bodies with very pale cool gray/celadon shadow washes. Sharp fine dry-brush grain within the painting; partly transparent feathered vapor at the outside. No heavy dark contour, no bands of charcoal and no repeated rows of scallops. Luminous, light, weightless, spacious, calm.\nLayer RIGHT / MIDDLE. Square canvas. A full warm-ivory cloud bank enters from beyond the RIGHT edge, filling most of the right two-thirds. Two large offset rounded cloud pillows overlap above one smaller low puff, leaving a shallow transparent bay near the lower-left. The silhouette extends in a long soft horizontal shoulder toward the LEFT, with one detached tiny vapor puff ahead of it. Broad gently rounded volumes and pale diffuse cool-gray shadow pockets, not vertical columns and not ornamental curls. Main body almost opaque; fringes partly transparent. Different silhouette and arrangement from the reference and left bank, never mirrored.\nOutput: one original PNG layer with actual transparent alpha around the cloud and real semi-transparent feathered edges. Preserve clear fine watercolor brush detail, no overall blur and no painted pixel blocks. No paper rectangle, checkerboard, scene, ground, horizon, sea, water, mountains, rocks, smoke, buildings, birds, text, seals, frames or borders. No breaking crests, curling hooks, spirals, wave motifs, foam, spray, waterfalls, vertical streaks, dripping ink or torn hanging curtains. Not photorealistic and not 3D. One cloud asset only, no sheet or diagram.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-6ddc2358-ad4d-4d49-8d48-1efc12f5d32f.png",
+      "validation": {
+        "dimensions": [
+          1671,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "cc20b7fd1212904a26a9d14a7c17c80d9c930ad16c7a148d2c9ae73ec54d3883",
+        "transparent_percent": 52.48,
+        "near_opaque_alpha_245_plus_percent": 36.02,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-front.png",
+      "side": "left",
+      "depth": "front",
+      "design": "A dense low foreground billow with a broad domed shoulder",
+      "composition": "Layer LEFT / FOREGROUND. Wide landscape canvas. An almost opaque close ivory cumulus bank is anchored beyond the LEFT and BOTTOM edges. A single very broad low domed shoulder rises in the lower-left, joined by two small unequal soft cloud humps extending gently toward the middle-right. The lower half and left edge contain a generous continuous dense painted body; upper-right is mostly transparent. Fine pale cool-gray watercolor pooling gives the rounded cloud weightless volume. No sharp lip, no curling tip and no striped underbelly. The leading edge dissolves in delicate horizontal vapor. Very detailed crisp painted grain while maintaining soft natural cloud edges.",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e and watercolor website transition.\nInput image role: STYLE AND PALETTE REFERENCE ONLY. Paint a NEW original cloud silhouette; do not copy, mirror, crop, tile, rearrange or trace the reference cloud. Match its light hand-painted atmosphere and pale shadow colors.\nPrimary subject: unmistakable airy CUMULUS CLOUDS, buoyant sky vapor with broad soft rounded billows, irregular overlapping puffs and shallow diffuse interior shadow pockets. A 2D Japanese sumi-e ink-wash watercolor illustration, warm ivory cloud bodies with very pale cool gray/celadon shadow washes. Sharp fine dry-brush grain within the painting; partly transparent feathered vapor at the outside. No heavy dark contour, no bands of charcoal and no repeated rows of scallops. Luminous, light, weightless, spacious, calm.\nLayer LEFT / FOREGROUND. Wide landscape canvas. An almost opaque close ivory cumulus bank is anchored beyond the LEFT and BOTTOM edges. A single very broad low domed shoulder rises in the lower-left, joined by two small unequal soft cloud humps extending gently toward the middle-right. The lower half and left edge contain a generous continuous dense painted body; upper-right is mostly transparent. Fine pale cool-gray watercolor pooling gives the rounded cloud weightless volume. No sharp lip, no curling tip and no striped underbelly. The leading edge dissolves in delicate horizontal vapor. Very detailed crisp painted grain while maintaining soft natural cloud edges.\nOutput: one original PNG layer with actual transparent alpha around the cloud and real semi-transparent feathered edges. Preserve clear fine watercolor brush detail, no overall blur and no painted pixel blocks. No paper rectangle, checkerboard, scene, ground, horizon, sea, water, mountains, rocks, smoke, buildings, birds, text, seals, frames or borders. No breaking crests, curling hooks, spirals, wave motifs, foam, spray, waterfalls, vertical streaks, dripping ink or torn hanging curtains. Not photorealistic and not 3D. One cloud asset only, no sheet or diagram.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-3570c8f2-12fa-4e79-9d1a-49f43de2c207.png",
+      "validation": {
+        "dimensions": [
+          1774,
+          887
+        ],
+        "mode": "RGBA",
+        "sha256": "3c09b805bef7afb2dc5fcc37468b1a55e36d6a9312bb9bf5d4ce62eeba79bce8",
+        "transparent_percent": 45.5,
+        "near_opaque_alpha_245_plus_percent": 39.22,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-front.png",
+      "side": "right",
+      "depth": "front",
+      "design": "A high foreground canopy of broad soft rounded billows",
+      "composition": "Layer RIGHT / FOREGROUND. Wide landscape canvas. A generous almost-opaque ivory cloud canopy is anchored beyond the TOP and RIGHT edges. Its main airy body fills the upper-right, with a broad rounded downward-facing cloud cushion near the middle and two smaller unequal puffs drifting LEFT. The lower-left remains genuine transparency. Dense continuous pale painted body near the top/right edges for screen coverage, soft diffused cool-gray interior pockets and thin outward vapor. Its outline is flowing and loosely rounded without tight scrolls, hooks, crests or a hanging fringe. Different cloud structure from the low-left foreground bank; never mirror it.",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e and watercolor website transition.\nInput image role: STYLE AND PALETTE REFERENCE ONLY. Paint a NEW original cloud silhouette; do not copy, mirror, crop, tile, rearrange or trace the reference cloud. Match its light hand-painted atmosphere and pale shadow colors.\nPrimary subject: unmistakable airy CUMULUS CLOUDS, buoyant sky vapor with broad soft rounded billows, irregular overlapping puffs and shallow diffuse interior shadow pockets. A 2D Japanese sumi-e ink-wash watercolor illustration, warm ivory cloud bodies with very pale cool gray/celadon shadow washes. Sharp fine dry-brush grain within the painting; partly transparent feathered vapor at the outside. No heavy dark contour, no bands of charcoal and no repeated rows of scallops. Luminous, light, weightless, spacious, calm.\nLayer RIGHT / FOREGROUND. Wide landscape canvas. A generous almost-opaque ivory cloud canopy is anchored beyond the TOP and RIGHT edges. Its main airy body fills the upper-right, with a broad rounded downward-facing cloud cushion near the middle and two smaller unequal puffs drifting LEFT. The lower-left remains genuine transparency. Dense continuous pale painted body near the top/right edges for screen coverage, soft diffused cool-gray interior pockets and thin outward vapor. Its outline is flowing and loosely rounded without tight scrolls, hooks, crests or a hanging fringe. Different cloud structure from the low-left foreground bank; never mirror it.\nOutput: one original PNG layer with actual transparent alpha around the cloud and real semi-transparent feathered edges. Preserve clear fine watercolor brush detail, no overall blur and no painted pixel blocks. No paper rectangle, checkerboard, scene, ground, horizon, sea, water, mountains, rocks, smoke, buildings, birds, text, seals, frames or borders. No breaking crests, curling hooks, spirals, wave motifs, foam, spray, waterfalls, vertical streaks, dripping ink or torn hanging curtains. Not photorealistic and not 3D. One cloud asset only, no sheet or diagram.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-bd85d8ff-7007-43ed-812e-3b78e21483e5.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "ddf806a438a00f1939e563adc0e3d9c210cbf904d124ef4105a6f3a3c0ac29a5",
+        "transparent_percent": 51.9,
+        "near_opaque_alpha_245_plus_percent": 36.55,
+        "original_bytes_preserved": true
+      }
+    }
+  ],
+  "runtime_integration": "Not performed; replacement artwork requires user approval. All four current runtime cloud sets remain unchanged.",
+  "preview_layout": {
+    "width": 1200,
+    "height": 560,
+    "layers": [
+      {
+        "file": "left-rear.png",
+        "x": -192,
+        "y": 128.8,
+        "width": 1344.0000000000002,
+        "height": 756.4019138755982,
+        "opacity": 0.86,
+        "zIndex": 2
+      },
+      {
+        "file": "right-rear.png",
+        "x": -208.80000000000015,
+        "y": 28,
+        "width": 1612.8000000000002,
+        "height": 644.9573373676249,
+        "opacity": 0.86,
+        "zIndex": 1
+      },
+      {
+        "file": "left-middle.png",
+        "x": -96,
+        "y": -612.72,
+        "width": 1897.44,
+        "height": 1897.44,
+        "opacity": 1,
+        "zIndex": 4
+      },
+      {
+        "file": "right-middle.png",
+        "x": -663.3600000000001,
+        "y": -321.5378843806105,
+        "width": 1935.3600000000001,
+        "height": 1089.8705924596052,
+        "opacity": 1,
+        "zIndex": 3
+      },
+      {
+        "file": "left-front.png",
+        "x": -228,
+        "y": 61.599999999999994,
+        "width": 1457.28,
+        "height": 728.64,
+        "opacity": 1,
+        "zIndex": 5
+      },
+      {
+        "file": "right-front.png",
+        "x": -106.55999999999995,
+        "y": -112,
+        "width": 1522.56,
+        "height": 856.8953110047846,
+        "opacity": 1,
+        "zIndex": 6
+      }
+    ],
+    "note": "Static closed-view composition for artwork approval only; no runtime source or animation changes."
+  }
+}
