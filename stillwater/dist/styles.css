@@ -50,6 +50,8 @@ html.cloud-intro-loading::after{content:'';position:fixed;inset:0;z-index:14;poi
 @media(max-width:650px){.hero{height:375svh;min-height:2850px}.hero-copy{top:135px}.passage{min-height:525svh}}
 @media(prefers-reduced-motion:reduce){html.cloud-intro-loading::after{display:none}.hero{height:115svh;min-height:900px}.hero-copy{position:relative;top:auto}.passage{min-height:165svh}.epilogue{min-height:125svh}}
 @media(max-width:650px) and (prefers-reduced-motion:reduce){.hero{height:125svh;min-height:950px}.passage{min-height:175svh}}
+/* Keep the same viewport and scrollbar throughout loading and normal flight. */
+html{overflow-y:scroll;scrollbar-gutter:stable}
 /* A painted enso frames the seal, then Canvas UI refraction opens the page. */
 .ink-opening{position:fixed;inset:0;z-index:90;overflow:hidden;isolation:isolate;touch-action:none}
 .ink-opening[hidden]{display:none}
@@ -59,9 +61,9 @@ html.cloud-intro-loading::after{content:'';position:fixed;inset:0;z-index:14;poi
 .ink-opening-name{font:10px/1.7 var(--sans);letter-spacing:.3em;color:var(--ink);margin-left:.3em}
 .ink-opening-label [role=status]{font:12px/1.7 var(--serif);font-style:italic;margin-top:9px}
 .ink-opening-skip{position:absolute;right:clamp(20px,4vw,70px);bottom:clamp(18px,4vh,45px);min-height:44px;padding:10px 4px;border:0;border-bottom:1px solid #66715f66;background:transparent;color:#66715f;font:11px var(--sans);letter-spacing:.04em}
-html.ink-opening-pending{overflow:hidden;scroll-behavior:auto;scrollbar-gutter:stable}
+html.ink-opening-pending{scroll-behavior:auto;overscroll-behavior:none}
 html.ink-opening-pending::after{content:'';position:fixed;inset:0;z-index:89;pointer-events:none;background:#f1ecdf}
 html.ink-revealing::after{display:none}
 .ink-revealing .stage,.ink-revealing .hero-copy,.ink-revealing .hero-calligraphy,.ink-revealing .hero-footnote,.ink-revealing .site-header,.ink-revealing .flight-controls{filter:blur(var(--ink-reveal-blur,26px));will-change:filter}
 .ink-revealing .stage{transform:scale(var(--ink-reveal-scale,1.035));transform-origin:50% 50%}
-@media(prefers-reduced-motion:reduce){.ink-opening,html.ink-opening-pending::after{display:none!important}.ink-revealing .stage,.ink-revealing .hero-copy,.ink-revealing .hero-calligraphy,.ink-revealing .hero-footnote,.ink-revealing .site-header,.ink-revealing .flight-controls{filter:none;transform:none;will-change:auto}html.ink-opening-pending{overflow:auto}}
+@media(prefers-reduced-motion:reduce){.ink-opening,html.ink-opening-pending::after{display:none!important}.ink-revealing .stage,.ink-revealing .hero-copy,.ink-revealing .hero-calligraphy,.ink-revealing .hero-footnote,.ink-revealing .site-header,.ink-revealing .flight-controls{filter:none;transform:none;will-change:auto}}

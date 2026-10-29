@@ -36,6 +36,7 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
   let started = false, lastPhase = 'loading', lastPercent = -1, rippleActive = false;
   let rippleSurface = null, rippleSurfaceFailed = false;
   const mountedAt = performance.now();
+  const heldScrollTop = scrollY;
   let lastTime = mountedAt;
 
   function finish(reason = 'complete') {
@@ -54,15 +55,25 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
     content.forEach(({element,wasInert}) => { element.inert = wasInert; });
     removeEventListener('resize', resize);
     removeEventListener('keydown', onKey);
+    removeEventListener('wheel', onWheel);
+    removeEventListener('scroll', onScroll);
     removeEventListener('pagehide', onPageHide);
     removeEventListener('ink-opening-timeout', onTimeout);
     reduced.removeEventListener('change', onMotion);
     skip.removeEventListener('click', onSkip);
     if (hadFocus) document.querySelector('.brand')?.focus({ preventScroll: true });
-    dispatchEvent(new Event('resize'));
   }
   function onSkip() { finish('skipped'); }
-  function onKey(event) { if (event.key === 'Escape') onSkip(); }
+  function onKey(event) {
+    if (event.key === 'Escape') onSkip();
+    else if (event.target !== skip && ['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)) event.preventDefault();
+  }
+  // Lock input, not root overflow: hiding the scrollbar changes the viewport
+  // and forces the artwork and cloth to resize when the opening completes.
+  function onWheel(event) { if (!event.ctrlKey) event.preventDefault(); }
+  function onScroll() {
+    if (!disposed && scrollY !== heldScrollTop) scrollTo({ top: heldScrollTop, behavior: 'instant' });
+  }
   function onPageHide() { finish('restored'); }
   function onTimeout() { finish('timeout'); }
   function onMotion(event) { if (event.matches) finish('reduced-motion'); }
@@ -85,7 +96,7 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
   }
 
   function resize() {
-    width = innerWidth; height = innerHeight;
+    width = root.clientWidth || innerWidth; height = root.clientHeight || innerHeight;
     const ratio = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.ceil(width * ratio); canvas.height = Math.ceil(height * ratio);
     canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
@@ -141,6 +152,8 @@ export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
   rippleCanvas?.addEventListener('webglcontextlost',onSurfaceLost);
   skip.addEventListener('click', onSkip);
   addEventListener('keydown', onKey);
+  addEventListener('wheel', onWheel, { passive: false });
+  addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', resize, { passive: true });
   addEventListener('pagehide', onPageHide);
   addEventListener('ink-opening-timeout', onTimeout);

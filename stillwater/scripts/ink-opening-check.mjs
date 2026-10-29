@@ -95,11 +95,13 @@ setCanvasRipple();
 // Exercise the real controller through asset failures, timeouts, skips and a
 // preference change. These checks protect document visibility and input release.
 function environment({reducedMotion=false,hash='',navigationType='navigate'}={}){
-  let clock=0,id=0,drawCalls=0;
+  let clock=0,id=0,drawCalls=0,scrollCorrections=0;
+  const dispatched=[];
   const frames=new Map(),timers=new Map(),events=new Map(),motionEvents=new Map();
   const classes=new Set(['ink-opening-pending']);
   function element(){const listeners=new Map(),attributes=new Map(),properties=new Map();return {hidden:true,inert:false,dataset:{},style:{opacity:'',setProperty:(key,value)=>properties.set(key,value),removeProperty:key=>properties.delete(key),getPropertyValue:key=>properties.get(key)},classList:{add:(...values)=>values.forEach(v=>classes.add(v)),remove:(...values)=>values.forEach(v=>classes.delete(v)),contains:value=>classes.has(value)},addEventListener:(name,callback)=>listeners.set(name,callback),removeEventListener:name=>listeners.delete(name),setAttribute:(name,value)=>attributes.set(name,value),getAttribute:name=>attributes.get(name),listeners,focus(){this.focused=true}}}
   const root=element(),html=element(),skip=element(),label=element(),caption=element(),progress=element(),brand=element(),canvas=element(),rippleCanvas=element();
+  root.clientWidth=1265;root.clientHeight=720;
   const page=[element(),element(),element(),element()];
   const context=new Proxy({createRadialGradient:()=>({addColorStop(){}})},{get(target,key){if(key in target)return target[key];return ()=>{drawCalls++}},set(target,key,value){target[key]=value;return true}});
   canvas.getContext=()=>context;
@@ -111,10 +113,11 @@ function environment({reducedMotion=false,hash='',navigationType='navigate'}={})
   const replacements={document,location:{hash},scrollY:0,innerWidth:1280,innerHeight:720,devicePixelRatio:2,performance:{now:()=>clock,getEntriesByType:()=>[{type:navigationType}]},matchMedia:()=>motion,
     setTimeout:(callback,delay)=>{const next=++id;timers.set(next,{callback,at:clock+delay});return next},clearTimeout:key=>timers.delete(key),
     requestAnimationFrame:callback=>{const next=++id;frames.set(next,callback);return next},cancelAnimationFrame:key=>frames.delete(key),
-    addEventListener:(name,callback)=>events.set(name,callback),removeEventListener:name=>events.delete(name),dispatchEvent:event=>events.get(event.type)?.(event)};
+    addEventListener:(name,callback)=>events.set(name,callback),removeEventListener:name=>events.delete(name),dispatchEvent:event=>{dispatched.push(event.type);events.get(event.type)?.(event)},
+    scrollTo:({top})=>{scrollCorrections++;globalThis.scrollY=top}};
   const previous=new Map(Object.keys(replacements).map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
   for(const [key,value] of Object.entries(replacements))Object.defineProperty(globalThis,key,{value,configurable:true,writable:true});
-  return {root,html,page,skip,brand,document,progress,caption,rippleCanvas,classes,frames,events,motion,motionEvents,drawCalls:()=>drawCalls,
+  return {root,html,page,skip,brand,document,progress,caption,canvas,rippleCanvas,classes,frames,events,motion,motionEvents,dispatched,drawCalls:()=>drawCalls,scrollCorrections:()=>scrollCorrections,
     advanceTo(target,step=16){while(clock<target){clock=Math.min(target,clock+step);for(const [key,timer] of [...timers])if(timer.at<=clock){timers.delete(key);timer.callback()}const current=[...frames];frames.clear();for(const [,callback] of current)callback(clock)}},
     restore(){for(const [key,descriptor] of previous){if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key]}}
   };
@@ -125,6 +128,14 @@ try{
   let redraws=0;
   const opening=mountInkOpening({onRippleFrame(){redraws++}});
   assert(env.page.every(element=>element.inert),'Page links must wait until the reveal or skip');
+  assert.equal(env.canvas.width,2530,'The opening must use the unchanged content viewport, excluding the persistent scrollbar');
+  assert.equal(env.canvas.style.width,'1265px');
+  let prevented=0;
+  env.events.get('wheel')({ctrlKey:false,preventDefault(){prevented++}});assert.equal(prevented,1,'Wheel scrolling must wait without hiding the scrollbar');
+  env.events.get('wheel')({ctrlKey:true,preventDefault(){prevented++}});assert.equal(prevented,1,'Browser zoom must remain available');
+  env.events.get('keydown')({key:'PageDown',target:null,preventDefault(){prevented++}});assert.equal(prevented,2);
+  env.events.get('keydown')({key:' ',target:env.skip,preventDefault(){prevented++}});assert.equal(prevented,2,'Space must still activate the skip button');
+  globalThis.scrollY=250;env.events.get('scroll')();assert.equal(globalThis.scrollY,0);assert.equal(env.scrollCorrections(),1,'Scrollbar dragging must not advance the hidden flight');
   opening.waitFor([Promise.resolve(),Promise.reject(new Error('First poster unavailable'))]);
   await Promise.resolve();await Promise.resolve();
   env.advanceTo(2100);assert.equal(env.root.dataset.phase,'stamp');assert.equal(env.progress.getAttribute('aria-valuenow'),'100');
@@ -141,6 +152,8 @@ try{
   assert.equal(env.html.style.getPropertyValue('--ink-reveal-blur'),undefined);
   assert.equal(env.html.style.getPropertyValue('--ink-cover-blur'),undefined);
   assert(env.rippleCanvas.hidden);assert.equal(env.rippleCanvas.listeners.size,0);
+  assert.equal(env.events.size,0,'All temporary scroll and key guards must be removed');
+  assert(!env.dispatched.includes('resize'),'Finishing must not trigger an unnecessary layout and canvas rebuild');
   assert.equal(canvasRippleState().amplitude,0,'Finish must clear the shared ripple on every surface');
   const stopped=redraws;env.advanceTo(9000);assert.equal(redraws,stopped,'No ripple redraws may continue after completion');
   opening.destroy();assert.equal(env.root.dataset.phase,'complete','Cleanup must be idempotent');
@@ -169,6 +182,7 @@ try{
   env.skip.listeners.get('click')();
   assert.equal(env.root.dataset.phase,'skipped');assert(env.root.hidden);assert(env.brand.focused);assert.equal(env.frames.size,0);assert(env.page.every(element=>!element.inert));
   assert.equal(canvasRippleState().amplitude,0,'Skipping during a wave must remove refraction immediately');
+  assert.equal(env.events.size,0,'Skipping must restore native scroll input');
 }finally{env.restore()}
 
 env=environment();
