@@ -68,9 +68,3 @@ For Vercel, the repository includes configurations for either project root:
 | `stillwater` | `npm run build` | `dist` |
 
 Use the Other framework preset. Do not set Root Directory to `stillwater/dist`; the validation scripts live outside it. `server.mjs` is for local previews and is not part of the static deployment.
-
-## Local files and references
-
-Only this repository-root README is tracked among Markdown files. Agent instructions, working notes, prompt records and nested README notes remain local and ignored. Generated artwork and approved runtime assets stay tracked.
-
-User-supplied references and raw attachments stay local, under ignored `.local/private-references/` when a workspace copy is needed. They must not be committed, pushed or included in deployments. Local QA captures, deployment archives, dependencies and secrets are also ignored.
