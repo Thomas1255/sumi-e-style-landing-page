@@ -1,0 +1,127 @@
+{
+  "status": "preview-awaiting-user-approval",
+  "tool": "built-in image_gen.imagegen",
+  "generated_date": "2026-10-28",
+  "title": "Mountain storm banks",
+  "target_transition": "Autumn temples to overhead gorge",
+  "opening_artwork": "unchanged; this set is for a later scene transition only",
+  "family_brief": "Structure family: TALL WIND-TORN MOUNTAIN CLOUDS, monumental ragged vertical cloud plumes and downward fraying mist curtains. Cool slate-gray and diluted ink-blue shadow pools beneath luminous ivory faces; sharper broken vertical dry-brush texture contrasts with soft feathered vapor. Energetic height and irregular vertical rhythm define this set. These are atmospheric clouds, not rocks, triangular mountain peaks, smoke from a fire, water or waterfall. No circular spiral motifs, horizontal shelf stacks or ornamental scalloped chains.",
+  "reference": "../../continuous-landscape-perspectives-v2/04-gorge-high-overhead.png",
+  "assets": [
+    {
+      "file": "left-rear.png",
+      "side": "left",
+      "depth": "rear",
+      "design": "A high torn crest and descending wisps",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: TALL WIND-TORN MOUNTAIN CLOUDS, monumental ragged vertical cloud plumes and downward fraying mist curtains. Cool slate-gray and diluted ink-blue shadow pools beneath luminous ivory faces; sharper broken vertical dry-brush texture contrasts with soft feathered vapor. Energetic height and irregular vertical rhythm define this set. These are atmospheric clouds, not rocks, triangular mountain peaks, smoke from a fire, water or waterfall. No circular spiral motifs, horizontal shelf stacks or ornamental scalloped chains.\nLayer: LEFT / REAR.\nComposition: Wide landscape canvas. Distant cloud begins at LEFT with one high slender torn crest and a long diagonal stream of delicate wisps descending toward the LOWER-RIGHT. Several very fine downward strokes fade into actual transparency. Upper-right and lower-left are airy empty alpha. Pale cool ink wash, long thin cloud mass, no dense dark column.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-85146919-9118-4a0b-9c6d-f9a809a4f1e4.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "0dd1d0ab988e79957bc0eb3d382e71103b0022be14eab07800b95aed4ca5fefd",
+        "transparent_percent": 68.36,
+        "near_opaque_alpha_245_plus_percent": 19.62,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-rear.png",
+      "side": "right",
+      "depth": "rear",
+      "design": "Three uneven upright feathery plumes",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: TALL WIND-TORN MOUNTAIN CLOUDS, monumental ragged vertical cloud plumes and downward fraying mist curtains. Cool slate-gray and diluted ink-blue shadow pools beneath luminous ivory faces; sharper broken vertical dry-brush texture contrasts with soft feathered vapor. Energetic height and irregular vertical rhythm define this set. These are atmospheric clouds, not rocks, triangular mountain peaks, smoke from a fire, water or waterfall. No circular spiral motifs, horizontal shelf stacks or ornamental scalloped chains.\nLayer: RIGHT / REAR.\nComposition: Wide landscape canvas. Rear cloud anchored to RIGHT sends THREE upright feathery plumes upward at very different heights, joined by a thin soft base that trails far LEFT. Highest plume is nearer the center-right, shortest is at far right. The leftward tail is thin and low. Broad transparent margins and partly transparent frayed vapor. No diagonal reflected crest.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-21a5645c-4958-49ad-a079-c1b74cb1b454.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "634b5e48380397778308ed274b0d15a71c1d95e593228b79114b7e242e02202a",
+        "transparent_percent": 60.81,
+        "near_opaque_alpha_245_plus_percent": 25.12,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-middle.png",
+      "side": "left",
+      "depth": "middle",
+      "design": "Two monumental leaning cloud columns",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: TALL WIND-TORN MOUNTAIN CLOUDS, monumental ragged vertical cloud plumes and downward fraying mist curtains. Cool slate-gray and diluted ink-blue shadow pools beneath luminous ivory faces; sharper broken vertical dry-brush texture contrasts with soft feathered vapor. Energetic height and irregular vertical rhythm define this set. These are atmospheric clouds, not rocks, triangular mountain peaks, smoke from a fire, water or waterfall. No circular spiral motifs, horizontal shelf stacks or ornamental scalloped chains.\nLayer: LEFT / MIDDLE.\nComposition: Near-square canvas. Dense luminous ivory cloud mass fills the LEFT edge and both left corners. Two monumental soft cloud columns lean toward the RIGHT: a tall narrow upper tower and a shorter much wider lower buttress, merged into a continuous nearly opaque body. Their leading edge is ragged and wind-torn, with a few long hanging vapor teeth. Cool slate-blue-gray ink shadow channels run mostly VERTICALLY through the painted form. Main body has no transparent holes; right fringe is real transparency. Rounded atmospheric mass, never rock spires.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-4beafd76-3efc-4334-9cd1-1f7ec7080e26.png",
+      "validation": {
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "sha256": "73e149de8a4f2b2ca2e03333cb2ab4e04d9c2963ce82c8ae774812764c424c63",
+        "transparent_percent": 39.84,
+        "near_opaque_alpha_245_plus_percent": 45.89,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-middle.png",
+      "side": "right",
+      "depth": "middle",
+      "design": "Three staggered broad cloud pillars and hanging fringe",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: TALL WIND-TORN MOUNTAIN CLOUDS, monumental ragged vertical cloud plumes and downward fraying mist curtains. Cool slate-gray and diluted ink-blue shadow pools beneath luminous ivory faces; sharper broken vertical dry-brush texture contrasts with soft feathered vapor. Energetic height and irregular vertical rhythm define this set. These are atmospheric clouds, not rocks, triangular mountain peaks, smoke from a fire, water or waterfall. No circular spiral motifs, horizontal shelf stacks or ornamental scalloped chains.\nLayer: RIGHT / MIDDLE.\nComposition: Near-square canvas. Dense nearly opaque warm ivory cloud bank fills the RIGHT edge and both right corners. Its LEFT silhouette alternates THREE uneven broad soft cloud pillars, the widest in the upper-middle and the shortest near the bottom. A ragged downward-hanging fringe joins them, with broken vertical charcoal/slate-gray brush shadows. Solid continuous scene-covering main body without holes, feathered outer alpha. Not a mirror of a two-column bank; no architectural or mountain shapes.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-1187f502-bd18-4b01-af9d-36a5769d66fd.png",
+      "validation": {
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "mode": "RGBA",
+        "sha256": "385079cb033d21b5154dcfe20e60e174060304b7221ca88cd03692c78394500e",
+        "transparent_percent": 52.1,
+        "near_opaque_alpha_245_plus_percent": 37.71,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "left-front.png",
+      "side": "left",
+      "depth": "front",
+      "design": "A low heavy bank with a tall torn leading crest",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: TALL WIND-TORN MOUNTAIN CLOUDS, monumental ragged vertical cloud plumes and downward fraying mist curtains. Cool slate-gray and diluted ink-blue shadow pools beneath luminous ivory faces; sharper broken vertical dry-brush texture contrasts with soft feathered vapor. Energetic height and irregular vertical rhythm define this set. These are atmospheric clouds, not rocks, triangular mountain peaks, smoke from a fire, water or waterfall. No circular spiral motifs, horizontal shelf stacks or ornamental scalloped chains.\nLayer: LEFT / FRONT.\nComposition: Wide landscape canvas. A heavy closest cloud rolls from beyond LEFT and BOTTOM, with one tall TORN upright crest at its rightward leading edge, followed by a shorter blunt companion lobe. Cool ink-blue and charcoal dry-brush shadows pool low under the luminous ivory face, with energetic near-vertical streaks. Top-right is genuinely transparent, edges have wispy semi-transparent vapor. Almost opaque continuous core, no curls, no ocean crest.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-33f7aa6c-bbe6-4c4a-9081-54fbc28fc785.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "ae069ea7271bebd88958db19b05e7dde084b2373a7aa6a29e03eb08039643221",
+        "transparent_percent": 46.65,
+        "near_opaque_alpha_245_plus_percent": 40.73,
+        "original_bytes_preserved": true
+      }
+    },
+    {
+      "file": "right-front.png",
+      "side": "right",
+      "depth": "front",
+      "design": "An upper storm overhang with a ripped descending curtain",
+      "prompt": "Use case: stylized-concept\nAsset type: one independent transparent PNG cloud layer for a neo-traditional Japanese sumi-e watercolor website transition.\nCreate a NEW painting with a unique silhouette and newly painted brush textures. Do not copy, mirror, tile, sample or reframe an earlier cloud image. The supplied landscape is a PALETTE AND MEDIUM reference only; do not include its scenery.\nMedium: expressive hand-painted 2D sumi-e ink and watercolor. Warm ivory cloud interiors with controlled gray ink wash give genuine painted volume. Actual transparent alpha around the cloud and delicate partly transparent frayed mist edges. No paper rectangle, scene, ground, mountains, waves, buildings, birds, sun, writing, seals, borders, watermarks, photorealism, 3D shading, painted checkerboard or solid background. One cloud layer only, not a contact sheet, diagram or multi-layer composite.\nMake an organically asymmetric cloud form with a clear painted body, not a flat indistinct translucent smear.\nStructure family: TALL WIND-TORN MOUNTAIN CLOUDS, monumental ragged vertical cloud plumes and downward fraying mist curtains. Cool slate-gray and diluted ink-blue shadow pools beneath luminous ivory faces; sharper broken vertical dry-brush texture contrasts with soft feathered vapor. Energetic height and irregular vertical rhythm define this set. These are atmospheric clouds, not rocks, triangular mountain peaks, smoke from a fire, water or waterfall. No circular spiral motifs, horizontal shelf stacks or ornamental scalloped chains.\nLayer: RIGHT / FRONT.\nComposition: Wide landscape canvas. A thick foreground storm-cloud OVERHANG continues beyond RIGHT and TOP. Its left-leading front is blunt and irregular, while a long ripped vapor curtain hangs DOWN and LEFT in unequal tapered strips. Bright ivory top faces, cool slate-gray underside, broken vertical ink texture. Lower-left is mostly actual transparency; nearly opaque connected main cloud with fine feathered fringes. No upright mirrored crest or spiral flourish.",
+      "generated_source": "C:\\Users\\tf156\\.codex\\generated_images\\01a17b14-aeeb-77e2-ab65-a581f6bd7af8\\exec-d45a4565-2fc3-4581-b46e-5a81c789e5ac.png",
+      "validation": {
+        "dimensions": [
+          1672,
+          941
+        ],
+        "mode": "RGBA",
+        "sha256": "101c8e18e4badd9e1afd8b5f256895c15155a815ef8afc162a0184e248d20059",
+        "transparent_percent": 42.33,
+        "near_opaque_alpha_245_plus_percent": 45.65,
+        "original_bytes_preserved": true
+      }
+    }
+  ],
+  "runtime_integration": "not performed; user approval required"
+}
