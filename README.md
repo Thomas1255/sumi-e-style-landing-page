@@ -11,3 +11,5 @@ Current implementation details are in `stillwater/REDESIGN.md`. Selected artwork
 Repository: [Thomas1255/sumi-e-style-landing-page](https://github.com/Thomas1255/sumi-e-style-landing-page). The Git repository covers this entire workspace, with the site in `stillwater/`. Project work should be checked, committed, and pushed as described in `AGENTS.md`.
 
 For Vercel, import this repository with Root Directory set to the repository root (leave it blank), and deploy the latest `main` commit. `vercel.json` selects the Other framework preset, runs `npm run build`, and serves `stillwater/dist` as static files. `server.mjs` is only for local previews; this site does not require a production server or serverless function.
+
+Existing Vercel projects with Root Directory set to `stillwater` are also supported: `stillwater/vercel.json` selects the same static deployment with Output Directory `dist`, relative to that root. Use either the repository root or `stillwater` as Root Directory, not `stillwater/dist`.
