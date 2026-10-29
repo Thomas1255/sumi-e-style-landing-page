@@ -1,4 +1,5 @@
 import { clamp, SCENE_CUTS } from './flight-timeline.js';
+import { createInkCloudRenderer } from './ink-cloud-renderer.js';
 
 // Give the painted banks a longer scroll runway than the underlying scene dissolve.
 export const INK_CLOUD_SCROLL_SPAN = .20;
@@ -106,6 +107,10 @@ export function mountInkClouds(after) {
   const fallback = document.createElement('div');
   fallback.className = 'ink-cloud-loading';
   root.append(fallback);
+  const surface = document.createElement('canvas');
+  surface.className = 'ink-cloud-surface';
+  surface.hidden = true;
+  root.append(surface);
   // Keep decoded images in separate banks. Changing the active bank never swaps
   // an image URL during a scroll frame, including a fast jump or reverse scroll.
   const banks = INK_CLOUD_SETS.map((layers, setIndex) => {
@@ -119,6 +124,7 @@ export function mountInkClouds(after) {
       image.alt = '';
       image.draggable = false;
       image.decoding = 'async';
+      image.fetchPriority = setIndex === 0 ? 'high' : 'low';
       image.dataset.layer = layer.id;
       image.dataset.depth = layer.depth;
       image.src = layer.src;
@@ -130,6 +136,7 @@ export function mountInkClouds(after) {
   });
   after.after(root);
   let progress = 0, reduced = false, disposed = false;
+  const renderer = createInkCloudRenderer(surface,render);
 
   function render() {
     const frame = inkCloudFrame(progress, innerWidth, innerHeight, reduced);
@@ -142,6 +149,9 @@ export function mountInkClouds(after) {
     root.dataset.cloudPhase = frame.phase.toFixed(6);
     root.dataset.cloudTransition = frame.strength.toFixed(6);
     fallback.style.opacity = String(bank.state === 'ready' ? 0 : frame.strength * .985);
+    const reconstructed = bank.state === 'ready' && !!renderer?.draw(frame,bank.planes,innerWidth,innerHeight,devicePixelRatio || 1);
+    root.dataset.cloudRenderer = reconstructed ? 'reconstructed' : 'images';
+    surface.hidden = !reconstructed;
     frame.layers.forEach((layer, index) => {
       const image = bank.planes[index];
       image.style.width = `${layer.width}px`;
@@ -175,6 +185,7 @@ export function mountInkClouds(after) {
     destroy() {
       disposed = true;
       removeEventListener('resize', render);
+      renderer?.destroy();
       document.documentElement.classList.remove('cloud-intro-loading');
       root.remove();
     }

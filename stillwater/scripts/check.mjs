@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength, flockTravel } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
 import { INK_CLOUD_LAYERS, INK_CLOUD_SETS, INK_CLOUD_VARIANTS, INK_CLOUD_SCROLL_SPAN, INK_CLOUD_INTRO_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
+import { inkCloudSurface } from '../dist/ink-cloud-renderer.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const html = await readFile(path.join(root, 'index.html'), 'utf8');
@@ -16,9 +17,9 @@ execFileSync(process.execPath, ['--check', path.join(root, 'app.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'flight-model.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'clouds.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'page-clouds.js')]);
-for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
+for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','ink-cloud-renderer.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
 // Resolve all relative module imports, including assets loaded from JavaScript.
-for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','page-cloth.js','page-clouds.js','ink-clouds.js']) {
+for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','page-cloth.js','page-clouds.js','ink-clouds.js','ink-cloud-renderer.js']) {
   const module = await readFile(path.join(root, filename), 'utf8');
   for (const match of module.matchAll(/(?:from\s+|import\s+)['"](\.\/[^'"]+)['"]/g)) await access(path.resolve(root, match[1]));
   for (const match of module.matchAll(/['"](assets\/[^'"]+)['"]/g)) await access(path.join(root,match[1]));
@@ -84,6 +85,11 @@ for(const layers of INK_CLOUD_SETS){
 }
 assert.equal(new Set(INK_CLOUD_SETS.flat().map(layer=>layer.src)).size,24,'Later transitions must never reuse an opening or other transition source');
 assert.equal(new Set(cloudHashes).size,24,'Every cloud layer must have distinct painted content');
+assert.deepEqual(inkCloudSurface(1920,1080,1),{width:1920,height:1080,ratio:1},'Full-HD cloud rendering must use a full-HD surface');
+assert.deepEqual(inkCloudSurface(1920,1080,2),{width:3840,height:2160,ratio:2},'High-density displays need a matching 2x cloud surface');
+assert.deepEqual(inkCloudSurface(390,844,2),{width:780,height:1688,ratio:2},'Mobile clouds must retain high-density detail');
+const limitedCloudSurface=inkCloudSurface(2560,1440,2,4096);
+assert(limitedCloudSurface.width<=4096&&limitedCloudSurface.height<=4096,'Cloud buffers must respect the GPU size limit');
 assert(INK_CLOUD_SCROLL_SPAN>=SCENE_DISSOLVE*2,'Cloud transitions need at least twice the scroll distance of the landscape dissolve');
 assert(SCENE_CUTS.slice(1).every((cut,index)=>cut-SCENE_CUTS[index]>INK_CLOUD_SCROLL_SPAN),'Cloud sequences must leave clear space between scenes');
 for(const viewport of [[1280,720],[390,844],[2560,1080]]){
