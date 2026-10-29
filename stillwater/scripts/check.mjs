@@ -85,6 +85,14 @@ for(const layers of INK_CLOUD_SETS){
 }
 assert.equal(new Set(INK_CLOUD_SETS.flat().map(layer=>layer.src)).size,24,'Later transitions must never reuse an opening or other transition source');
 assert.equal(new Set(cloudHashes).size,24,'Every cloud layer must have distinct painted content');
+const cumulusRecord=JSON.parse(await readFile(new URL('../art-previews/sumi-cloud-gorge-cumulus-v4/artwork-record.json',import.meta.url),'utf8'));
+assert.equal(INK_CLOUD_VARIANTS[3].id,'gorge-cumulus-banks','The final transition must use the approved cumulus composition');
+for(const asset of cumulusRecord.assets){
+  const layer=INK_CLOUD_SETS[3].find(layer=>layer.id===`${asset.side}-${asset.depth}`);
+  assert.equal(layer.src,`assets/clouds/gorge-cumulus/${asset.file}`,'The final transition must use the approved replacement set');
+  const painting=await readFile(path.join(root,layer.src));
+  assert.equal(createHash('sha256').update(painting).digest('hex'),asset.validation.sha256,'The approved cumulus painting must be preserved unchanged');
+}
 assert.deepEqual(inkCloudSurface(1920,1080,1),{width:1920,height:1080,ratio:1},'Full-HD cloud rendering must use a full-HD surface');
 assert.deepEqual(inkCloudSurface(1920,1080,2),{width:3840,height:2160,ratio:2},'High-density displays need a matching 2x cloud surface');
 assert.deepEqual(inkCloudSurface(390,844,2),{width:780,height:1688,ratio:2},'Mobile clouds must retain high-density detail');

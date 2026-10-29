@@ -1,5 +1,5 @@
 {
-  "status": "approved-and-implemented",
+  "status": "superseded-artwork-preserved",
   "tool": "built-in image_gen.imagegen",
   "generated_date": "2026-10-28",
   "title": "Mountain storm banks",
@@ -139,5 +139,10 @@
   "approval": {
     "date": "2026-10-28",
     "user_request": "approve all of the sets, now put them to use"
+  },
+  "superseded": {
+    "date": "2026-10-29",
+    "reason": "The closed transition looked like waves; user approved the rounded cumulus replacement.",
+    "replacement": "../../sumi-cloud-gorge-cumulus-v4/"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "status": "preview-awaiting-user-approval",
+  "status": "approved-and-implemented",
   "tool": "built-in image_gen.imagegen",
   "generated_date": "2026-10-28",
   "title": "Gorge sky — cumulus clouds",
@@ -29,7 +29,8 @@
         "transparent_percent": 60.73,
         "near_opaque_alpha_245_plus_percent": 26.02,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/gorge-cumulus/left-rear.png"
     },
     {
       "file": "right-rear.png",
@@ -49,7 +50,8 @@
         "transparent_percent": 60.63,
         "near_opaque_alpha_245_plus_percent": 28.63,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/gorge-cumulus/right-rear.png"
     },
     {
       "file": "left-middle.png",
@@ -69,7 +71,8 @@
         "transparent_percent": 40.69,
         "near_opaque_alpha_245_plus_percent": 44.56,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/gorge-cumulus/left-middle.png"
     },
     {
       "file": "right-middle.png",
@@ -89,7 +92,8 @@
         "transparent_percent": 52.48,
         "near_opaque_alpha_245_plus_percent": 36.02,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/gorge-cumulus/right-middle.png"
     },
     {
       "file": "left-front.png",
@@ -109,7 +113,8 @@
         "transparent_percent": 45.5,
         "near_opaque_alpha_245_plus_percent": 39.22,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/gorge-cumulus/left-front.png"
     },
     {
       "file": "right-front.png",
@@ -129,10 +134,22 @@
         "transparent_percent": 51.9,
         "near_opaque_alpha_245_plus_percent": 36.55,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/gorge-cumulus/right-front.png"
     }
   ],
-  "runtime_integration": "Not performed; replacement artwork requires user approval. All four current runtime cloud sets remain unchanged.",
+  "runtime_integration": {
+    "directory": "stillwater/dist/assets/clouds/gorge-cumulus/",
+    "motion_module": "stillwater/dist/ink-clouds.js",
+    "variant": "gorge-cumulus-banks",
+    "transition_progress": 0.68,
+    "scroll_span": 0.2,
+    "rendering": "Existing high-density reconstruction and transparent PNG fallback retained",
+    "coverage_validation": "Actual source-alpha compositing sampled every 2 CSS pixels across the closed hold at 1280x720, 390x844 and 2560x1080: all sampled pixels >=98% opaque.",
+    "browser_validation": "Not performed: local browser use is disabled in Work settings.",
+    "other_transitions": "Original opening, river mist and temple volutes unchanged",
+    "retained_previous_artwork": "stillwater/art-previews/sumi-cloud-transition-sets-v3/03-mountain-plumes/"
+  },
   "preview_layout": {
     "width": 1200,
     "height": 560,
@@ -193,5 +210,83 @@
       }
     ],
     "note": "Static closed-view composition for artwork approval only; no runtime source or animation changes."
-  }
+  },
+  "approval": {
+    "date": "2026-10-29",
+    "user_request": "Implement this"
+  },
+  "runtime_layout": [
+    {
+      "id": "left-rear",
+      "src": "assets/clouds/gorge-cumulus/left-rear.png",
+      "side": "left",
+      "width": 1344.0000000000002,
+      "height": 756.4019138755982,
+      "x": -192,
+      "y": 128.8,
+      "closure": 1,
+      "opacity": 0.86,
+      "zIndex": 2
+    },
+    {
+      "id": "right-rear",
+      "src": "assets/clouds/gorge-cumulus/right-rear.png",
+      "side": "right",
+      "width": 1612.8000000000002,
+      "height": 644.9573373676249,
+      "x": -208.80000000000018,
+      "y": 28.000000000000004,
+      "closure": 1,
+      "opacity": 0.86,
+      "zIndex": 1
+    },
+    {
+      "id": "left-middle",
+      "src": "assets/clouds/gorge-cumulus/left-middle.png",
+      "side": "left",
+      "width": 1897.44,
+      "height": 1897.44,
+      "x": -96,
+      "y": -668.72,
+      "closure": 1,
+      "opacity": 1,
+      "zIndex": 4
+    },
+    {
+      "id": "right-middle",
+      "src": "assets/clouds/gorge-cumulus/right-middle.png",
+      "side": "right",
+      "width": 1935.3600000000001,
+      "height": 1089.8705924596052,
+      "x": -615.3600000000001,
+      "y": -321.5378843806105,
+      "closure": 1,
+      "opacity": 1,
+      "zIndex": 3
+    },
+    {
+      "id": "left-front",
+      "src": "assets/clouds/gorge-cumulus/left-front.png",
+      "side": "left",
+      "width": 1457.28,
+      "height": 728.64,
+      "x": -228,
+      "y": 61.599999999999994,
+      "closure": 1,
+      "opacity": 1,
+      "zIndex": 5
+    },
+    {
+      "id": "right-front",
+      "src": "assets/clouds/gorge-cumulus/right-front.png",
+      "side": "right",
+      "width": 1522.56,
+      "height": 856.8953110047846,
+      "x": -106.55999999999995,
+      "y": -112,
+      "closure": 1,
+      "opacity": 1,
+      "zIndex": 6
+    }
+  ]
 }

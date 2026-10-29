@@ -1,6 +1,6 @@
 # Gorge sky — cumulus clouds
 
-Status: preview awaiting approval. Six newly generated transparent PNGs for the final cloud transition only. Runtime artwork and animation are unchanged.
+Status: approved and implemented on 2026-10-29. Six transparent PNGs for the final cloud transition only; exact generation prompts preserved below.
 
 Built-in ImageGen was used. The first layer was created without image inputs. The other five used the first layer only as a medium/palette reference, with a different original silhouette requested for every painting. Generated originals are preserved unchanged.
 

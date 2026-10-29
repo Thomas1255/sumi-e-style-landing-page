@@ -35,27 +35,27 @@ export const INK_CLOUD_VARIANTS = Object.freeze([
     { scale: 1.38, y: -.23, drift: .14, arc: -.04, enter: [.24, .46], leave: [.65, .90], z: 5 },
     { scale: 1.20, y: .24, drift: -.08, arc: .025, enter: [.14, .43], leave: [.60, .85], z: 6 }
   ] },
-  { id: 'gorge-descending-banks', layers: [
+  { id: 'gorge-cumulus-banks', layers: [
     { scale: 1.12, y: .32, drift: -.18, arc: -.045, enter: [0, .37], leave: [.71, 1], z: 2 },
     { scale: 1.20, y: -.42, drift: .12, arc: .045, enter: [.05, .39], leave: [.70, 1], z: 1 },
-    { scale: 1.34, y: .10, inset: .08, drift: -.24, arc: -.05, enter: [.10, .44], leave: [.65, .94], z: 4 },
-    { scale: 1.26, y: -.12, inset: .06, drift: -.20, arc: .05, enter: [.08, .42], leave: [.67, .97], z: 3 },
+    { scale: 1.34, y: 0, inset: .08, drift: -.24, arc: -.05, enter: [.10, .44], leave: [.65, .94], z: 4 },
+    { scale: 1.26, y: -.12, inset: .10, drift: -.20, arc: .05, enter: [.08, .42], leave: [.67, .97], z: 3 },
     { scale: 1.32, y: -.20, drift: -.15, arc: -.035, enter: [.22, .46], leave: [.60, .87], z: 5 },
     { scale: 1.22, y: .08, drift: -.18, arc: .035, enter: [.16, .44], leave: [.62, .88], z: 6 }
   ] }
 ].map(variant => Object.freeze({ ...variant, layers: Object.freeze(variant.layers.map(layer => Object.freeze(layer))) })));
 
-const paintedSet = (directory, rearAspects) => INK_CLOUD_LAYERS.map((layer, index) => ({
+const paintedSet = (directory, aspects) => INK_CLOUD_LAYERS.map((layer, index) => ({
   ...layer,
   src: `assets/clouds/${directory}/${layer.id}.png`,
-  aspect: index < 2 ? rearAspects[index] : index < 4 ? 1 : 1672 / 941
+  aspect: aspects[index]
 }));
 
 export const INK_CLOUD_SETS = Object.freeze([
   INK_CLOUD_LAYERS,
-  paintedSet('river-mist', [2048 / 768, 1672 / 941]),
-  paintedSet('temple-volutes', [1672 / 941, 1672 / 941]),
-  paintedSet('mountain-plumes', [1672 / 941, 1672 / 941])
+  paintedSet('river-mist', [2048 / 768, 1672 / 941, 1, 1, 1672 / 941, 1672 / 941]),
+  paintedSet('temple-volutes', [1672 / 941, 1672 / 941, 1, 1, 1672 / 941, 1672 / 941]),
+  paintedSet('gorge-cumulus', [1672 / 941, 1983 / 793, 1, 1671 / 941, 1774 / 887, 1672 / 941])
 ].map(layers => Object.freeze(layers.map(layer => Object.freeze(layer)))));
 
 const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
