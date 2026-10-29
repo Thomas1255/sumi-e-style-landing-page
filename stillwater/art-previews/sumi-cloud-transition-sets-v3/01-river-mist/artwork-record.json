@@ -1,5 +1,5 @@
 {
-  "status": "preview-awaiting-user-approval",
+  "status": "approved-and-implemented",
   "tool": "built-in image_gen.imagegen",
   "generated_date": "2026-10-28",
   "title": "River mist ribbons",
@@ -25,7 +25,8 @@
         "transparent_percent": 51.98,
         "near_opaque_alpha_245_plus_percent": 28.51,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/river-mist/left-rear.png"
     },
     {
       "file": "right-rear.png",
@@ -44,7 +45,8 @@
         "transparent_percent": 67.38,
         "near_opaque_alpha_245_plus_percent": 19.88,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/river-mist/right-rear.png"
     },
     {
       "file": "left-middle.png",
@@ -63,7 +65,8 @@
         "transparent_percent": 33.56,
         "near_opaque_alpha_245_plus_percent": 50.09,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/river-mist/left-middle.png"
     },
     {
       "file": "right-middle.png",
@@ -82,7 +85,8 @@
         "transparent_percent": 47.87,
         "near_opaque_alpha_245_plus_percent": 34.48,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/river-mist/right-middle.png"
     },
     {
       "file": "left-front.png",
@@ -101,7 +105,8 @@
         "transparent_percent": 53.91,
         "near_opaque_alpha_245_plus_percent": 35.25,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/river-mist/left-front.png"
     },
     {
       "file": "right-front.png",
@@ -120,8 +125,19 @@
         "transparent_percent": 60.62,
         "near_opaque_alpha_245_plus_percent": 23.23,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/river-mist/right-front.png"
     }
   ],
-  "runtime_integration": "not performed; user approval required"
+  "runtime_integration": {
+    "directory": "stillwater/dist/assets/clouds/river-mist/",
+    "motion_module": "stillwater/dist/ink-clouds.js",
+    "opening_artwork": "preserved unchanged",
+    "scroll_span": 0.2,
+    "coverage_validation": "Sampled RGBA compositing at 2 CSS pixel intervals: every sampled pixel at least 98% opaque through the closed hold, at 1280x720, 390x844 and 2560x1080."
+  },
+  "approval": {
+    "date": "2026-10-28",
+    "user_request": "approve all of the sets, now put them to use"
+  }
 }

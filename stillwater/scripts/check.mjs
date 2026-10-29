@@ -3,9 +3,10 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { FLIGHT_CLIPS, SCENE_CUTS, SCENE_DISSOLVE, clipBounds, clipFrame, flightVideoState, sceneCloudStrength, flockTravel } from '../dist/flight-timeline.js';
 import { routeCamera, SCENES } from '../dist/terrain.js';
-import { INK_CLOUD_LAYERS, INK_CLOUD_VARIANTS, INK_CLOUD_SCROLL_SPAN, INK_CLOUD_INTRO_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
+import { INK_CLOUD_LAYERS, INK_CLOUD_SETS, INK_CLOUD_VARIANTS, INK_CLOUD_SCROLL_SPAN, INK_CLOUD_INTRO_SPAN, inkCloudFrame } from '../dist/ink-clouds.js';
 
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const html = await readFile(path.join(root, 'index.html'), 'utf8');
@@ -68,10 +69,29 @@ for(const p of [0,.3,.55,.9,1])assert.equal(sceneCloudStrength(p),0,'Ambient sce
 assert.equal(INK_CLOUD_LAYERS.length,6,'Each side needs three independently painted cloud planes');
 assert.equal(new Set(INK_CLOUD_LAYERS.map(layer=>layer.src)).size,6,'Cloud layers must use six distinct artworks');
 assert.equal(INK_CLOUD_VARIANTS.length,4,'The opening and all three scene changes need their own composition');
+assert.equal(INK_CLOUD_SETS.length,4,'Each passage needs its approved artwork set');
+assert.deepEqual(INK_CLOUD_SETS[0],INK_CLOUD_LAYERS,'The original opening artwork must stay intact');
+const cloudHashes=[];
+for(const layers of INK_CLOUD_SETS){
+  assert.equal(layers.length,6,'Every artwork set needs independent left/right layers at all three depths');
+  for(const layer of layers){
+    const png=await readFile(path.join(root,layer.src));
+    assert.equal(png.toString('ascii',1,4),'PNG','Cloud artwork must be PNG');
+    assert.equal(png[25],6,'Cloud PNGs must retain RGBA transparency');
+    assert(Math.abs(png.readUInt32BE(16)/png.readUInt32BE(20)-layer.aspect)<1e-10,'Cloud geometry must preserve the painting aspect ratio');
+    cloudHashes.push(createHash('sha256').update(png).digest('hex'));
+  }
+}
+assert.equal(new Set(INK_CLOUD_SETS.flat().map(layer=>layer.src)).size,24,'Later transitions must never reuse an opening or other transition source');
+assert.equal(new Set(cloudHashes).size,24,'Every cloud layer must have distinct painted content');
 assert(INK_CLOUD_SCROLL_SPAN>=SCENE_DISSOLVE*2,'Cloud transitions need at least twice the scroll distance of the landscape dissolve');
 assert(SCENE_CUTS.slice(1).every((cut,index)=>cut-SCENE_CUTS[index]>INK_CLOUD_SCROLL_SPAN),'Cloud sequences must leave clear space between scenes');
 for(const viewport of [[1280,720],[390,844],[2560,1080]]){
   const compositions=[0,...SCENE_CUTS].map(p=>inkCloudFrame(p,...viewport));
+  for(const [index,frame] of compositions.entries()){
+    assert.equal(frame.setIndex,index,'Scroll position must select the correct approved set');
+    assert.deepEqual(frame.layers.map(layer=>layer.src),INK_CLOUD_SETS[index].map(layer=>layer.src),'The rendered frame must use the matching six paintings');
+  }
   assert.equal(new Set(compositions.map(frame=>frame.variant)).size,4,'Every transition must select a distinct cloud variant');
   assert.equal(new Set(compositions.map(frame=>JSON.stringify(frame.layers.map(({x,y,width,height,zIndex})=>({x,y,width,height,zIndex}))))).size,4,'Transition variety must change actual framing and overlaps');
   const arrivals=SCENE_CUTS.map(cut=>inkCloudFrame(cut-.04,...viewport).layers.map(layer=>layer.closure));
@@ -118,4 +138,4 @@ assert.deepEqual([0,.30,.55,.9].map(p=>routeCamera(p).index),[0,1,2,3],'The flig
 for(const scene of SCENES)await access(path.join(root,scene));
 assert.equal((html.match(/data-cloth/g)||[]).length,5,'Every story panel must have cloth');
 await import('./server-check.mjs');
-console.log('Verified assets, reversible video frames, four synchronized landscapes, six staggered cloud layers, five cloth panels, reduced motion, and HTTP video seeking.');
+console.log('Verified assets, reversible video frames, four synchronized landscapes, 24 unique PNGs in four staggered cloud sets, five cloth panels, reduced motion, and HTTP video seeking.');

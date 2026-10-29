@@ -34,8 +34,8 @@ main{overflow-x:clip;overflow-y:visible}
 .ink-cloud-transition{position:fixed;inset:0;z-index:13;overflow:hidden;pointer-events:none;contain:strict;isolation:isolate;visibility:hidden}
 .ink-cloud-transition[data-active=true]{visibility:visible}
 .ink-cloud-layer{position:absolute;left:0;top:0;display:block;max-width:none;pointer-events:none;user-select:none}
-.ink-cloud-layer[hidden]{display:none}
-.ink-cloud-transition[data-active=true] .ink-cloud-layer{will-change:transform}
+.ink-cloud-set[hidden],.ink-cloud-layer[hidden]{display:none}
+.ink-cloud-transition[data-active=true] .ink-cloud-set:not([hidden]) .ink-cloud-layer{will-change:transform}
 .ink-cloud-loading{position:absolute;inset:0;background:#f3eddf;opacity:0}
 @media(prefers-reduced-motion:reduce){.ink-cloud-transition{display:none}}
 /* A longer physical scroll gives the layered clouds time to travel across the view. */

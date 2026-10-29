@@ -1,5 +1,5 @@
 {
-  "status": "preview-awaiting-user-approval",
+  "status": "approved-and-implemented",
   "tool": "built-in image_gen.imagegen",
   "generated_date": "2026-10-28",
   "title": "Temple cloud scrolls",
@@ -25,7 +25,8 @@
         "transparent_percent": 50.13,
         "near_opaque_alpha_245_plus_percent": 35.48,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/temple-volutes/left-rear.png"
     },
     {
       "file": "right-rear.png",
@@ -44,7 +45,8 @@
         "transparent_percent": 58.95,
         "near_opaque_alpha_245_plus_percent": 29.63,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/temple-volutes/right-rear.png"
     },
     {
       "file": "left-middle.png",
@@ -63,7 +65,8 @@
         "transparent_percent": 29.63,
         "near_opaque_alpha_245_plus_percent": 55.13,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/temple-volutes/left-middle.png"
     },
     {
       "file": "right-middle.png",
@@ -82,7 +85,8 @@
         "transparent_percent": 39.26,
         "near_opaque_alpha_245_plus_percent": 50.4,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/temple-volutes/right-middle.png"
     },
     {
       "file": "left-front.png",
@@ -101,7 +105,8 @@
         "transparent_percent": 39.31,
         "near_opaque_alpha_245_plus_percent": 51.55,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/temple-volutes/left-front.png"
     },
     {
       "file": "right-front.png",
@@ -120,8 +125,19 @@
         "transparent_percent": 46.9,
         "near_opaque_alpha_245_plus_percent": 42.34,
         "original_bytes_preserved": true
-      }
+      },
+      "runtime_file": "assets/clouds/temple-volutes/right-front.png"
     }
   ],
-  "runtime_integration": "not performed; user approval required"
+  "runtime_integration": {
+    "directory": "stillwater/dist/assets/clouds/temple-volutes/",
+    "motion_module": "stillwater/dist/ink-clouds.js",
+    "opening_artwork": "preserved unchanged",
+    "scroll_span": 0.2,
+    "coverage_validation": "Sampled RGBA compositing at 2 CSS pixel intervals: every sampled pixel at least 98% opaque through the closed hold, at 1280x720, 390x844 and 2560x1080."
+  },
+  "approval": {
+    "date": "2026-10-28",
+    "user_request": "approve all of the sets, now put them to use"
+  }
 }

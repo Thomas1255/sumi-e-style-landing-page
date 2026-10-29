@@ -1,10 +1,14 @@
 # New cloud artwork for the three scene transitions
 
-Status: generated artwork awaiting user approval. No runtime files or opening artwork have been changed.
+Status: all three sets approved and implemented on 2026-10-28. The original opening artwork is unchanged.
 
 18 original transparent PNGs were created with the built-in ImageGen tool: three distinct sets of six independent layers. Every image was generated separately, using only its approved landscape as the palette/medium reference. No opening cloud artwork or other cloud was supplied as an input. No images were mirrored, sampled, recolored or cut into layers.
 
-Each review page shows a static layered composition over its landscape and all six PNGs separately. The composition is for artwork review; final motion and viewport coverage will be implemented only after approval.
+Each review page preserves the static artwork study and all six PNGs separately. Runtime copies in `stillwater/dist/assets/clouds/river-mist/`, `temple-volutes/` and `mountain-plumes/` are byte-for-byte identical to these originals. `stillwater/dist/ink-clouds.js` assigns a different set to each of the three scene cuts and retains the original six PNGs for the opening.
+
+Each set has its own six scroll-driven planes, staggered entrance/exit speeds, vertical drift and overlaps. All 24 paintings preload into separate banks, so forward scrolling, reverse scrolling and chapter jumps select the matching decoded artwork without swapping image URLs during motion. The opening keeps its existing loading cover; a failed or pending bank has a warm paper fallback. The long 20% transition scroll span, closed hold and reduced-motion behavior are preserved.
+
+Coverage was checked by compositing actual PNG alpha at 2 CSS pixel intervals at 1280×720, 390×844 and 2560×1080. Every sampled pixel remains at least 98% opaque during the closed hold. The build also verifies 24 distinct PNG content hashes, original aspect ratios, RGBA transparency, correct scene selection, staggered motion and exact reverse-scroll frames.
 
 ## 1. River mist ribbons
 
