@@ -1,6 +1,7 @@
 // The paintings contain the correct perspective. A restrained depth-dependent
 // dolly moves near riverbanks faster than peaks without flattening the artwork.
 import { sceneState } from './flight-timeline.js';
+import { CANVAS_RIPPLE_GLSL, bindCanvasRipple } from './canvas-ripple.js';
 export const SCENES=Object.freeze([
   'assets/flight-wetlands-v2.webp','assets/flight-village-v2.webp',
   'assets/flight-temples-v2.webp','assets/flight-gorge-v2.webp'
@@ -19,12 +20,13 @@ varying vec2 vUv;
 uniform sampler2D uSceneA,uSceneB;
 uniform vec2 uResolution,uAspect;
 uniform float uProgress,uBlend,uIndex,uNext,uSway;
-vec2 sceneUv(float aspect,float index){
+${CANVAS_RIPPLE_GLSL}
+vec2 sceneUv(float aspect,float index,vec2 screenUv){
   float screen=uResolution.x/uResolution.y;
   vec2 cover=screen>aspect?vec2(1.0,aspect/screen):vec2(screen/aspect,1.0);
   // Recede along each flock's direction; the final view looks down into the gorge.
   vec2 anchor=index<.5?vec2(.58,.25):index<1.5?vec2(.23,.20):index<2.5?vec2(.78,.18):vec2(.50,.32);
-  vec2 uv=(vUv-.5)*cover+.5;
+  vec2 uv=(screenUv-.5)*cover+.5;
   float age=clamp((uProgress-index*.25+.045)/.33,0.0,1.0);
   float depth=smoothstep(.28,1.05,uv.y);
   float zoom=1.035+age*(.065+depth*.14);
@@ -33,13 +35,24 @@ vec2 sceneUv(float aspect,float index){
   uv.x+=sin(uv.y*92.0+uProgress*34.0)*.00065*depth;
   return uv;
 }
-void main(){
-  vec3 a=texture2D(uSceneA,sceneUv(uAspect.x,uIndex)).rgb;
-  vec3 b=texture2D(uSceneB,sceneUv(uAspect.y,uNext)).rgb;
+vec3 sceneColor(vec2 uv){
+  vec3 a=texture2D(uSceneA,sceneUv(uAspect.x,uIndex,uv)).rgb;
+  vec3 b=texture2D(uSceneB,sceneUv(uAspect.y,uNext,uv)).rgb;
   vec3 color=mix(a,b,uBlend);
   float passageMist=sin(uBlend*3.14159265)*.19;
   color=mix(color,vec3(.94,.925,.88),passageMist);
-  gl_FragColor=vec4(color,1.0);
+  return color;
+}
+void main(){
+  vec2 grad=canvasRippleGradient();
+  vec2 uv=canvasRippleUv(vUv,grad,uCanvasRippleViewport.zw,1.0);
+  vec3 color=sceneColor(uv);
+  float d=canvasRippleDispersion();
+  if(d>0.001){
+    color.r=sceneColor(canvasRippleUv(vUv,grad,uCanvasRippleViewport.zw,1.0+d)).r;
+    color.b=sceneColor(canvasRippleUv(vUv,grad,uCanvasRippleViewport.zw,1.0-d)).b;
+  }
+  gl_FragColor=vec4(canvasRippleLight(color,grad),1.0);
 }`;
 export function createTerrain(canvas,images){
   const gl=canvas.getContext('webgl',{alpha:false,antialias:false,depth:false});
@@ -57,6 +70,7 @@ export function createTerrain(canvas,images){
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,image);return texture;
   });
   const uniforms=Object.fromEntries(['uSceneA','uSceneB','uResolution','uAspect','uProgress','uBlend','uIndex','uNext','uSway'].map(name=>[name,gl.getUniformLocation(program,name)]));
+  const ripple=bindCanvasRipple(gl,program,canvas);
   canvas.dataset.terrainRenderer='painted-flight';
   return {
     render(progress,reducedMotion=false){
@@ -68,6 +82,7 @@ export function createTerrain(canvas,images){
       gl.uniform1i(uniforms.uSceneA,0);gl.uniform1i(uniforms.uSceneB,1);
       gl.uniform2f(uniforms.uResolution,width,height);gl.uniform2f(uniforms.uAspect,images[camera.index].naturalWidth/images[camera.index].naturalHeight,images[camera.next].naturalWidth/images[camera.next].naturalHeight);
       gl.uniform1f(uniforms.uProgress,camera.progress);gl.uniform1f(uniforms.uBlend,camera.blend);gl.uniform1f(uniforms.uIndex,camera.index);gl.uniform1f(uniforms.uNext,camera.next);gl.uniform1f(uniforms.uSway,camera.x);
+      ripple();
       gl.drawArrays(gl.TRIANGLES,0,6);
       canvas.dataset.cameraZ=camera.z.toFixed(4);canvas.dataset.terrainProgress=camera.progress.toFixed(6);canvas.dataset.scene=String(camera.index);canvas.dataset.sceneBlend=camera.blend.toFixed(6);
     }

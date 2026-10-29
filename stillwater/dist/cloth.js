@@ -1,4 +1,5 @@
 // Canvas UI Cloth: supplied wave simulation and WebGL mesh, adapted to a portable DOM-texture capture.
+import { CANVAS_RIPPLE_GLSL, bindCanvasRipple } from './canvas-ripple.js';
 const canvasDimensionLimits = new WeakMap();
 function getCanvasPixelRatio(element, context) {
     const scale = window.visualViewport?.scale || 1;
@@ -159,11 +160,21 @@ uniform vec2 uRes;
 uniform float uRadius;
 uniform float uDark;
 ${SDF_SNIPPET}
+${CANVAS_RIPPLE_GLSL}
+
+vec3 rippleFabric(vec2 uv) {
+  vec4 tex = texture(uContent, clamp(uv, vec2(0.001), vec2(uMaxX - 0.001, 0.999)));
+  return mix(uBacking, tex.rgb, tex.a);
+}
 
 void main () {
-  vec2 uv = clamp(vUv, vec2(0.001), vec2(uMaxX - 0.001, 0.999));
-  vec4 tex = texture(uContent, uv);
-  vec3 fabric = mix(uBacking, tex.rgb, tex.a);
+  vec2 grad = canvasRippleGradient();
+  vec3 fabric = rippleFabric(canvasRippleUv(vUv, grad, uRes, 1.0));
+  float dispersion = canvasRippleDispersion();
+  if (dispersion > 0.001) {
+    fabric.r = rippleFabric(canvasRippleUv(vUv, grad, uRes, 1.0 + dispersion)).r;
+    fabric.b = rippleFabric(canvasRippleUv(vUv, grad, uRes, 1.0 - dispersion)).b;
+  }
 
   vec3 n = normalize(vNormal);
   vec3 lightDir = normalize(vec3(-0.3, 0.42, 0.86));
@@ -192,7 +203,7 @@ void main () {
   lit += vec3(uDark * uLight * 0.08 * (1.0 - hemT));
 
   float alpha = clamp(0.5 - d, 0.0, 1.0);
-  outColor = vec4(clamp(lit, 0.0, 1.0), 1.0) * alpha;
+  outColor = vec4(clamp(canvasRippleLight(lit, grad), 0.0, 1.0), 1.0) * alpha;
 }`;
 const SHADOW_VERT = `#version 300 es
 precision highp float;
@@ -309,6 +320,7 @@ export function createCloth(elements, options = {}) {
         };
     }
     const cloth = link(CLOTH_VERT, CLOTH_FRAG);
+    const ripple = bindCanvasRipple(gl, cloth.program, output);
     const shadow = link(SHADOW_VERT, SHADOW_FRAG);
     const gridVerts = new Float32Array(NODES * NODES * 2);
     for(let y = 0; y < NODES; y++){
@@ -672,6 +684,7 @@ export function createCloth(elements, options = {}) {
         gl.uniform1f(shadow.uniforms.uDark, dark);
         gl.drawElements(gl.TRIANGLES, gridIndices.length, gl.UNSIGNED_INT, 0);
         gl.useProgram(cloth.program);
+        ripple();
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, contentTexture);
         gl.uniform1i(cloth.uniforms.uContent, 0);
@@ -803,6 +816,7 @@ export function createCloth(elements, options = {}) {
     listenTarget.addEventListener("pointermove", onPointerMove);
     listenTarget.addEventListener("pointerleave", onPointerLeave);
     return {
+        renderFrame () { if (!destroyed && visible) render(); },
         refresh () {
             capture();
             start();

@@ -50,7 +50,7 @@ html.cloud-intro-loading::after{content:'';position:fixed;inset:0;z-index:14;poi
 @media(max-width:650px){.hero{height:375svh;min-height:2850px}.hero-copy{top:135px}.passage{min-height:525svh}}
 @media(prefers-reduced-motion:reduce){html.cloud-intro-loading::after{display:none}.hero{height:115svh;min-height:900px}.hero-copy{position:relative;top:auto}.passage{min-height:165svh}.epilogue{min-height:125svh}}
 @media(max-width:650px) and (prefers-reduced-motion:reduce){.hero{height:125svh;min-height:950px}.passage{min-height:175svh}}
-/* A painted enso gathers into a drop, then opens the real page through a wet ripple. */
+/* A painted enso frames the seal, then Canvas UI refraction opens the page. */
 .ink-opening{position:fixed;inset:0;z-index:90;overflow:hidden;isolation:isolate;touch-action:none}
 .ink-opening[hidden]{display:none}
 .ink-opening canvas{position:absolute;left:0;top:0;display:block;pointer-events:none}

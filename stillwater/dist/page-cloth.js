@@ -62,5 +62,8 @@ export function mountStoryCloth() {
     output.addEventListener('webglcontextlost',event=>{event.preventDefault();instance.destroy();observer.disconnect();wrapper.classList.remove('cloth-active');output.hidden=true;wrapper.dataset.clothState='fallback';},{once:true});
     mounted.push({instance,observer});
   });
-  return { destroy(){for(const {instance,observer} of mounted){observer.disconnect();instance.destroy();}} };
+  return {
+    renderFrame(){for(const {instance} of mounted)instance.renderFrame();},
+    destroy(){for(const {instance,observer} of mounted){observer.disconnect();instance.destroy();}}
+  };
 }

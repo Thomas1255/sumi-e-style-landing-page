@@ -28,7 +28,7 @@ export function inkOpeningFrame(milliseconds, width, height, reducedMotion = fal
   const done = reducedMotion || time >= total;
   return {
     phase: done ? 'complete' : time < stamp ? 'stamp' : time < bloomStart ? 'seal' : 'bloom',
-    done, bloom,
+    done, bloom, rippleAge: bloom * reveal / 1000,
     ringRadius: 72,
     ringOpacity: 1 - smooth(bloom / .27),
     sealOpacity: smooth(press / .32) * (1 - smooth(bloom / .2)),
@@ -39,10 +39,6 @@ export function inkOpeningFrame(milliseconds, width, height, reducedMotion = fal
     blur: done ? 0 : 26 * (1 - smooth((bloom - .06) / .86)),
     zoom: done ? 1 : 1 + .035 * (1 - smooth(bloom)),
     washOpacity: done ? 0 : 1 - smooth((bloom - .88) / .12),
-    labelOpacity: 1 - smooth(time / (stamp * .9)),
-    ripples: [0, .11, .24].map((delay, index) => {
-      const age = clamp((bloom - delay) / (1 - delay));
-      return { radius: maxRadius * (1 - Math.pow(1 - age, 2.6)), opacity: bloom > delay ? (1 - smooth(age)) * (.24 - index * .045) : 0 };
-    })
+    labelOpacity: 1 - smooth(time / (stamp * .9))
   };
 }

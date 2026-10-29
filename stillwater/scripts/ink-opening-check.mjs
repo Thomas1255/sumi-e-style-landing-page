@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { INK_OPENING_TIMING, inkOpeningFrame, shouldPlayInkOpening } from '../dist/ink-opening-model.js';
 import { mountInkOpening, openingMediaReady } from '../dist/ink-opening.js';
+import { CANVAS_RIPPLE_OPTIONS, setCanvasRipple, canvasRippleState, bindCanvasRipple } from '../dist/canvas-ripple.js';
 
 assert(shouldPlayInkOpening());
 for (const options of [{ reducedMotion: true }, { hash: '#passage-two' }, { scrollPosition: 500 }, { navigationType: 'back_forward' }]) assert(!shouldPlayInkOpening(options),'Restored, anchored and reduced-motion visits must open immediately');
@@ -22,13 +23,28 @@ for(const [width,height] of [[1280,720],[390,844],[2560,1080]]){
     const frame=inkOpeningFrame(time,width,height);
     assert(frame.radius>=previousRadius && frame.blur<=previousBlur,'The ripple must expand while the real page settles into focus');
     previousRadius=frame.radius;previousBlur=frame.blur;
-    assert(frame.ripples.every(ripple=>ripple.opacity>=0&&ripple.opacity<=1));
+    assert(frame.rippleAge>=0&&frame.rippleAge<=INK_OPENING_TIMING.reveal/1000);
   }
   const end=inkOpeningFrame(total,width,height);
   assert(end.done&&end.radius-end.feather>Math.hypot(width,height)/2,'The feathered aperture must clear every corner before cleanup');
   assert.equal(end.blur,0);assert.equal(end.zoom,1);assert.equal(end.washOpacity,0);
   assert(inkOpeningFrame(0,width,height,true).done,'Reduced motion must never start the ripple');
 }
+
+// The same CSS-space splash must cross canvases with different origins, sizes
+// and backing densities. Idle draws must not read layout or retain wave energy.
+const calls=new Map();let boundsReads=0;
+const gl={getUniformLocation:(_,name)=>name,uniform4f:(name,...values)=>calls.set(name,values),uniform3f:(name,...values)=>calls.set(name,values),uniform2f:(name,...values)=>calls.set(name,values)};
+const viewport={width:2560,height:1440,getBoundingClientRect(){boundsReads++;return {left:-22,top:-13,width:1324,height:746}}};
+const fabric={width:1000,height:600,getBoundingClientRect(){boundsReads++;return {left:70,top:150,width:500,height:300}}};
+const surface=bindCanvasRipple(gl,{},viewport),cloth=bindCanvasRipple(gl,{},fabric);
+setCanvasRipple(inkOpeningFrame(bloomStart+500,1280,720),1280,720);
+surface();assert.deepEqual(calls.get('uCanvasRipplePixels'),[2560,1440]);assert.deepEqual(calls.get('uCanvasRippleViewport'),[-22,-13,1324,746]);
+const splash=calls.get('uCanvasRipple');
+cloth();assert.deepEqual(calls.get('uCanvasRipple'),splash);assert.deepEqual(splash.slice(0,2),[640,360]);assert(Math.abs(splash[2]-.5)<1e-9);
+assert.deepEqual(calls.get('uCanvasRippleViewport'),[70,150,500,300]);assert.deepEqual(calls.get('uCanvasRipplePixels'),[1000,600]);
+assert.deepEqual(calls.get('uCanvasRippleWave'),[340*CANVAS_RIPPLE_OPTIONS.speed,80,80,1]);
+setCanvasRipple();surface();cloth();assert.equal(boundsReads,2,'Completed ripples must not add layout work');assert.equal(calls.get('uCanvasRipple')[3],0);
 
 // Exercise the real controller through asset failures, timeouts, skips and a
 // preference change. These checks protect document visibility and input release.
@@ -59,15 +75,20 @@ function environment({reducedMotion=false,hash='',navigationType='navigate'}={})
 
 let env=environment();
 try{
-  const opening=mountInkOpening();
+  let redraws=0;
+  const opening=mountInkOpening({onRippleFrame(){redraws++}});
   assert(env.page.every(element=>element.inert),'Page links must wait until the reveal or skip');
   opening.waitFor([Promise.resolve(),Promise.reject(new Error('First poster unavailable'))]);
   await Promise.resolve();await Promise.resolve();
   env.advanceTo(2100);assert.equal(env.root.dataset.phase,'stamp');assert.equal(env.progress.getAttribute('aria-valuenow'),'100');
+  assert.equal(redraws,0,'The water surface must wait for the seal to finish');
   env.advanceTo(3200);assert.equal(env.root.dataset.phase,'bloom');assert(env.classes.has('ink-revealing'));assert(env.drawCalls()>0);
+  assert(redraws>0&&canvasRippleState().amplitude>0,'The opening must drive Canvas UI refraction while revealing');
   env.advanceTo(6000);assert.equal(env.root.dataset.phase,'complete');assert(env.root.hidden);
   assert(env.page.every(element=>!element.inert));assert(!env.classes.has('ink-opening-pending'));assert(!env.classes.has('ink-revealing'));assert.equal(env.frames.size,0);
   assert.equal(env.html.style.getPropertyValue('--ink-reveal-blur'),undefined);
+  assert.equal(canvasRippleState().amplitude,0,'Finish must clear the shared ripple on every surface');
+  const stopped=redraws;env.advanceTo(9000);assert.equal(redraws,stopped,'No ripple redraws may continue after completion');
   opening.destroy();assert.equal(env.root.dataset.phase,'complete','Cleanup must be idempotent');
 }finally{env.restore()}
 
@@ -89,9 +110,11 @@ try{
 
 env=environment();
 try{
-  mountInkOpening();env.document.activeElement=env.skip;
+  const opening=mountInkOpening();opening.waitFor([]);env.advanceTo(3200);
+  assert(canvasRippleState().amplitude>0);env.document.activeElement=env.skip;
   env.skip.listeners.get('click')();
   assert.equal(env.root.dataset.phase,'skipped');assert(env.root.hidden);assert(env.brand.focused);assert.equal(env.frames.size,0);assert(env.page.every(element=>!element.inert));
+  assert.equal(canvasRippleState().amplitude,0,'Skipping during a wave must remove refraction immediately');
 }finally{env.restore()}
 
 env=environment();
@@ -109,4 +132,4 @@ try{
   const ready=openingMediaReady(media);assert(media.listeners.has('loadeddata'));
   media.listeners.get('loadeddata')();await ready;assert.equal(media.listeners.size,0,'Readiness listeners must be released');
 }finally{env.restore()}
-console.log('Verified ink opening: enso-to-seal press and hold, full-corner ripple coverage, blur settlement, failed/stalled assets, skip/focus cleanup, deep links, history, and reduced motion.');
+console.log('Verified ink opening: seal timing, Canvas UI ripple alignment across live surfaces, idle cleanup, full-corner reveal, blur settlement, failed/stalled assets, skip/focus, history, and reduced motion.');

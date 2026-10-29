@@ -17,9 +17,9 @@ execFileSync(process.execPath, ['--check', path.join(root, 'app.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'flight-model.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'clouds.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'page-clouds.js')]);
-for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
+for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js','canvas-ripple.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
 // Resolve all relative module imports, including assets loaded from JavaScript.
-for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','page-cloth.js','page-clouds.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js']) {
+for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','page-clouds.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js','canvas-ripple.js']) {
   const module = await readFile(path.join(root, filename), 'utf8');
   for (const match of module.matchAll(/(?:from\s+|import\s+)['"](\.\/[^'"]+)['"]/g)) await access(path.resolve(root, match[1]));
   for (const match of module.matchAll(/['"](assets\/[^'"]+)['"]/g)) await access(path.join(root,match[1]));

@@ -1,5 +1,6 @@
 import { INK_OPENING_TIMING, inkOpeningFrame, shouldPlayInkOpening } from './ink-opening-model.js';
 import { paintInkOpening } from './ink-opening-paint.js';
+import { setCanvasRipple } from './canvas-ripple.js';
 
 export function openingMediaReady(media, timeout = 4200) {
   if (!media || media.readyState >= 2 || media.error) return Promise.resolve();
@@ -11,7 +12,7 @@ export function openingMediaReady(media, timeout = 4200) {
   });
 }
 
-export function mountInkOpening() {
+export function mountInkOpening({ onRippleFrame = () => {} } = {}) {
   const html = document.documentElement, root = document.querySelector('#ink-opening');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const canvas = root?.querySelector('canvas'), context = canvas?.getContext('2d');
@@ -38,10 +39,12 @@ export function mountInkOpening() {
   function finish(reason = 'complete') {
     if (disposed) return;
     disposed = true; cancelAnimationFrame(raf); clearTimeout(safety);
+    setCanvasRipple();
     const hadFocus = root.contains(document.activeElement);
     html.classList.remove('ink-opening-pending', 'ink-revealing');
     html.style.removeProperty('--ink-reveal-blur'); html.style.removeProperty('--ink-reveal-scale');
     root.hidden = true; root.dataset.phase = reason;
+    try { onRippleFrame(); } catch { /* A failed renderer must not block input release. */ }
     content.forEach(({element,wasInert}) => { element.inert = wasInert; });
     removeEventListener('resize', resize);
     removeEventListener('keydown', onKey);
@@ -90,6 +93,7 @@ export function mountInkOpening() {
         }
       } else {
         const frame = inkOpeningFrame(now - transitionStart, width, height);
+        setCanvasRipple(frame, width, height);
         if (frame.phase !== lastPhase) {
           root.dataset.phase = frame.phase; lastPhase = frame.phase;
           if (frame.phase === 'stamp') caption.textContent = 'Sealed in ink';
@@ -99,6 +103,7 @@ export function mountInkOpening() {
         html.style.setProperty('--ink-reveal-blur', `${frame.blur.toFixed(2)}px`);
         html.style.setProperty('--ink-reveal-scale', frame.zoom.toFixed(5));
         paintInkOpening(context, width, height, { frame });
+        if (frame.bloom > 0 || frame.done) onRippleFrame();
         if (frame.done) { finish(); return; }
       }
       raf = requestAnimationFrame(tick);

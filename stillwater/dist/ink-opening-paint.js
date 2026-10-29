@@ -193,22 +193,6 @@ export function paintInkOpening(context, width, height, { loading = false, progr
       gradient.addColorStop(.58, 'rgba(0,0,0,.86)');
       gradient.addColorStop(1, 'rgba(0,0,0,0)');
       context.fillStyle = gradient; context.fillRect(0, 0, width, height); context.restore();
-      for (const [index, ripple] of frame.ripples.entries()) {
-        if (ripple.radius < 2 || ripple.opacity <= 0) continue;
-        context.save(); context.globalAlpha = ripple.opacity;
-        context.strokeStyle = index ? '#798b7c' : '#5c716b';
-        context.lineWidth = index ? .8 : 1.35;
-        context.shadowColor = '#8c9c8b'; context.shadowBlur = 10 + index * 4;
-        context.beginPath();
-        for (let step = 0; step <= 140; step++) {
-          const a = step / 140 * TAU;
-          const wobble = 1 + .006 * Math.sin(a * 5 + index) + .003 * Math.sin(a * 11);
-          const px = x + Math.cos(a) * ripple.radius * wobble;
-          const py = y + Math.sin(a) * ripple.radius * wobble;
-          if (step) context.lineTo(px, py); else context.moveTo(px, py);
-        }
-        context.closePath(); context.stroke(); context.restore();
-      }
     }
     paintInkSeal(context, x, y + frame.sealOffsetY, frame.sealScale, frame.sealOpacity);
   }

@@ -5,7 +5,10 @@ import { mountStoryCloth } from './page-cloth.js';
 import { mountPageClouds } from './page-clouds.js';
 import { mountInkOpening, openingMediaReady } from './ink-opening.js';
 import './audio.js';
-const opening=mountInkOpening();
+const opening=mountInkOpening({onRippleFrame(){
+  draw(clamp(scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)));
+  storyCloth.renderFrame();
+}});
 const birdCanvas=document.querySelector('#flight-canvas'),terrainCanvas=document.querySelector('#terrain-canvas');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const flock=createVideoFlock(birdCanvas,document.querySelector('#flight-poster'));
@@ -51,5 +54,5 @@ terrainCanvas.addEventListener('webglcontextrestored',()=>{contextLost=false;set
 addEventListener('scroll',schedule,{passive:true});addEventListener('resize',resize,{passive:true});reduced.addEventListener('change',schedule);
 controls.addEventListener('input',()=>{scrollTo({top:Number(controls.value)/1000*(document.documentElement.scrollHeight-innerHeight),behavior:'instant'});update();});
 resize();
-mountStoryCloth();
+const storyCloth=mountStoryCloth();
 opening.waitFor([terrainReady[0],document.querySelector('#flight-poster').decode(),document.fonts.ready,openingMediaReady(document.querySelector('.flight-decoder[data-clip="0"]'))]);

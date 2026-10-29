@@ -1,4 +1,5 @@
 import { FLIGHT_CLIPS, flightVideoState, flockTravel, clamp } from './flight-timeline.js';
+import { CANVAS_RIPPLE_GLSL, bindCanvasRipple } from './canvas-ripple.js';
 
 const VERT = `
 attribute vec2 aPosition;
@@ -11,25 +12,35 @@ void main(){
   gl_Position=vec4(pixel.x/uResolution.x*2.0-1.0,1.0-pixel.y/uResolution.y*2.0,0.0,1.0);
 }`;
 const FRAG = `
-precision mediump float;
+precision highp float;
 varying vec2 vUv;
 uniform sampler2D uFilm;
 uniform float uOpacity;
+uniform vec4 uRect;
+${CANVAS_RIPPLE_GLSL}
 void main(){
-  vec3 color=texture2D(uFilm,vUv).rgb;
+  vec2 grad=canvasRippleGradient();
+  vec2 uv=canvasRippleUv(vUv,grad,uRect.zw,1.0);
+  vec3 color=texture2D(uFilm,uv).rgb;
+  float d=canvasRippleDispersion();
+  if(d>0.001){
+    color.r=texture2D(uFilm,canvasRippleUv(vUv,grad,uRect.zw,1.0+d)).r;
+    color.b=texture2D(uFilm,canvasRippleUv(vUv,grad,uRect.zw,1.0-d)).b;
+  }
   float other=max(color.r,color.b);
   float saturation=(max(other,color.g)-min(min(color.r,color.b),color.g))/max(max(other,color.g),.001);
   float green=smoothstep(.035,.16,color.g-other)*smoothstep(.12,.40,saturation);
   float alpha=1.0-green;
   // Remove green spill from the soft ink edges without altering red crowns.
   color.g=min(color.g,other*1.025);
-  float edge=smoothstep(0.0,.006,min(min(vUv.x,1.0-vUv.x),min(vUv.y,1.0-vUv.y)));
+  color=canvasRippleLight(color,grad);
+  float edge=smoothstep(0.0,.006,min(min(uv.x,1.0-uv.x),min(uv.y,1.0-uv.y)));
   alpha*=uOpacity*edge;
   gl_FragColor=vec4(color*alpha,alpha);
 }`;
 
 export function createVideoFlock(canvas, poster) {
-  let gl = null, program, uniforms, state = flightVideoState(0), lost = false, queued = false;
+  let gl = null, program, uniforms, ripple, state = flightVideoState(0), lost = false, queued = false;
   const assets = FLIGHT_CLIPS.map((clip, index) => {
     const video = document.createElement('video');
     video.className = 'flight-decoder';
@@ -57,6 +68,7 @@ export function createVideoFlock(canvas, poster) {
     const position = gl.getAttribLocation(program, 'aPosition');
     gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
     uniforms = Object.fromEntries(['uRect','uResolution','uOpacity','uFilm'].map(name => [name, gl.getUniformLocation(program, name)]));
+    ripple = bindCanvasRipple(gl, program, canvas);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     assets.forEach(asset => {
       asset.texture = gl.createTexture(); asset.ready = false;
@@ -136,7 +148,7 @@ export function createVideoFlock(canvas, poster) {
     const dpr = Math.min(devicePixelRatio || 1, 1.6), w = Math.round(width * dpr), h = Math.round(height * dpr);
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
     gl.viewport(0, 0, w, h); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(program); gl.uniform2f(uniforms.uResolution, width, height);
+    gl.useProgram(program); gl.uniform2f(uniforms.uResolution, width, height); ripple();
     gl.uniform4f(uniforms.uRect, ...rect); gl.uniform1i(uniforms.uFilm, 0);
     if (fallback) return;
     for (const layer of state.layers) {
