@@ -1,6 +1,10 @@
 node_modules/
 .local/
 # User-supplied references belong only in .local/private-references/.
+# Working notes and instructions stay local; only the main README is published.
+*.[mM][dD]
+*.[mM][aA][rR][kK][dD][oO][wW][nN]
+!/README.md
 *.log
 *.tar
 *.tar.gz

@@ -1,15 +1,76 @@
 # Stillwater
 
-A neo-traditional sumi-e and watercolor scroll inspired by the supplied river story. Follow nine ink-painted cranes through wetlands, golden terraces, autumn forest and a mountain gorge. Four approved, generated 1080p films provide the flight motion and changing perspectives. Scrolling advances or reverses each film; stopping holds its frame. Story text hangs on linen with the supplied Canvas UI Cloth effect, while Canvas UI Clouds adds drifting mist and cursor wind.
+A neo-traditional sumi-e and watercolor scroll experience. Follow a flock of nine ink-painted cranes through wetlands, golden terraces, autumn forest and a mountain gorge.
 
-Includes chapter navigation, a keyboard-accessible flight slider, reduced-motion support, transparent painted fallbacks and opt-in water audio. The original video drafts, upscales, prompts and credit records are preserved in `stillwater/art-previews/`. Integration uses the existing approved videos and requires no new generation.
+## The experience
 
-Run `npm run dev` and open http://localhost:5173. No dependency installation is required. Run `npm run build` to validate. Deployable files live in `stillwater/dist/`.
+- Four generated crane films share a reversible scroll timeline with four painted landscapes. Scroll down to advance, scroll up to retrace, and stop to hold the current frame.
+- Layered sumi-e cloud paintings conceal changes in perspective, with a distinct cloud composition for each transition. Gentle ambient mist adds movement between scenes.
+- An ink-circle loader stamps the 水 seal before a full-screen Canvas UI ripple reveals the page.
+- Story text hangs on animated linen using Canvas UI Cloth.
+- Chapter navigation, a keyboard-accessible flight slider, reduced-motion support, painted fallbacks and optional pond audio keep the journey accessible.
 
-Current implementation details are in `stillwater/REDESIGN.md`. Selected artwork and exact built-in ImageGen prompts are in `stillwater/FLOCK-ARTWORK.md`. Earlier art studies and prompts are retained separately.
+## Run locally
 
-Repository: [Thomas1255/sumi-e-style-landing-page](https://github.com/Thomas1255/sumi-e-style-landing-page). The Git repository covers this entire workspace, with the site in `stillwater/`. Project work should be checked, committed, and pushed as described in `AGENTS.md`.
+Use Node.js with npm. The project is validated with Node.js 24 and has no npm package dependencies, so no installation step is required.
 
-For Vercel, import this repository with Root Directory set to the repository root (leave it blank), and deploy the latest `main` commit. `vercel.json` selects the Other framework preset, runs `npm run build`, and serves `stillwater/dist` as static files. `server.mjs` is only for local previews; this site does not require a production server or serverless function.
+From the repository root:
 
-Existing Vercel projects with Root Directory set to `stillwater` are also supported: `stillwater/vercel.json` selects the same static deployment with Output Directory `dist`, relative to that root. Use either the repository root or `stillwater` as Root Directory, not `stillwater/dist`.
+```sh
+npm run dev
+```
+
+Open [localhost:5173](http://localhost:5173/). Stop the server with `Ctrl+C` in the terminal that started it.
+
+If that port is already in use, use the running preview or choose another port:
+
+```sh
+npm run dev -- --port 5175
+```
+
+Then open [localhost:5175](http://localhost:5175/).
+
+## Validate changes
+
+```sh
+npm run build
+```
+
+This validates the maintained site files; it does not generate or overwrite `dist/`. Checks cover JavaScript syntax and imports, asset references, reversible flight timing, landscape synchronization, cloud coverage, the opening ripple, reduced-motion behavior and HTTP video seeking. `npm run check` runs the same validation.
+
+The build uses a temporary local HTTP server for its video-range checks. Browser visual testing is a separate step.
+
+## Project layout
+
+```text
+stillwater/
+  dist/           Maintained HTML, CSS, JavaScript and runtime artwork
+    assets/       Landscapes, cloud layers, crane posters and films
+  scripts/        Validation checks
+  server.mjs      Local preview server with HTTP byte-range support
+  art-previews/   Generated artwork studies and media production assets
+vercel.json       Static deployment configuration
+```
+
+`stillwater/dist/` is the deployable source and stays tracked in Git. Edit it directly. The preview server serves this directory only.
+
+The site uses native JavaScript, Canvas, WebGL and the Web Audio API. Canvas UI effects are adapted to its existing renderers; React and a production Node server are not required. The approved crane films are bundled assets, and running the page does not generate new media or spend generation credits.
+
+## Deploy
+
+Serve `stillwater/dist/` with a static host that supports HTTP byte-range requests for video seeking.
+
+For Vercel, the repository includes configurations for either project root:
+
+| Root Directory | Build command | Output Directory |
+| --- | --- | --- |
+| Repository root | `npm run build` | `stillwater/dist` |
+| `stillwater` | `npm run build` | `dist` |
+
+Use the Other framework preset. Do not set Root Directory to `stillwater/dist`; the validation scripts live outside it. `server.mjs` is for local previews and is not part of the static deployment.
+
+## Local files and references
+
+Only this repository-root README is tracked among Markdown files. Agent instructions, working notes, prompt records and nested README notes remain local and ignored. Generated artwork and approved runtime assets stay tracked.
+
+User-supplied references and raw attachments stay local, under ignored `.local/private-references/` when a workspace copy is needed. They must not be committed, pushed or included in deployments. Local QA captures, deployment archives, dependencies and secrets are also ignored.
