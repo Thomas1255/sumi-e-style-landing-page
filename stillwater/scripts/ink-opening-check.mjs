@@ -5,13 +5,20 @@ import { mountInkOpening, openingMediaReady } from '../dist/ink-opening.js';
 assert(shouldPlayInkOpening());
 for (const options of [{ reducedMotion: true }, { hash: '#passage-two' }, { scrollPosition: 500 }, { navigationType: 'back_forward' }]) assert(!shouldPlayInkOpening(options),'Restored, anchored and reduced-motion visits must open immediately');
 assert(shouldPlayInkOpening({hash:'#top'}));
-const total=INK_OPENING_TIMING.gather+INK_OPENING_TIMING.drop+INK_OPENING_TIMING.reveal;
+const bloomStart=INK_OPENING_TIMING.stamp+INK_OPENING_TIMING.stampHold;
+const total=bloomStart+INK_OPENING_TIMING.reveal;
 for(const [width,height] of [[1280,720],[390,844],[2560,1080]]){
-  assert.equal(inkOpeningFrame(0,width,height).phase,'gather');
-  const drop=inkOpeningFrame(INK_OPENING_TIMING.gather+100,width,height);
-  assert.equal(drop.phase,'drop');assert.equal(drop.dropOpacity,1);assert.equal(drop.radius,0,'The drop must appear before the aperture opens');
+  const start=inkOpeningFrame(0,width,height);
+  assert.equal(start.phase,'stamp');assert.equal(start.sealOpacity,0);
+  const impact=inkOpeningFrame(INK_OPENING_TIMING.stamp*.48,width,height);
+  assert(impact.sealScale<1&&impact.sealOpacity===1,'The seal must press down before its impression settles');
+  const seal=inkOpeningFrame(INK_OPENING_TIMING.stamp+100,width,height);
+  assert.equal(seal.phase,'seal');assert.equal(seal.sealOpacity,1);assert.equal(seal.sealScale,1);
+  assert.equal(seal.ringRadius,start.ringRadius,'The completed enso must frame the seal without contracting into a drop');
+  assert.equal(seal.radius,0,'The seal impression must hold before the aperture opens');
+  assert.equal(seal.sealOffsetY,0);
   let previousRadius=0,previousBlur=26;
-  for(let time=INK_OPENING_TIMING.gather+INK_OPENING_TIMING.drop;time<=total;time+=10){
+  for(let time=bloomStart;time<=total;time+=10){
     const frame=inkOpeningFrame(time,width,height);
     assert(frame.radius>=previousRadius && frame.blur<=previousBlur,'The ripple must expand while the real page settles into focus');
     previousRadius=frame.radius;previousBlur=frame.blur;
@@ -45,7 +52,7 @@ function environment({reducedMotion=false,hash='',navigationType='navigate'}={})
   const previous=new Map(Object.keys(replacements).map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
   for(const [key,value] of Object.entries(replacements))Object.defineProperty(globalThis,key,{value,configurable:true,writable:true});
   return {root,html,page,skip,brand,document,progress,caption,classes,frames,events,motion,motionEvents,drawCalls:()=>drawCalls,
-    advanceTo(target){while(clock<target){clock=Math.min(target,clock+16);for(const [key,timer] of [...timers])if(timer.at<=clock){timers.delete(key);timer.callback()}const current=[...frames];frames.clear();for(const [,callback] of current)callback(clock)}},
+    advanceTo(target,step=16){while(clock<target){clock=Math.min(target,clock+step);for(const [key,timer] of [...timers])if(timer.at<=clock){timers.delete(key);timer.callback()}const current=[...frames];frames.clear();for(const [,callback] of current)callback(clock)}},
     restore(){for(const [key,descriptor] of previous){if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key]}}
   };
 }
@@ -56,12 +63,21 @@ try{
   assert(env.page.every(element=>element.inert),'Page links must wait until the reveal or skip');
   opening.waitFor([Promise.resolve(),Promise.reject(new Error('First poster unavailable'))]);
   await Promise.resolve();await Promise.resolve();
-  env.advanceTo(2100);assert.equal(env.root.dataset.phase,'gather');assert.equal(env.progress.getAttribute('aria-valuenow'),'100');
+  env.advanceTo(2100);assert.equal(env.root.dataset.phase,'stamp');assert.equal(env.progress.getAttribute('aria-valuenow'),'100');
   env.advanceTo(3200);assert.equal(env.root.dataset.phase,'bloom');assert(env.classes.has('ink-revealing'));assert(env.drawCalls()>0);
   env.advanceTo(6000);assert.equal(env.root.dataset.phase,'complete');assert(env.root.hidden);
   assert(env.page.every(element=>!element.inert));assert(!env.classes.has('ink-opening-pending'));assert(!env.classes.has('ink-revealing'));assert.equal(env.frames.size,0);
   assert.equal(env.html.style.getPropertyValue('--ink-reveal-blur'),undefined);
   opening.destroy();assert.equal(env.root.dataset.phase,'complete','Cleanup must be idempotent');
+}finally{env.restore()}
+
+env=environment();
+try{
+  mountInkOpening().waitFor([Promise.resolve()]);
+  await Promise.resolve();await Promise.resolve();
+  env.advanceTo(8000,1000);
+  assert.equal(env.root.dataset.phase,'complete','Sparse animation frames must catch up to ready assets before the safety timeout');
+  assert(env.page.every(element=>!element.inert));
 }finally{env.restore()}
 
 env=environment();
@@ -93,4 +109,4 @@ try{
   const ready=openingMediaReady(media);assert(media.listeners.has('loadeddata'));
   media.listeners.get('loadeddata')();await ready;assert.equal(media.listeners.size,0,'Readiness listeners must be released');
 }finally{env.restore()}
-console.log('Verified ink opening: circle-to-drop sequence, full-corner ripple coverage, blur settlement, failed/stalled assets, skip/focus cleanup, deep links, history, and reduced motion.');
+console.log('Verified ink opening: enso-to-seal press and hold, full-corner ripple coverage, blur settlement, failed/stalled assets, skip/focus cleanup, deep links, history, and reduced motion.');

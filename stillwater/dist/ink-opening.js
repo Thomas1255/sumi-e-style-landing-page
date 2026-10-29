@@ -68,7 +68,9 @@ export function mountInkOpening() {
   function tick(now) {
     if (disposed) return;
     try {
-      const dt = Math.max(0, Math.min(80, now - lastTime)); lastTime = now;
+      // Exponential easing is stable for any elapsed time. Capping this delta
+      // makes a throttled tab lag behind its real asset progress until timeout.
+      const dt = Math.max(0, now - lastTime); lastTime = now;
       if (transitionStart === null) {
         const elapsed = now - mountedAt;
         if (elapsed >= INK_OPENING_TIMING.maximumLoading) assetProgress = 1;
@@ -90,6 +92,7 @@ export function mountInkOpening() {
         const frame = inkOpeningFrame(now - transitionStart, width, height);
         if (frame.phase !== lastPhase) {
           root.dataset.phase = frame.phase; lastPhase = frame.phase;
+          if (frame.phase === 'stamp') caption.textContent = 'Sealed in ink';
           if (frame.phase === 'bloom') { html.classList.add('ink-revealing'); caption.textContent = 'The sky opens'; }
         }
         label.style.opacity = String(frame.labelOpacity);

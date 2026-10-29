@@ -54,7 +54,7 @@ html.cloud-intro-loading::after{content:'';position:fixed;inset:0;z-index:14;poi
 .ink-opening{position:fixed;inset:0;z-index:90;overflow:hidden;isolation:isolate;touch-action:none}
 .ink-opening[hidden]{display:none}
 .ink-opening canvas{position:absolute;left:0;top:0;display:block;pointer-events:none}
-.ink-opening-label{position:absolute;left:50%;top:calc(50% + 99px);transform:translateX(-50%);width:240px;text-align:center;color:#66715f;pointer-events:none}
+.ink-opening-label{position:absolute;left:50%;top:calc(50% + 116px);transform:translateX(-50%);width:240px;text-align:center;color:#66715f;pointer-events:none}
 .ink-opening-name{font:10px/1.7 var(--sans);letter-spacing:.3em;color:var(--ink);margin-left:.3em}
 .ink-opening-label [role=status]{font:12px/1.7 var(--serif);font-style:italic;margin-top:9px}
 .ink-opening-skip{position:absolute;right:clamp(20px,4vw,70px);bottom:clamp(18px,4vh,45px);min-height:44px;padding:10px 4px;border:0;border-bottom:1px solid #66715f66;background:transparent;color:#66715f;font:11px var(--sans);letter-spacing:.04em}

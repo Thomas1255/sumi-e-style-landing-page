@@ -1,41 +1,104 @@
 const TAU = Math.PI * 2;
+const clamp = value => Math.max(0, Math.min(1, value));
+const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
+const grain = seed => { const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453; return value - Math.floor(value); };
+const circles = new WeakMap();
+const BRUSH_START = 2.04, BRUSH_SPAN = TAU - .73;
 
-// Several uneven bristle tracks describe an enso. Their pigment and radius vary
-// around the stroke; this is painted geometry rather than a rotating UI spinner.
+// Original brush geometry: broad pigment at the lower-left start, long dry
+// bristle channels, an uneven rim and a tapered finish around an open lower gap.
+// No pixels from a supplied reference are used or loaded by the page.
 export function paintInkCircle(context, x, y, radius, progress, opacity = 1) {
-  const end = Math.max(0, Math.min(1, progress)) * (TAU - .025);
+  if (progress <= 0 || opacity <= 0) return;
+  const density = Math.min(2, Math.max(1, Math.abs(context.getTransform?.()?.a || 1)));
+  let brush = circles.get(context);
+  if (!brush || brush.radius !== radius || brush.density !== density) {
+    const extent = Math.ceil(radius * 1.3), size = Math.ceil(extent * 2 * density);
+    const canvas = context.canvas?.ownerDocument?.createElement('canvas') ?? (typeof OffscreenCanvas === 'function' ? new OffscreenCanvas(size, size) : null);
+    if (canvas) {
+      canvas.width = canvas.height = size;
+      const ink = canvas.getContext('2d');
+      if (ink) {
+        ink.setTransform(density, 0, 0, density, 0, 0);
+        paintBrush(ink, extent, extent, radius, 1, 1);
+        brush = { canvas, radius, density, extent }; circles.set(context, brush);
+      }
+    }
+  }
+  // Bake the bristle geometry once per display density. Advancing the painted
+  // arc only clips this small transparent canvas, leaving the page renderer free.
+  if (!brush || brush.radius !== radius || brush.density !== density) return paintBrush(context, x, y, radius, progress, opacity);
+  context.save(); context.globalAlpha *= opacity;
+  if (progress < 1) {
+    context.beginPath(); context.moveTo(x, y);
+    context.arc(x, y, radius * 1.4, BRUSH_START - .04 * BRUSH_SPAN, BRUSH_START + clamp(progress) * BRUSH_SPAN);
+    context.closePath(); context.clip();
+  }
+  context.drawImage(brush.canvas, x - brush.extent, y - brush.extent, brush.extent * 2, brush.extent * 2);
+  context.restore();
+}
+
+function paintBrush(context, x, y, radius, progress, opacity) {
+  const end = clamp(progress);
   if (end <= 0 || opacity <= 0) return;
   context.save();
   context.lineCap = 'round'; context.lineJoin = 'round';
-  const steps = Math.max(2, Math.ceil(end * 34));
-  // A wet pigment body gives the stroke weight; the finer bristles below leave
-  // an irregular, drier edge rather than a thin mechanical progress ring.
-  context.strokeStyle = `rgba(31,38,33,${opacity * .72})`;
-  for (let step = 1; step <= steps; step++) {
-    const a = step / steps * end - Math.PI * .57;
-    const previous = (step - 1) / steps * end - Math.PI * .57;
-    const weight = .65 + .3 * Math.sin(a * 1.2 + .6) + .12 * Math.sin(a * 4 + .2);
-    context.lineWidth = Math.min(18, radius * .35) * weight;
-    const r = radius + Math.min(1, radius / 25) * (1.2 * Math.sin(a * 3) + .6 * Math.sin(a * 11));
-    const previousRadius = radius + Math.min(1, radius / 25) * (1.2 * Math.sin(previous * 3) + .6 * Math.sin(previous * 11));
+  const steps = 330, tracks = 76, start = BRUSH_START, span = BRUSH_SPAN;
+  for (let bristle = 0; bristle < tracks; bristle++) {
+    const across = bristle / (tracks - 1) * 2 - 1;
+    const offset = across * radius * .2;
+    const ink = .7 + grain(bristle + 4) * .25;
+    context.strokeStyle = `rgba(28,29,27,${opacity * ink})`;
+    context.lineWidth = radius * (.009 + grain(bristle + 61) * .008);
     context.beginPath();
-    context.moveTo(x + Math.cos(previous) * previousRadius * 1.035, y + Math.sin(previous) * previousRadius);
-    context.lineTo(x + Math.cos(a) * r * 1.035, y + Math.sin(a) * r);
-    context.stroke();
-  }
-  for (let bristle = 0; bristle < 24; bristle++) {
-    const offset = (bristle / 23 - .5) * Math.min(18, radius * .35);
-    context.strokeStyle = bristle % 5 === 0 ? `rgba(241,236,223,${opacity * .28})` : `rgba(38,46,42,${opacity * (.13 + .14 * (1 - Math.abs(bristle - 11.5) / 12))})`;
-    context.lineWidth = (.55 + (bristle % 4) * .28) * Math.min(1, radius / 20);
-    context.beginPath();
-    for (let step = 0; step <= steps; step++) {
-      const a = step / steps * end - Math.PI * .57;
-      const grain = Math.sin(a * 7 + bristle * .28) * .8 + Math.sin(a * 19 + bristle) * .28;
-      const r = radius + offset * (.67 + .3 * Math.sin(a * 1.4 + .3)) + grain * Math.min(1, radius / 25);
-      const px = x + Math.cos(a) * r * 1.035, py = y + Math.sin(a) * r;
-      if (step) context.lineTo(px, py); else context.moveTo(px, py);
+    let connected = false;
+    const tip = 1 - grain(bristle + 23) * .07;
+    const heel = -.033 * Math.sqrt(1 - across * across) + grain(bristle + 8) * .004;
+    for (let step = -11; step <= Math.ceil(end * steps); step++) {
+      const t = Math.min(end, step / steps), a = start + t * span;
+      const channel = ((bristle >= 44 && bristle <= 48) || (bristle >= 60 && bristle <= 62)) && t > .18 && t < .92;
+      const broken = t > .82 && grain(bristle * 79 + Math.floor(t * 100)) > .79;
+      if (t < heel || t > tip || channel || broken) { connected = false; continue; }
+      const pressure = (1.14 - .34 * t + .13 * Math.sin(a * 1.8)) * (1 - .74 * smooth((t - .86) / .14));
+      const wobble = radius * (.009 * Math.sin(a * 3) + .004 * Math.sin(a * 13 + bristle * .12));
+      const r = radius + offset * pressure + wobble + radius * .003 * Math.sin(a * 67 + bristle * 3);
+      const px = x + Math.cos(a) * r, py = y + Math.sin(a) * r * 1.025;
+      if (connected) context.lineTo(px, py); else context.moveTo(px, py);
+      connected = true;
     }
     context.stroke();
+  }
+  // Sparse pigment caught by the paper, fixed across frames rather than noise.
+  for (let i = 0; i < 420; i++) {
+    const t = grain(i + 100), a = start + t * span;
+    if (t > end) continue;
+    const pressure = (1.14 - .34 * t + .13 * Math.sin(a * 1.8)) * (1 - .74 * smooth((t - .86) / .14));
+    const r = radius + (i % 2 ? -1 : 1) * radius * (.2 * pressure + grain(i + 9) * .026);
+    context.fillStyle = `rgba(31,32,29,${opacity * (.12 + grain(i + 7) * .38)})`;
+    const size = radius * (.003 + grain(i + 17) * .007);
+    context.fillRect(x + Math.cos(a) * r, y + Math.sin(a) * r * 1.025, size, size);
+  }
+  context.restore();
+}
+
+export function paintInkSeal(context, x, y, scale = 1, opacity = 1) {
+  if (opacity <= 0) return;
+  context.save(); context.translate(x, y); context.rotate(-.052); context.scale(scale, scale);
+  context.globalAlpha *= opacity;
+  context.fillStyle = '#a84d3a';
+  context.beginPath(); context.moveTo(-28, -33); context.lineTo(28, -32);
+  context.lineTo(29, 32); context.lineTo(-27, 33); context.closePath(); context.fill();
+  context.strokeStyle = '#ead8bf'; context.lineWidth = .9;
+  context.strokeRect(-24, -29, 48, 58);
+  context.fillStyle = '#f1ecdf';
+  context.font = '46px "Yu Mincho", "SimSun", "Noto Serif CJK SC", serif';
+  context.textAlign = 'center'; context.textBaseline = 'middle';
+  context.fillText('水', 0, 2, 47);
+  // Tiny uninked fibers make the impression feel pressed onto washi.
+  context.fillStyle = '#f1ecdf';
+  for (let i = 0; i < 85; i++) {
+    context.globalAlpha = opacity * (.12 + grain(i + 3) * .34);
+    context.fillRect(-27 + grain(i + 19) * 54, -32 + grain(i + 73) * 64, .35 + grain(i + 28) * .8, .4 + grain(i + 2));
   }
   context.restore();
 }
@@ -55,8 +118,7 @@ export function paintInkOpening(context, width, height, { loading = false, progr
     context.fillRect(px, py, .65, .65);
   }
   if (loading) {
-    paintInkCircle(context, x, y, 54, 1, .065);
-    paintInkCircle(context, x, y, 54, progress, 1);
+    paintInkCircle(context, x, y, 72, progress, 1);
   } else if (frame) {
     paintInkCircle(context, x, y, frame.ringRadius, 1, frame.ringOpacity);
     if (frame.bloom > 0) {
@@ -86,16 +148,7 @@ export function paintInkOpening(context, width, height, { loading = false, progr
         context.closePath(); context.stroke(); context.restore();
       }
     }
-    if (frame.dropOpacity > 0) {
-      context.save(); context.globalAlpha = frame.dropOpacity;
-      context.translate(x, y); context.fillStyle = '#262e2a';
-      const r = frame.dropRadius;
-      context.beginPath(); context.moveTo(0, -r * 1.7);
-      context.bezierCurveTo(r * .35, -r * .55, r * 1.12, -.15 * r, r, .6 * r);
-      context.bezierCurveTo(r * .8, r * 1.65, -r * .95, r * 1.5, -r, .5 * r);
-      context.bezierCurveTo(-r * 1.04, -.12 * r, -r * .25, -r * .7, 0, -r * 1.7);
-      context.fill(); context.restore();
-    }
+    paintInkSeal(context, x, y + frame.sealOffsetY, frame.sealScale, frame.sealOpacity);
   }
   context.restore();
 }
