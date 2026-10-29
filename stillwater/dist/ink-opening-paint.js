@@ -183,17 +183,6 @@ export function paintInkOpening(context, width, height, { loading = false, progr
     paintInkCircle(context, x, y, 72, progress, 1);
   } else if (frame) {
     paintInkCircle(context, x, y, frame.ringRadius, 1, frame.ringOpacity);
-    if (frame.bloom > 0) {
-      // Clear the paper from its center with a soft wet boundary. The real page
-      // below this canvas is blurred independently, then settles into focus.
-      const r = frame.radius, feather = Math.min(frame.feather, r * .65);
-      context.save(); context.globalCompositeOperation = 'destination-out';
-      const gradient = context.createRadialGradient(x, y, Math.max(0, r - feather), x, y, Math.max(1, r + feather));
-      gradient.addColorStop(0, 'rgba(0,0,0,1)');
-      gradient.addColorStop(.58, 'rgba(0,0,0,.86)');
-      gradient.addColorStop(1, 'rgba(0,0,0,0)');
-      context.fillStyle = gradient; context.fillRect(0, 0, width, height); context.restore();
-    }
     paintInkSeal(context, x, y + frame.sealOffsetY, frame.sealScale, frame.sealOpacity);
   }
   context.restore();

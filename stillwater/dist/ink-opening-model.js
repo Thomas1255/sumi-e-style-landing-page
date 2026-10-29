@@ -22,23 +22,20 @@ export function inkOpeningFrame(milliseconds, width, height, reducedMotion = fal
   const bloomStart = stamp + stampHold, total = bloomStart + reveal;
   const press = clamp(time / stamp);
   const bloom = reducedMotion ? 1 : clamp((time - bloomStart) / reveal);
-  const spread = 1 - Math.pow(1 - bloom, 2.6);
-  const feather = Math.min(110, Math.max(38, Math.min(width, height) * .12));
-  const maxRadius = Math.hypot(width, height) / 2 + feather * 2;
   const done = reducedMotion || time >= total;
   return {
     phase: done ? 'complete' : time < stamp ? 'stamp' : time < bloomStart ? 'seal' : 'bloom',
-    done, bloom, rippleAge: bloom * reveal / 1000,
+    done, bloom, rippleAge: bloom * reveal / 1000, revealDuration: reveal / 1000,
     ringRadius: 72,
     ringOpacity: 1 - smooth(bloom / .27),
     sealOpacity: smooth(press / .32) * (1 - smooth(bloom / .2)),
     sealScale: press < .48 ? 1.18 - .22 * smooth(press / .48) : .96 + .04 * smooth((press - .48) / .52),
     sealOffsetY: 7 * (smooth(press / .48) - 1),
-    radius: maxRadius * spread,
-    feather,
-    blur: done ? 0 : 26 * (1 - smooth((bloom - .06) / .86)),
-    zoom: done ? 1 : 1 + .035 * (1 - smooth(bloom)),
-    washOpacity: done ? 0 : 1 - smooth((bloom - .88) / .12),
+    blur: done ? 0 : 26 * (1 - smooth(bloom / .46)),
+    zoom: 1,
+    // The cover dissolves uniformly. Canvas UI is the sole expanding ripple;
+    // there is no second circular aperture or magnification underneath it.
+    washOpacity: done ? 0 : 1 - smooth(bloom / .22),
     labelOpacity: 1 - smooth(time / (stamp * .9))
   };
 }

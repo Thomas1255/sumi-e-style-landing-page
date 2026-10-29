@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { INK_OPENING_TIMING, inkOpeningFrame, shouldPlayInkOpening } from '../dist/ink-opening-model.js';
 import { mountInkOpening, openingMediaReady } from '../dist/ink-opening.js';
-import { CANVAS_RIPPLE_OPTIONS, setCanvasRipple, canvasRippleState, bindCanvasRipple } from '../dist/canvas-ripple.js';
+import { CANVAS_RIPPLE_OPTIONS, canvasRippleGeometry, setCanvasRipple, canvasRippleState, bindCanvasRipple } from '../dist/canvas-ripple.js';
 
 assert(shouldPlayInkOpening());
 for (const options of [{ reducedMotion: true }, { hash: '#passage-two' }, { scrollPosition: 500 }, { navigationType: 'back_forward' }]) assert(!shouldPlayInkOpening(options),'Restored, anchored and reduced-motion visits must open immediately');
@@ -16,17 +16,25 @@ for(const [width,height] of [[1280,720],[390,844],[2560,1080]]){
   const seal=inkOpeningFrame(INK_OPENING_TIMING.stamp+100,width,height);
   assert.equal(seal.phase,'seal');assert.equal(seal.sealOpacity,1);assert.equal(seal.sealScale,1);
   assert.equal(seal.ringRadius,start.ringRadius,'The completed enso must frame the seal without contracting into a drop');
-  assert.equal(seal.radius,0,'The seal impression must hold before the aperture opens');
+  assert.equal(seal.washOpacity,1,'The seal impression must hold before the page fades in');
   assert.equal(seal.sealOffsetY,0);
-  let previousRadius=0,previousBlur=26;
+  let previousWash=1,previousBlur=26;
   for(let time=bloomStart;time<=total;time+=10){
     const frame=inkOpeningFrame(time,width,height);
-    assert(frame.radius>=previousRadius && frame.blur<=previousBlur,'The ripple must expand while the real page settles into focus');
-    previousRadius=frame.radius;previousBlur=frame.blur;
+    assert(frame.washOpacity<=previousWash && frame.blur<=previousBlur,'The full cover must dissolve while the page settles into focus');
+    previousWash=frame.washOpacity;previousBlur=frame.blur;
     assert(frame.rippleAge>=0&&frame.rippleAge<=INK_OPENING_TIMING.reveal/1000);
   }
   const end=inkOpeningFrame(total,width,height);
-  assert(end.done&&end.radius-end.feather>Math.hypot(width,height)/2,'The feathered aperture must clear every corner before cleanup');
+  assert(end.done);
+  const geometry=canvasRippleGeometry(width,height,end.revealDuration);
+  const cornerAge=geometry.radius/geometry.speed;
+  assert(cornerAge<end.revealDuration*.9,'The Canvas UI crest must reach every corner before its final fade');
+  assert(geometry.speed*end.revealDuration*.9-2*geometry.bandWidth>=geometry.radius,'Trailing crests must cross all corners before cleanup');
+  setCanvasRipple(inkOpeningFrame(bloomStart+cornerAge*1000,width,height),width,height);
+  assert.equal(canvasRippleState().amplitude,CANVAS_RIPPLE_OPTIONS.amplitude,'The splash must retain its full configured amplitude as it reaches the corners');
+  const clear=inkOpeningFrame(bloomStart+INK_OPENING_TIMING.reveal*.5,width,height);
+  assert.equal(clear.washOpacity,0,'The whole page must be visible while the Canvas UI wave crosses it');
   assert.equal(end.blur,0);assert.equal(end.zoom,1);assert.equal(end.washOpacity,0);
   assert(inkOpeningFrame(0,width,height,true).done,'Reduced motion must never start the ripple');
 }
@@ -43,7 +51,8 @@ surface();assert.deepEqual(calls.get('uCanvasRipplePixels'),[2560,1440]);assert.
 const splash=calls.get('uCanvasRipple');
 cloth();assert.deepEqual(calls.get('uCanvasRipple'),splash);assert.deepEqual(splash.slice(0,2),[640,360]);assert(Math.abs(splash[2]-.5)<1e-9);
 assert.deepEqual(calls.get('uCanvasRippleViewport'),[70,150,500,300]);assert.deepEqual(calls.get('uCanvasRipplePixels'),[1000,600]);
-assert.deepEqual(calls.get('uCanvasRippleWave'),[340*CANVAS_RIPPLE_OPTIONS.speed,80,80,1]);
+const geometry=canvasRippleGeometry(1280,720);
+assert.deepEqual(calls.get('uCanvasRippleWave'),[geometry.speed,geometry.wavelength,geometry.bandWidth,1]);
 setCanvasRipple();surface();cloth();assert.equal(boundsReads,2,'Completed ripples must not add layout work');assert.equal(calls.get('uCanvasRipple')[3],0);
 
 // Exercise the real controller through asset failures, timeouts, skips and a
@@ -132,4 +141,4 @@ try{
   const ready=openingMediaReady(media);assert(media.listeners.has('loadeddata'));
   media.listeners.get('loadeddata')();await ready;assert.equal(media.listeners.size,0,'Readiness listeners must be released');
 }finally{env.restore()}
-console.log('Verified ink opening: seal timing, Canvas UI ripple alignment across live surfaces, idle cleanup, full-corner reveal, blur settlement, failed/stalled assets, skip/focus, history, and reduced motion.');
+console.log('Verified ink opening: seal timing, full-screen Canvas UI wave coverage, surface alignment, uniform cover fade, idle cleanup, blur settlement, failed/stalled assets, skip/focus, history, and reduced motion.');

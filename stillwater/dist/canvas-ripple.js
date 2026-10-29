@@ -5,10 +5,22 @@ export const CANVAS_RIPPLE_OPTIONS = Object.freeze({ amplitude: .5, speed: .65, 
 const OFF = Object.freeze({ x: 0, y: 0, age: 0, amplitude: 0 });
 let current = OFF;
 
+export function canvasRippleGeometry(width, height, duration = 1.95) {
+  const radius = Math.hypot(Math.max(1, width), Math.max(1, height)) / 2;
+  const wavelength = Math.max(CANVAS_RIPPLE_OPTIONS.wavelength, radius * .22);
+  const bandWidth = wavelength * CANVAS_RIPPLE_OPTIONS.rings * .5;
+  // The original demo speed leaves a splash confined near the center during
+  // this short opening. Fit the wave train to the farthest viewport corner,
+  // then let its trailing crests leave the screen before the final fade.
+  const speed = Math.max(340 * CANVAS_RIPPLE_OPTIONS.speed, (radius + 2 * bandWidth) / (Math.max(.1, duration) * .88));
+  return { radius, wavelength, bandWidth, speed };
+}
+
 export function setCanvasRipple(frame = null, width = 0, height = 0) {
-  const end = frame ? Math.max(0, Math.min(1, (frame.bloom - .8) / .2)) : 1;
+  const end = frame ? Math.max(0, Math.min(1, (frame.bloom - .9) / .1)) : 1;
   current = frame && frame.bloom > 0 && !frame.done ? {
     x: width / 2, y: height / 2, age: frame.rippleAge,
+    ...canvasRippleGeometry(width, height, frame.revealDuration),
     amplitude: CANVAS_RIPPLE_OPTIONS.amplitude * (1 - end * end * (3 - 2 * end))
   } : OFF;
 }
@@ -63,7 +75,7 @@ export function bindCanvasRipple(gl, program, canvas) {
     const rect = canvas.getBoundingClientRect(), options = CANVAS_RIPPLE_OPTIONS;
     gl.uniform4f(loc.uCanvasRippleViewport, rect.left, rect.top, Math.max(rect.width, 1), Math.max(rect.height, 1));
     gl.uniform2f(loc.uCanvasRipplePixels, canvas.width, canvas.height);
-    gl.uniform4f(loc.uCanvasRippleWave, 340 * options.speed, options.wavelength, options.wavelength * options.rings * .5, options.decay);
+    gl.uniform4f(loc.uCanvasRippleWave, wave.speed, wave.wavelength, wave.bandWidth, options.decay);
     gl.uniform3f(loc.uCanvasRippleOpt, options.refraction, options.dispersion, options.shine);
   };
 }
