@@ -30,7 +30,10 @@ main{overflow-x:clip;overflow-y:visible}
 .flight-decoder{position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-2}
 #flight-poster{position:absolute;z-index:2;pointer-events:none;object-fit:contain;width:62%;left:35%;top:28%;height:45%}
 /* Ambient mist stays gentle; independently painted cloud layers cover each scene cut. */
-.clouds-canvas{z-index:12}
+.clouds-canvas{z-index:12;opacity:1;transition:opacity 1.2s ease-in-out}
+/* Let the opening settle into focus before the ambient mist fades in. */
+html.ink-opening-pending .clouds-canvas{opacity:0;transition:none}
+@media(prefers-reduced-motion:reduce){.clouds-canvas{transition:none}}
 .ink-cloud-transition{position:fixed;inset:0;z-index:13;overflow:hidden;pointer-events:none;contain:strict;isolation:isolate;visibility:hidden}
 .ink-cloud-transition[data-active=true]{visibility:visible}
 .ink-cloud-layer{position:absolute;left:0;top:0;display:block;max-width:none;pointer-events:none;user-select:none}
