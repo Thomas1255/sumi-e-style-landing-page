@@ -1,14 +1,14 @@
 import { createClouds } from './clouds.js';
 import { mountInkClouds } from './ink-clouds.js';
 
-// Keep the supplied ambient mist gentle; separate painted layers conceal scene changes.
+// More visible ambient mist still leaves the landscape readable underneath.
 export const CLOUD_OPTIONS = Object.freeze({
   scale: 1,
   speed: .6,
   cover: .1,
   density: 2.5,
   shading: .1,
-  opacity: .28,
+  opacity: .42,
   shadow: .06,
   shadowOffsetX: 200,
   shadowOffsetY: -10,

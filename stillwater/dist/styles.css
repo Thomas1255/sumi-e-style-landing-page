@@ -29,8 +29,8 @@ main{overflow-x:clip;overflow-y:visible}
 /* Paused films are decoded offscreen; WebGL removes their green backing. */
 .flight-decoder{position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-2}
 #flight-poster{position:absolute;z-index:2;pointer-events:none;object-fit:contain;width:62%;left:35%;top:28%;height:45%}
-/* Ambient mist stays gentle; independently painted cloud layers cover each scene cut. */
-.clouds-canvas{z-index:12;opacity:1;transition:opacity 1.2s ease-in-out}
+/* Ambient mist builds slowly; independently painted cloud layers cover each scene cut. */
+.clouds-canvas{z-index:12;opacity:1;transition:opacity 4s ease-in-out}
 /* Let the opening settle into focus before the ambient mist fades in. */
 html.ink-opening-pending .clouds-canvas{opacity:0;transition:none}
 @media(prefers-reduced-motion:reduce){.clouds-canvas{transition:none}}
