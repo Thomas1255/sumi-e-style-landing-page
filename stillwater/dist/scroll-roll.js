@@ -12,6 +12,17 @@ export function clothRollGeometry(open, height) {
   return { radius, hanging, bottom: hanging + radius, materialEnd: Math.min(h, hanging + Math.PI * radius) };
 }
 
+// A weighted wooden hem moves as a rigid body. Both the fabric shader and the
+// DOM roller consume this same transform in the same animation frame.
+export function clothHemMotion(time, open, reducedMotion = false) {
+  const weight = reducedMotion ? 0 : clamp(open);
+  const x = 2.2 * Math.sin(time * .65) * weight;
+  const y = 1.1 * Math.sin(time * .91 + .8) * weight;
+  const angle = .0045 * Math.sin(time * .73 + 1.4) * weight;
+  const cosine = Math.cos(angle), sine = Math.sin(angle);
+  return { x, y, cosine, sine, matrix: `matrix(${cosine},${sine},${-sine},${cosine},${x},${y})` };
+}
+
 // Reveal the new scroll as the painted cloud banks part, rather than spending
 // its entire entrance behind the opaque center of the scene transition.
 export function scrollSceneArrival(progress, index) {

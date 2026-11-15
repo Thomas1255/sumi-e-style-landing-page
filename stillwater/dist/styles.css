@@ -59,9 +59,13 @@ html::-webkit-scrollbar{display:none;width:0;height:0}
 /* The full text keeps its layout while its lower edge winds into a linen roll. */
 .scroll-roll{background:transparent;box-shadow:none;opacity:var(--scroll-opacity,0);visibility:var(--scroll-visible,hidden);transform:translateY(var(--scroll-pin,0px));will-change:auto}
 .scroll-roll .cloth-content{clip-path:inset(0 0 max(0px,calc(100% - var(--scroll-clip,100%))) 0)}
-.scroll-roller{position:absolute;z-index:4;left:-5px;right:-5px;top:var(--scroll-roll-top,100%);height:var(--scroll-roll-size,9px);pointer-events:none;border-radius:7px;border:1px solid #88765366;background:repeating-linear-gradient(0deg,#fff5d511 0 1px,#715b3b16 1px 2px,transparent 2px 4px),linear-gradient(180deg,#8d7956,#e3d2a8 20%,#fff1cc 40%,#d3bf96 67%,#817050);background-position:0 var(--scroll-turn,0px),0 0;box-shadow:0 4px 8px #2930242b,inset 0 1px #fff7df88}
-.scroll-roller::before,.scroll-roller::after{content:'';position:absolute;top:-1px;bottom:-1px;width:7px;border:1px solid #70603f88;border-radius:50%;background:radial-gradient(ellipse,#6c5a3c 10%,#d6c19a 20%,#8b7751 35%,#dac9a6 55%,#70603f 85%)}
-.scroll-roller::before{left:-3px}.scroll-roller::after{right:-3px}
+.cloth-scroll{--scroll-wood:linear-gradient(#6c5b3c,#453c2b 42%,#8f7d56 67%,#423b2a)}
+.cloth-scroll::before{background:var(--scroll-wood)}
+.scroll-roller{position:absolute;z-index:4;left:-12px;right:-12px;top:var(--scroll-roll-top,100%);height:8px;pointer-events:none;border-radius:6px;background:var(--scroll-wood);box-shadow:0 2px 3px #1c241c55;transform:var(--roller-motion,none);transform-origin:50% 50%}
+.scroll-roller::before,.scroll-roller::after{content:'';position:absolute;top:0;bottom:0;width:5px;border:1px solid #423b2a88;border-radius:50%;background:radial-gradient(ellipse,#756441 15%,#453c2b 35%,#8f7d56 60%,#423b2a 85%)}
+.scroll-roller::before{left:-2px}.scroll-roller::after{right:-2px}
+.cloth-active:focus-within .scroll-roller{transform:none}
+@media(max-width:650px){.scroll-roller{left:-8px;right:-8px}}
 .epilogue:has(.scroll-roll){display:block;padding-top:22svh}
 .epilogue-copy.scroll-roll{position:sticky;top:22svh;margin-inline:auto}
 @media(prefers-reduced-motion:reduce){.scroll-roll{transform:none;opacity:1;visibility:visible}.scroll-roll .cloth-content{clip-path:none}.scroll-roller{display:none}}

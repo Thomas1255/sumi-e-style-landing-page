@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { clothRollGeometry, scrollRollFrame, scrollSceneArrival } from '../dist/scroll-roll.js';
+import { clothRollGeometry, scrollRollFrame, scrollSceneArrival, clothHemMotion } from '../dist/scroll-roll.js';
 import { SCENE_CUTS } from '../dist/flight-timeline.js';
 
 SCENE_CUTS.forEach((cut,i)=>{
@@ -41,4 +41,19 @@ for(const height of [290,390,520]){
   assert.deepEqual(clothRollGeometry(1,height),{radius:0,hanging:height,bottom:height,materialEnd:height},'Fully unrolled text must retain its original scale and geometry');
   assert.equal(clothRollGeometry(0,height).hanging,0);
 }
-console.log('Verified reversible scroll unrolling, full-size text, early roll-up before sticky release, opening and final scrolls, and reduced motion.');
+for(const open of [0,.2,.7,1])for(let time=0;time<=60;time+=.5){
+  const hem=clothHemMotion(time,open);
+  assert(Math.abs(hem.x)<=2.2&&Math.abs(hem.y)<=1.1,'The weighted roller must sway gently');
+  assert(Math.abs(hem.cosine**2+hem.sine**2-1)<1e-12,'The roller must rotate without stretching or bending');
+  const matrix=hem.matrix.slice(7,-1).split(',').map(Number);
+  assert.deepEqual(matrix.map(v=>v||0),[hem.cosine,hem.sine,-hem.sine,hem.cosine,hem.x,hem.y].map(v=>v||0),'The DOM roller and paper shader must receive the same rigid transform');
+  for(const width of [292,440,500]){
+    const left={x:hem.x-width*.5*hem.cosine,y:hem.y-width*.5*hem.sine};
+    const right={x:hem.x+width*.5*hem.cosine,y:hem.y+width*.5*hem.sine};
+    assert(Math.abs(Math.hypot(right.x-left.x,right.y-left.y)-width)<1e-10,'The attached lower edge must remain the length of the wooden roller');
+  }
+}
+for(const time of [0,3,18,60]){
+  for(const hem of [clothHemMotion(time,0),clothHemMotion(time,1,true)])assert.deepEqual([hem.x,hem.y,hem.cosine,hem.sine].map(v=>v||0),[0,0,1,0],'Closed and reduced-motion scrolls must keep their roller still');
+}
+console.log('Verified reversible scroll unrolling, rigid attached rollers, gentle sway, early roll-up, opening and final scrolls, and reduced motion.');

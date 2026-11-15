@@ -1,7 +1,7 @@
 import { createCloth } from './cloth.js';
 import { clothRollGeometry, scrollRollFrame, scrollSceneArrival } from './scroll-roll.js';
 
-export const CLOTH_OPTIONS = Object.freeze({ wind: 3, speed: .5, amplitude: 30, drape: 40, brush: 2.05, brushSize: 150, damping: 1, light: .5, sheen: .1, shadow: .25, cornerRadius: 2, perspective: 1200, pin: 'top', backing: [.916,.879,.779] });
+export const CLOTH_OPTIONS = Object.freeze({ wind: 1.25, speed: .38, amplitude: 10, drape: 14, brush: .7, brushSize: 150, damping: 1.6, light: .4, sheen: .06, shadow: .2, cornerRadius: 2, perspective: 1200, pin: 'top', backing: [.916,.879,.779] });
 
 // Capture the actual laid-out text glyphs into a texture using their DOM ranges.
 // This keeps the supplied cloth mesh available on browsers without drawElementImage.
@@ -55,11 +55,11 @@ export function mountStoryCloth() {
   const wrappers=[...document.querySelectorAll('[data-cloth]')];
   wrappers.forEach((wrapper,index)=>{
     const content=wrapper.querySelector('.cloth-content'),output=wrapper.querySelector('.cloth-output'),source=document.createElement('canvas');
+    const roller=document.createElement('span');roller.className='scroll-roller';roller.setAttribute('aria-hidden','true');wrapper.append(roller);
     let instance=null;
-    if(paintClothTexture(source,content))try{instance=createCloth({source,content,output},CLOTH_OPTIONS);}catch(error){console.warn('Cloth fallback:',error.message);instance=null;}
+    if(paintClothTexture(source,content))try{instance=createCloth({source,content,output,roller},CLOTH_OPTIONS);}catch(error){console.warn('Cloth fallback:',error.message);instance=null;}
     if(!instance||output.dataset.clothTexture!=='ready'){instance?.destroy();instance=null;output.hidden=true;wrapper.dataset.clothState='fallback';}
     else {wrapper.dataset.clothState='active';wrapper.classList.add('cloth-active');}
-    const roller=document.createElement('span');roller.className='scroll-roller';roller.setAttribute('aria-hidden','true');wrapper.append(roller);
     const entry={wrapper,content,output,instance,roller,panel:wrapper.closest('.panel'),index,shift:0,frame:0,wasInert:content.inert};
     const refresh=()=>{cancelAnimationFrame(entry.frame);entry.frame=requestAnimationFrame(()=>{
       if(disposed)return;
@@ -90,9 +90,7 @@ export function mountStoryCloth() {
       wrapper.style.setProperty('--scroll-opacity',String(frame.opacity));
       wrapper.style.setProperty('--scroll-visible',frame.open>.001?'visible':'hidden');
       wrapper.style.setProperty('--scroll-clip',`${roll.bottom.toFixed(3)}px`);
-      wrapper.style.setProperty('--scroll-roll-top',`${(roll.radius?roll.hanging+roll.radius*.35:height-4).toFixed(3)}px`);
-      wrapper.style.setProperty('--scroll-roll-size',`${Math.max(9,roll.radius*.9+5).toFixed(3)}px`);
-      wrapper.style.setProperty('--scroll-turn',`${(frame.open*1440).toFixed(2)}px`);
+      wrapper.style.setProperty('--scroll-roll-top',`${(roll.bottom-4).toFixed(3)}px`);
       wrapper.dataset.scrollOpen=frame.open.toFixed(4);wrapper.dataset.scrollPhase=frame.phase;
       content.inert=entry.wasInert||(!motion.matches&&frame.open<.98);
       instance?.setUnroll(frame.open);
@@ -118,7 +116,7 @@ export function mountStoryCloth() {
       for(const entry of mounted){
         entry.observer.disconnect();cancelAnimationFrame(entry.frame);entry.instance?.destroy();entry.output.removeEventListener('webglcontextlost',entry.onLost);
         entry.content.inert=entry.wasInert;entry.roller.remove();entry.wrapper.classList.remove('scroll-roll','cloth-active');
-        for(const name of ['pin','opacity','visible','clip','roll-top','roll-size','turn'])entry.wrapper.style.removeProperty(`--scroll-${name}`);
+        for(const name of ['pin','opacity','visible','clip','roll-top'])entry.wrapper.style.removeProperty(`--scroll-${name}`);
         delete entry.wrapper.dataset.scrollOpen;delete entry.wrapper.dataset.scrollPhase;
       }
     }

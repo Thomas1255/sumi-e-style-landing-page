@@ -1,5 +1,6 @@
 // Canvas UI Cloth: supplied wave simulation and WebGL mesh, adapted to a portable DOM-texture capture.
 import { CANVAS_RIPPLE_GLSL, bindCanvasRipple } from './canvas-ripple.js';
+import { clothHemMotion } from './scroll-roll.js';
 const canvasDimensionLimits = new WeakMap();
 function getCanvasPixelRatio(element, context) {
     const scale = window.visualViewport?.scale || 1;
@@ -112,11 +113,23 @@ const DEFAULTS = {
 };
 const ROLL_VERTEX = `
 uniform float uUnroll;
+uniform vec4 uHemMotion;
+uniform float uHemAttached;
 vec3 rollFabric(vec2 local) {
   float radius = 18.0 * min(1.0, (1.0 - uUnroll) * 10.0);
   float hanging = uUnroll * (uRes.y - radius);
   float turn = clamp((local.y - hanging) / max(radius, 0.001), 0.0, 3.14159265);
   return vec3(local.x, min(local.y, hanging) + radius * sin(turn), radius * (1.0 - cos(turn)));
+}
+vec2 attachHem(vec2 projected, vec2 local, vec2 rolled) {
+  float radius = 18.0 * min(1.0, (1.0 - uUnroll) * 10.0);
+  float hanging = uUnroll * (uRes.y - radius);
+  float influence = smoothstep(0.45, 1.0, local.y / max(hanging, 1.0)) * uHemAttached;
+  vec2 pivot = vec2(uRes.x * 0.5, hanging + radius);
+  vec2 p = rolled - pivot;
+  vec2 rigid = vec2(uHemMotion.z * p.x - uHemMotion.w * p.y,
+                    uHemMotion.w * p.x + uHemMotion.z * p.y);
+  return mix(projected, pivot + rigid + uHemMotion.xy + vec2(uBleed), influence);
 }
 `;
 const CLOTH_VERT = `#version 300 es
@@ -149,10 +162,12 @@ void main () {
   vNormal = normalize(mix(vec3(0.0, -sin(turn), cos(turn)), vNormal, unbent));
   z = z * unbent + rolled.z;
   vec2 px = rolled.xy + aOffset * unbent + vec2(uBleed);
-  vec2 ndc = (px / uOut) * 2.0 - 1.0;
-  ndc.y = -ndc.y;
   float w = (uFocal - z) / uFocal;
-  gl_Position = vec4(ndc, -z / uFocal, w);
+  vec2 projected = (px - uOut * 0.5) / w + uOut * 0.5;
+  projected = attachHem(projected, vLocal, rolled.xy);
+  vec2 ndc = (projected / uOut) * 2.0 - 1.0;
+  ndc.y = -ndc.y;
+  gl_Position = vec4(ndc * w, -z / uFocal, w);
 }`;
 const SDF_SNIPPET = `
 float fabricDist (vec2 p, vec2 size, float radius) {
@@ -245,8 +260,8 @@ void main () {
   vLocal = aGrid * uRes;
   vec3 rolled = rollFabric(vLocal);
   vLift = z + rolled.z;
-  vec2 px =
-    rolled.xy + aOffset + vec2(uBleed) + vec2(10.0, 14.0) + vec2(0.3, 0.42) * vLift;
+  vec2 px = attachHem(rolled.xy + aOffset + vec2(uBleed), vLocal, rolled.xy)
+    + vec2(10.0, 14.0) + vec2(0.3, 0.42) * vLift;
   vec2 ndc = (px / uOut) * 2.0 - 1.0;
   ndc.y = -ndc.y;
   gl_Position = vec4(ndc, 0.0, 1.0);
@@ -294,7 +309,7 @@ export function createCloth(elements, options = {}) {
         ...DEFAULTS,
         ...options
     };
-    const { source, content, output } = elements;
+    const { source, content, output, roller } = elements;
     const wrapper = output.parentElement ?? output;
     output.style.top = `${-BLEED}px`;
     output.style.left = `${-BLEED}px`;
@@ -693,6 +708,8 @@ export function createCloth(elements, options = {}) {
         const shadowAlpha = Math.min(Math.max(config.shadow, 0), 1);
         const lum = 0.299 * backingRgb[0] + 0.587 * backingRgb[1] + 0.114 * backingRgb[2];
         const dark = Math.min(Math.max((0.5 - lum) / 0.35, 0), 1);
+        const hem = clothHemMotion(simTime, config.unroll, reducedMotion);
+        roller?.style.setProperty('--roller-motion', hem.matrix);
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         gl.viewport(0, 0, output.width, output.height);
         gl.clearColor(0, 0, 0, 0);
@@ -712,6 +729,8 @@ export function createCloth(elements, options = {}) {
         gl.uniform1f(shadow.uniforms.uRadius, radius);
         gl.uniform1f(shadow.uniforms.uDark, dark);
         gl.uniform1f(shadow.uniforms.uUnroll, config.unroll);
+        gl.uniform1f(shadow.uniforms.uHemAttached, roller ? 1 : 0);
+        gl.uniform4f(shadow.uniforms.uHemMotion, hem.x, hem.y, hem.cosine, hem.sine);
         gl.drawElements(gl.TRIANGLES, gridIndices.length, gl.UNSIGNED_INT, 0);
         gl.useProgram(cloth.program);
         ripple();
@@ -728,6 +747,8 @@ export function createCloth(elements, options = {}) {
         gl.uniform1f(cloth.uniforms.uRadius, radius);
         gl.uniform1f(cloth.uniforms.uDark, dark);
         gl.uniform1f(cloth.uniforms.uUnroll, config.unroll);
+        gl.uniform1f(cloth.uniforms.uHemAttached, roller ? 1 : 0);
+        gl.uniform4f(cloth.uniforms.uHemMotion, hem.x, hem.y, hem.cosine, hem.sine);
         gl.uniform3f(cloth.uniforms.uBacking, backingRgb[0], backingRgb[1], backingRgb[2]);
         gl.drawElements(gl.TRIANGLES, gridIndices.length, gl.UNSIGNED_INT, 0);
         gl.bindVertexArray(null);
@@ -871,6 +892,7 @@ export function createCloth(elements, options = {}) {
         },
         destroy () {
             if (destroyed) return;
+            roller?.style.removeProperty('--roller-motion');
             destroyed = true;
             rectCache.destroy();
             cancelAnimationFrame(raf);
