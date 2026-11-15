@@ -17,7 +17,7 @@ execFileSync(process.execPath, ['--check', path.join(root, 'app.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'flight-model.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'clouds.js')]);
 execFileSync(process.execPath, ['--check', path.join(root, 'page-clouds.js')]);
-for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js','canvas-ripple.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
+for (const filename of ['terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','scroll-roll.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js','canvas-ripple.js','audio.js']) execFileSync(process.execPath, ['--check', path.join(root, filename)]);
 // Resolve all relative module imports, including assets loaded from JavaScript.
 for (const filename of ['app.js','terrain.js','flight-timeline.js','video-flock.js','cloth.js','page-cloth.js','page-clouds.js','ink-clouds.js','ink-cloud-renderer.js','ink-opening.js','ink-opening-model.js','ink-opening-paint.js','canvas-ripple.js']) {
   const module = await readFile(path.join(root, filename), 'utf8');
@@ -154,5 +154,6 @@ assert.deepEqual([0,.30,.55,.9].map(p=>routeCamera(p).index),[0,1,2,3],'The flig
 for(const scene of SCENES)await access(path.join(root,scene));
 assert.equal((html.match(/data-cloth/g)||[]).length,5,'Every story panel must have cloth');
 await import('./ink-opening-check.mjs');
+await import('./scroll-roll-check.mjs');
 await import('./server-check.mjs');
 console.log('Verified assets, reversible video frames, four synchronized landscapes, 24 unique PNGs in four staggered cloud sets, five cloth panels, reduced motion, and HTTP video seeking.');

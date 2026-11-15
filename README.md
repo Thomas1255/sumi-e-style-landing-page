@@ -7,7 +7,7 @@ A neo-traditional sumi-e and watercolor scroll experience. Follow a flock of nin
 - Four generated crane films share a reversible scroll timeline with four painted landscapes. Scroll down to advance, scroll up to retrace, and stop to hold the current frame.
 - Layered sumi-e cloud paintings conceal changes in perspective, with a distinct cloud composition for each transition. Gentle ambient mist adds movement between scenes.
 - An ink-circle loader stamps the 水 seal before a full-screen Canvas UI ripple reveals the page.
-- Story text hangs on animated linen using Canvas UI Cloth.
+- Story text hangs on animated linen using Canvas UI Cloth. Each scroll unrolls as it appears and rolls back up in place before leaving; scrolling upward reverses the motion.
 - Chapter navigation, a keyboard-accessible flight slider, reduced-motion support, painted fallbacks and optional pond audio keep the journey accessible.
 
 ## Run locally
@@ -36,7 +36,7 @@ Then open [localhost:5175](http://localhost:5175/).
 npm run build
 ```
 
-This validates the maintained site files; it does not generate or overwrite `dist/`. Checks cover JavaScript syntax and imports, asset references, reversible flight timing, landscape synchronization, cloud coverage, the opening ripple, reduced-motion behavior and HTTP video seeking. `npm run check` runs the same validation.
+This validates the maintained site files; it does not generate or overwrite `dist/`. Checks cover JavaScript syntax and imports, asset references, reversible flight and scroll-roll timing, landscape synchronization, cloud coverage, the opening ripple, reduced-motion behavior and HTTP video seeking. `npm run check` runs the same validation.
 
 The build uses a temporary local HTTP server for its video-range checks. Browser visual testing is a separate step.
 

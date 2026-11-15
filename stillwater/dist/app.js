@@ -43,6 +43,7 @@ function update(){
   navLinks.forEach((link,index)=>{if(index===active)link.setAttribute('aria-current','step');else link.removeAttribute('aria-current');});
   document.querySelector('#passage-number').textContent=String(active).padStart(2,'0');document.querySelector('#passage-name').textContent=names[active];
   panels.forEach(panel=>{const r=panel.getBoundingClientRect(),enter=clamp((innerHeight*.85-r.top)/(innerHeight*.35)),exit=clamp(r.bottom/(innerHeight*.6));panel.style.setProperty('--reveal',String(reduced.matches?1:Math.min(enter,exit)));});
+  storyCloth.update();
   scheduled=false;
 }
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(update);}}
@@ -53,6 +54,6 @@ terrainCanvas.addEventListener('webglcontextlost',event=>{event.preventDefault()
 terrainCanvas.addEventListener('webglcontextrestored',()=>{contextLost=false;setupTerrain();});
 addEventListener('scroll',schedule,{passive:true});addEventListener('resize',resize,{passive:true});reduced.addEventListener('change',schedule);
 controls.addEventListener('input',()=>{scrollTo({top:Number(controls.value)/1000*(document.documentElement.scrollHeight-innerHeight),behavior:'instant'});update();});
-resize();
 const storyCloth=mountStoryCloth();
+resize();
 opening.waitFor([terrainReady[0],document.querySelector('#flight-poster').decode(),document.fonts.ready,openingMediaReady(document.querySelector('.flight-decoder[data-clip="0"]'))]);

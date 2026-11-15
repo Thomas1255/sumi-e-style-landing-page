@@ -107,8 +107,18 @@ const DEFAULTS = {
     shadow: 0.25,
     cornerRadius: 20,
     backing: "auto",
-    perspective: 1200
+    perspective: 1200,
+    unroll: 1
 };
+const ROLL_VERTEX = `
+uniform float uUnroll;
+vec3 rollFabric(vec2 local) {
+  float radius = 18.0 * min(1.0, (1.0 - uUnroll) * 10.0);
+  float hanging = uUnroll * (uRes.y - radius);
+  float turn = clamp((local.y - hanging) / max(radius, 0.001), 0.0, 3.14159265);
+  return vec3(local.x, min(local.y, hanging) + radius * sin(turn), radius * (1.0 - cos(turn)));
+}
+`;
 const CLOTH_VERT = `#version 300 es
 precision highp float;
 layout(location = 0) in vec2 aGrid;
@@ -122,6 +132,7 @@ out vec2 vUv;
 out vec3 vNormal;
 out float vFold;
 out vec2 vLocal;
+${ROLL_VERTEX}
 
 void main () {
   vUv = aGrid;
@@ -131,7 +142,13 @@ void main () {
   vFold = aData.w;
 
   vLocal = aGrid * uRes;
-  vec2 px = vLocal + aOffset + vec2(uBleed);
+  vec3 rolled = rollFabric(vLocal);
+  float radius = 18.0 * min(1.0, (1.0 - uUnroll) * 10.0);
+  float turn = clamp((vLocal.y - uUnroll * (uRes.y - radius)) / max(radius, 0.001), 0.0, 3.14159265);
+  float unbent = 1.0 - smoothstep(0.0, 0.8, turn);
+  vNormal = normalize(mix(vec3(0.0, -sin(turn), cos(turn)), vNormal, unbent));
+  z = z * unbent + rolled.z;
+  vec2 px = rolled.xy + aOffset * unbent + vec2(uBleed);
   vec2 ndc = (px / uOut) * 2.0 - 1.0;
   ndc.y = -ndc.y;
   float w = (uFocal - z) / uFocal;
@@ -159,6 +176,7 @@ uniform vec3 uBacking;
 uniform vec2 uRes;
 uniform float uRadius;
 uniform float uDark;
+uniform float uUnroll;
 ${SDF_SNIPPET}
 ${CANVAS_RIPPLE_GLSL}
 
@@ -168,6 +186,9 @@ vec3 rippleFabric(vec2 uv) {
 }
 
 void main () {
+  float rollRadius = 18.0 * min(1.0, (1.0 - uUnroll) * 10.0);
+  float materialEnd = uUnroll * (uRes.y - rollRadius) + 3.14159265 * rollRadius;
+  if (vLocal.y > materialEnd || uUnroll <= 0.001) discard;
   vec2 grad = canvasRippleGradient();
   vec3 fabric = rippleFabric(canvasRippleUv(vUv, grad, uRes, 1.0));
   float dispersion = canvasRippleDispersion();
@@ -176,7 +197,9 @@ void main () {
     fabric.b = rippleFabric(canvasRippleUv(vUv, grad, uRes, 1.0 - dispersion)).b;
   }
 
-  vec3 n = normalize(vNormal);
+  // The back of the winding fabric carries linen, rather than mirrored text.
+  if (!gl_FrontFacing) fabric = uBacking;
+  vec3 n = normalize(gl_FrontFacing ? vNormal : -vNormal);
   vec3 lightDir = normalize(vec3(-0.3, 0.42, 0.86));
   float diffFlat = 0.58 + 0.42 * lightDir.z;
   float diff = 0.58 + 0.42 * dot(n, lightDir);
@@ -215,13 +238,15 @@ uniform vec2 uOut;
 uniform float uBleed;
 out vec2 vLocal;
 out float vLift;
+${ROLL_VERTEX}
 
 void main () {
   float z = aData.x;
-  vLift = z;
   vLocal = aGrid * uRes;
+  vec3 rolled = rollFabric(vLocal);
+  vLift = z + rolled.z;
   vec2 px =
-    vLocal + aOffset + vec2(uBleed) + vec2(10.0, 14.0) + vec2(0.3, 0.42) * z;
+    rolled.xy + aOffset + vec2(uBleed) + vec2(10.0, 14.0) + vec2(0.3, 0.42) * vLift;
   vec2 ndc = (px / uOut) * 2.0 - 1.0;
   ndc.y = -ndc.y;
   gl_Position = vec4(ndc, 0.0, 1.0);
@@ -235,9 +260,13 @@ uniform float uShadow;
 uniform vec2 uRes;
 uniform float uRadius;
 uniform float uDark;
+uniform float uUnroll;
 ${SDF_SNIPPET}
 
 void main () {
+  float rollRadius = 18.0 * min(1.0, (1.0 - uUnroll) * 10.0);
+  float materialEnd = uUnroll * (uRes.y - rollRadius) + 3.14159265 * rollRadius;
+  if (vLocal.y > materialEnd || uUnroll <= 0.001) discard;
   float d = fabricDist(vLocal, uRes, uRadius);
   float a = uShadow * smoothstep(0.0, 30.0, -d);
 
@@ -682,6 +711,7 @@ export function createCloth(elements, options = {}) {
         gl.uniform1f(shadow.uniforms.uShadow, shadowAlpha);
         gl.uniform1f(shadow.uniforms.uRadius, radius);
         gl.uniform1f(shadow.uniforms.uDark, dark);
+        gl.uniform1f(shadow.uniforms.uUnroll, config.unroll);
         gl.drawElements(gl.TRIANGLES, gridIndices.length, gl.UNSIGNED_INT, 0);
         gl.useProgram(cloth.program);
         ripple();
@@ -697,6 +727,7 @@ export function createCloth(elements, options = {}) {
         gl.uniform1f(cloth.uniforms.uSheen, Math.max(config.sheen, 0));
         gl.uniform1f(cloth.uniforms.uRadius, radius);
         gl.uniform1f(cloth.uniforms.uDark, dark);
+        gl.uniform1f(cloth.uniforms.uUnroll, config.unroll);
         gl.uniform3f(cloth.uniforms.uBacking, backingRgb[0], backingRgb[1], backingRgb[2]);
         gl.drawElements(gl.TRIANGLES, gridIndices.length, gl.UNSIGNED_INT, 0);
         gl.bindVertexArray(null);
@@ -739,7 +770,7 @@ export function createCloth(elements, options = {}) {
         }
         composeVertices(width, height);
         render();
-        if (reducedMotion || config.wind <= 0.001 && fieldEnergy < 0.004 && touch.s < 0.01) {
+        if (config.unroll <= 0.001 || reducedMotion || config.wind <= 0.001 && fieldEnergy < 0.004 && touch.s < 0.01) {
             running = false;
             return;
         }
@@ -817,6 +848,13 @@ export function createCloth(elements, options = {}) {
     listenTarget.addEventListener("pointerleave", onPointerLeave);
     return {
         renderFrame () { if (!destroyed && visible) render(); },
+        setUnroll (amount) {
+            const next = Math.max(0, Math.min(1, amount));
+            if (destroyed || next === config.unroll) return;
+            config.unroll = next;
+            if (visible) render();
+            start();
+        },
         refresh () {
             capture();
             start();
@@ -832,6 +870,7 @@ export function createCloth(elements, options = {}) {
             start();
         },
         destroy () {
+            if (destroyed) return;
             destroyed = true;
             rectCache.destroy();
             cancelAnimationFrame(raf);
