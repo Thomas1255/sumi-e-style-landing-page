@@ -19,7 +19,7 @@ export const INK_CLOUD_LAYERS = Object.freeze([
 // approved PNGs, with its own arrangement and wind direction.
 export const INK_CLOUD_VARIANTS = Object.freeze([
   { id: 'opening-parting', layers: [] },
-  { id: 'wetlands-left-roll', layers: [
+  { id: 'calligraphic-curls-banks', layers: [
     { scale: 1.06, y: .08, drift: .06, arc: -.035, enter: [0, .36], leave: [.72, 1], z: 2 },
     { scale: .92, y: -.20, drift: -.08, arc: .035, enter: [.05, .43], leave: [.69, .98], z: 1 },
     { scale: 1.32, y: -.35, inset: 0, drift: .08, arc: -.035, enter: [.04, .39], leave: [.66, .94], z: 4 },
@@ -53,7 +53,7 @@ const paintedSet = (directory, aspects) => INK_CLOUD_LAYERS.map((layer, index) =
 
 export const INK_CLOUD_SETS = Object.freeze([
   INK_CLOUD_LAYERS,
-  paintedSet('river-mist', [2048 / 768, 1672 / 941, 1, 1, 1672 / 941, 1672 / 941]),
+  paintedSet('calligraphic-curls', [1897 / 829, 1774 / 887, 1, 1, 1672 / 941, 1672 / 941]),
   paintedSet('temple-volutes', [1672 / 941, 1672 / 941, 1, 1, 1672 / 941, 1672 / 941]),
   paintedSet('gorge-cumulus', [1672 / 941, 1983 / 793, 1, 1671 / 941, 1774 / 887, 1672 / 941])
 ].map(layers => Object.freeze(layers.map(layer => Object.freeze(layer)))));

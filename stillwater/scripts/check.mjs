@@ -85,6 +85,14 @@ for(const layers of INK_CLOUD_SETS){
 }
 assert.equal(new Set(INK_CLOUD_SETS.flat().map(layer=>layer.src)).size,24,'Later transitions must never reuse an opening or other transition source');
 assert.equal(new Set(cloudHashes).size,24,'Every cloud layer must have distinct painted content');
+const calligraphicRecord=JSON.parse(await readFile(new URL('../art-previews/sumi-cloud-calligraphic-v6/artwork-record.json',import.meta.url),'utf8'));
+assert.equal(INK_CLOUD_VARIANTS[1].id,'calligraphic-curls-banks','The first scene transition must use approved design A');
+for(const asset of calligraphicRecord.assets){
+  const layer=INK_CLOUD_SETS[1].find(layer=>layer.id===`${asset.side}-${asset.depth}`);
+  assert.equal(layer.src,`assets/clouds/calligraphic-curls/${asset.file}`,'All six planes must belong to approved A');
+  const painting=await readFile(path.join(root,layer.src));
+  assert.equal(createHash('sha256').update(painting).digest('hex'),asset.sha256,'Approved calligraphic paintings must remain unchanged');
+}
 const cumulusRecord=JSON.parse(await readFile(new URL('../art-previews/sumi-cloud-gorge-cumulus-v4/artwork-record.json',import.meta.url),'utf8'));
 assert.equal(INK_CLOUD_VARIANTS[3].id,'gorge-cumulus-banks','The final transition must use the approved cumulus composition');
 for(const asset of cumulusRecord.assets){

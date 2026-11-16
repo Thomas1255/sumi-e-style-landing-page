@@ -1,0 +1,56 @@
+{
+  "design": "Approved A: Calligraphic curls",
+  "transition": 1,
+  "reference": "../cloud-transition-prototypes-v5/01-calligraphic-curls.png",
+  "generation": "Built-in image generation; approved generated artwork reference only; user attachments not uploaded",
+  "assets": [
+    {
+      "side": "left",
+      "depth": "rear",
+      "file": "left-rear.png",
+      "width": 1897,
+      "height": 829,
+      "sha256": "349bba0b9d1ad1124d7f28d3f3ddc0ed5dc46cd49d5659b407648f50ff2ed666"
+    },
+    {
+      "side": "right",
+      "depth": "rear",
+      "file": "right-rear.png",
+      "width": 1774,
+      "height": 887,
+      "sha256": "ed35be06667089d7f3a6617ff0139bed15f3c198d90a2dd5a7061a78aff64118"
+    },
+    {
+      "side": "left",
+      "depth": "middle",
+      "file": "left-middle.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "b4f6157ecb21cb05a3f7fb6ab8edc5fb8202430ff7eedba4603b4b7a6e233bf5"
+    },
+    {
+      "side": "right",
+      "depth": "middle",
+      "file": "right-middle.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "4ffebcc2ef5d3d0a4b31ec245acc889e2b4cd89c51c4286c4d9f26b800464bff"
+    },
+    {
+      "side": "left",
+      "depth": "front",
+      "file": "left-front.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "9faf49e2d5bc862a8060794efd6d82808b6de65b0bc5f1c8d953e25cb0f53f87"
+    },
+    {
+      "side": "right",
+      "depth": "front",
+      "file": "right-front.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "1767860cfe3a57ff8e953130b5f3ea9a725b50edb7dff015516307ad89b9a550"
+    }
+  ]
+}
