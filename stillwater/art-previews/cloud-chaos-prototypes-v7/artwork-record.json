@@ -1,0 +1,63 @@
+{
+  "purpose": "Choose designs for scene transitions two and three",
+  "status": "awaiting-user-selection",
+  "appliedToWebsite": false,
+  "generationTool": "built-in ImageGen",
+  "source": "Text-only generation; no reference images or raw attachments uploaded",
+  "variants": [
+    {
+      "letter": "I",
+      "title": "Off-center rupture",
+      "file": "01-off-center-rupture.png",
+      "description": "One oversized cloud breaks into scattered fragments, leaving an uneven field of ink haze.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "e7db322675796952750ed329b1e83c03727bd465f3cd47608cbca26e1363d48a"
+    },
+    {
+      "letter": "J",
+      "title": "Colliding fronts",
+      "file": "02-colliding-fronts.png",
+      "description": "Unequal cloud banks collide off center, throwing thin tendrils across a quieter field.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "57bbee38ffb6c48b40914c6e1052a7ca17f0e579bca65ca85c7aff73ef25326a"
+    },
+    {
+      "letter": "K",
+      "title": "Giant and swarm",
+      "file": "03-giant-and-swarm.png",
+      "description": "A huge cropped cloud contrasts with a tiny, intricate knot of vapor.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "eed19d9cf872305bab6cb51b363893cd7a40097c5a79e15846ae473a98d1322f"
+    },
+    {
+      "letter": "L",
+      "title": "Torn cloud column",
+      "file": "04-torn-cloud-column.png",
+      "description": "A kinked vertical plume changes width abruptly beside a broad pale cloud sheet.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "cb5b1d825ea811bb565fd7e96f1711d8ef2863bcd66d99ab0fdaae17fa1a0664"
+    },
+    {
+      "letter": "M",
+      "title": "Tangled crosswinds",
+      "file": "05-tangled-crosswinds.png",
+      "description": "Wandering brush lines, broken curls and cloud fragments pull in competing directions.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "710cc423cdb62afa27d7ec7cdbc02c1106d41957b763c06629975cc8178e513d"
+    },
+    {
+      "letter": "N",
+      "title": "Ink eruption",
+      "file": "06-ink-eruption.png",
+      "description": "A dark, ragged ink mass cuts through scattered ivory clouds and gray vapor.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "c4e5a1f09fb4c0faae24b10728e65185b80a37ed985fdd61e642a5df91c48645"
+    }
+  ]
+}
