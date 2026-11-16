@@ -1,0 +1,52 @@
+{
+  "purpose": "Replacement studies for the third cloud transition",
+  "status": "awaiting-user-selection",
+  "appliedToWebsite": false,
+  "generation": "built-in image_gen, text-only prompts, no reference image uploads",
+  "variants": [
+    {
+      "letter": "A",
+      "slug": "01-calligraphic-curls",
+      "title": "Calligraphic curls",
+      "referenceInspired": true,
+      "file": "01-calligraphic-curls.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "5058b46bec4c2df96c5a898e6e8e93821d47b91dbcbf7ab04a41bb759112b16e"
+    },
+    {
+      "letter": "B",
+      "slug": "02-layered-mist",
+      "title": "Layered mist",
+      "referenceInspired": false,
+      "file": "02-layered-mist.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "cccaba3fa75f179ddcc7902319b31b00c25bd40e9a36051924fea017e66816f6"
+    },
+    {
+      "letter": "C",
+      "slug": "03-ink-cloud-banks",
+      "title": "Ink cloud banks",
+      "referenceInspired": false,
+      "file": "03-ink-cloud-banks.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "92353a7cc1811d4639b6272845f9ebb67462507c2541f6f2390c4981cf942719"
+    },
+    {
+      "letter": "D",
+      "slug": "04-windswept-veils",
+      "title": "Windswept veils",
+      "referenceInspired": false,
+      "file": "04-windswept-veils.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "5fb92dd15cf3f0b17dbe24181d77f11868c3e57745bd262e193902a4d504e3ac"
+    }
+  ]
+}
