@@ -1,0 +1,39 @@
+{
+  "purpose": "Choose designs for scene transitions two and three",
+  "status": "awaiting-user-selection",
+  "source": "Approved generated artwork A only",
+  "variants": [
+    {
+      "letter": "E",
+      "title": "Ascending procession",
+      "file": "01-ascending-procession.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "056cff5ee03fdf22c832392d18e3b65cfe3dfe93b373d808d6be7b615cb2c5b6"
+    },
+    {
+      "letter": "F",
+      "title": "Long-tailed crosswind",
+      "file": "02-long-tailed-crosswind.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "2f3f7aa1ce9ec0cede18e3b2d42217ecec4b91fdf75b5d91d353aa616b0c1ffd"
+    },
+    {
+      "letter": "G",
+      "title": "Arching canopy",
+      "file": "03-arching-canopy.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "080043512262134a4a9b43104d4c8a433b048bb1d5567b146530fde530fa5538"
+    },
+    {
+      "letter": "H",
+      "title": "Gathering whorls",
+      "file": "04-gathering-whorls.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "83aea533aa88256494c4a1f4b844968ecd6e61d3f992204b5021d36380d3b7bf"
+    }
+  ]
+}
