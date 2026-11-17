@@ -73,8 +73,8 @@ assert.equal(INK_CLOUD_VARIANTS.length,4,'The opening and all three scene change
 assert.equal(INK_CLOUD_SETS.length,4,'Each passage needs its approved artwork set');
 assert.deepEqual(INK_CLOUD_SETS[0],INK_CLOUD_LAYERS,'The original opening artwork must stay intact');
 const cloudHashes=[];
-for(const layers of INK_CLOUD_SETS){
-  assert.equal(layers.length,6,'Every artwork set needs six independent paintings across three depths');
+for(const [setIndex,layers] of INK_CLOUD_SETS.entries()){
+  assert.equal(layers.length,setIndex===3?5:6,'Each artwork set must retain all of its approved independent paintings');
   for(const layer of layers){
     const png=await readFile(path.join(root,layer.src));
     assert.equal(png.toString('ascii',1,4),'PNG','Cloud artwork must be PNG');
@@ -83,8 +83,8 @@ for(const layers of INK_CLOUD_SETS){
     cloudHashes.push(createHash('sha256').update(png).digest('hex'));
   }
 }
-assert.equal(new Set(INK_CLOUD_SETS.flat().map(layer=>layer.src)).size,24,'Later transitions must never reuse an opening or other transition source');
-assert.equal(new Set(cloudHashes).size,24,'Every cloud layer must have distinct painted content');
+assert.equal(new Set(INK_CLOUD_SETS.flat().map(layer=>layer.src)).size,23,'Later transitions must never reuse an opening or other transition source');
+assert.equal(new Set(cloudHashes).size,23,'Every cloud layer must have distinct painted content');
 const calligraphicRecord=JSON.parse(await readFile(new URL('../art-previews/sumi-cloud-calligraphic-v6/artwork-record.json',import.meta.url),'utf8'));
 assert.equal(INK_CLOUD_VARIANTS[1].id,'calligraphic-curls-banks','The first scene transition must use approved design A');
 for(const asset of calligraphicRecord.assets){
@@ -92,14 +92,6 @@ for(const asset of calligraphicRecord.assets){
   assert.equal(layer.src,`assets/clouds/calligraphic-curls/${asset.file}`,'All six planes must belong to approved A');
   const painting=await readFile(path.join(root,layer.src));
   assert.equal(createHash('sha256').update(painting).digest('hex'),asset.sha256,'Approved calligraphic paintings must remain unchanged');
-}
-const cumulusRecord=JSON.parse(await readFile(new URL('../art-previews/sumi-cloud-gorge-cumulus-v4/artwork-record.json',import.meta.url),'utf8'));
-assert.equal(INK_CLOUD_VARIANTS[3].id,'gorge-cumulus-banks','The final transition must use the approved cumulus composition');
-for(const asset of cumulusRecord.assets){
-  const layer=INK_CLOUD_SETS[3].find(layer=>layer.id===`${asset.side}-${asset.depth}`);
-  assert.equal(layer.src,`assets/clouds/gorge-cumulus/${asset.file}`,'The final transition must use the approved replacement set');
-  const painting=await readFile(path.join(root,layer.src));
-  assert.equal(createHash('sha256').update(painting).digest('hex'),asset.validation.sha256,'The approved cumulus painting must be preserved unchanged');
 }
 assert.deepEqual(inkCloudSurface(1920,1080,1),{width:1920,height:1080,ratio:1},'Full-HD cloud rendering must use a full-HD surface');
 assert.deepEqual(inkCloudSurface(1920,1080,2),{width:3840,height:2160,ratio:2},'High-density displays need a matching 2x cloud surface');
@@ -165,4 +157,4 @@ await import('./ink-opening-check.mjs');
 await import('./scroll-roll-check.mjs');
 await import('./cloud-sweep-check.mjs');
 await import('./server-check.mjs');
-console.log('Verified assets, reversible video frames, four synchronized landscapes, 24 unique PNGs in four staggered cloud sets, five cloth panels, reduced motion, and HTTP video seeking.');
+console.log('Verified assets, reversible video frames, four synchronized landscapes, 23 unique PNGs in four staggered cloud sets, five cloth panels, reduced motion, and HTTP video seeking.');

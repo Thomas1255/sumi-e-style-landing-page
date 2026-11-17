@@ -26,8 +26,18 @@ const WHISKER_SWEEP_LAYERS = [
   { id: 'front-billow', depth: 'front', src: 'assets/clouds/tangled-whiskers/06-front-low-billow.png', aspect: 1.5, width: 1.30, x: -.12, y: -.04, drift: -.035, enter: [.21,.46], leave: [.63,.90] }
 ].map(layer => ({ ...layer, side: 'right', opacity: 1 }));
 
-// The opening keeps its original paintings. Every later passage uses six newly
-// approved PNGs, with its own arrangement and wind direction.
+// The final passage mixes all five approved bold-outline paintings. Each is a
+// whole cloud with transparent margins, including its left-trailing tail tips.
+const BOLD_INK_SWEEP_LAYERS = [
+  { id: 'floating-canopy', depth: 'rear', src: 'assets/clouds/bold-ink/05-floating-canopy-bold.png', aspect: 2, width: 2.00, x: -.65, y: -.62, drift: -.035, enter: [0,.34], leave: [.74,1] },
+  { id: 'low-bank', depth: 'rear', src: 'assets/clouds/bold-ink/02-low-tumbling-bank-bold.png', aspect: 2, width: 2.40, x: -.95, y: -.40, drift: .03, enter: [.04,.40], leave: [.72,.99] },
+  { id: 'crown-front', depth: 'middle', src: 'assets/clouds/bold-ink/01-crown-front-bold.png', aspect: 2, width: 2.25, x: -1.10, y: -.48, drift: -.025, enter: [.08,.43], leave: [.67,.96] },
+  { id: 'rising-tangle', depth: 'middle', src: 'assets/clouds/bold-ink/03-rising-tangle-bold.png', aspect: 2, width: 1.80, x: -.55, y: -.30, drift: .05, enter: [.15,.45], leave: [.64,.93] },
+  { id: 'charcoal-front', depth: 'front', src: 'assets/clouds/bold-ink/04-charcoal-front-bold.png', aspect: 2, width: 1.50, x: -.25, y: -.15, drift: -.04, enter: [.23,.46], leave: [.60,.86] }
+].map(layer => ({ ...layer, side: 'left', opacity: 1 }));
+
+// The opening keeps its original paintings. Each later passage uses its own
+// approved artwork, arrangement and wind direction.
 export const INK_CLOUD_VARIANTS = Object.freeze([
   { id: 'opening-parting', layers: [] },
   { id: 'calligraphic-curls-banks', layers: [
@@ -39,14 +49,7 @@ export const INK_CLOUD_VARIANTS = Object.freeze([
     { scale: 1.10, y: .32, drift: -.08, arc: .025, enter: [.23, .46], leave: [.63, .88], z: 5 }
   ] },
   { id: 'tangled-whiskers-sweep', direction: 'right-to-left', layers: [] },
-  { id: 'gorge-cumulus-banks', layers: [
-    { scale: 1.12, y: .32, drift: -.18, arc: -.045, enter: [0, .37], leave: [.71, 1], z: 2 },
-    { scale: 1.20, y: -.42, drift: .12, arc: .045, enter: [.05, .39], leave: [.70, 1], z: 1 },
-    { scale: 1.34, y: 0, inset: .08, drift: -.24, arc: -.05, enter: [.10, .44], leave: [.65, .94], z: 4 },
-    { scale: 1.26, y: -.12, inset: .10, drift: -.20, arc: .05, enter: [.08, .42], leave: [.67, .97], z: 3 },
-    { scale: 1.32, y: -.20, drift: -.15, arc: -.035, enter: [.22, .46], leave: [.60, .87], z: 5 },
-    { scale: 1.22, y: .08, drift: -.18, arc: .035, enter: [.16, .44], leave: [.62, .88], z: 6 }
-  ] }
+  { id: 'bold-ink-rightward-sweep', direction: 'left-to-right', layers: [] }
 ].map(variant => Object.freeze({ ...variant, layers: Object.freeze(variant.layers.map(layer => Object.freeze(layer))) })));
 
 const paintedSet = (directory, aspects) => INK_CLOUD_LAYERS.map((layer, index) => ({
@@ -59,7 +62,7 @@ export const INK_CLOUD_SETS = Object.freeze([
   INK_CLOUD_LAYERS,
   paintedSet('calligraphic-curls', [1897 / 829, 1774 / 887, 1, 1, 1672 / 941, 1672 / 941]),
   WHISKER_SWEEP_LAYERS,
-  paintedSet('gorge-cumulus', [1672 / 941, 1983 / 793, 1, 1671 / 941, 1774 / 887, 1672 / 941])
+  BOLD_INK_SWEEP_LAYERS
 ].map(layers => Object.freeze(layers.map(layer => Object.freeze(layer)))));
 
 const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
@@ -71,8 +74,10 @@ function sweepCloudLayerFrame(layer, phase, width, height, index) {
   const stageWidth = Math.max(width, height * 16/9), stageHeight = stageWidth * 9/16;
   const w = stageWidth * layer.width, h = w / layer.aspect;
   const entry = interval(phase, layer.enter), exit = interval(phase, layer.leave);
-  const start = width + 24, closed = stageWidth * layer.x + (width - stageWidth) / 2;
-  const end = -w - 24;
+  const fromLeft = layer.side === 'left';
+  const start = fromLeft ? -w - 24 : width + 24;
+  const closed = stageWidth * layer.x + (width - stageWidth) / 2;
+  const end = fromLeft ? width + 24 : -w - 24;
   return {
     id: layer.id, src: layer.src, side: layer.side, width: w, height: h,
     x: start + (closed - start) * entry + (end - closed) * exit,
@@ -102,7 +107,7 @@ export function inkCloudFrame(progress, viewportWidth, viewportHeight, reducedMo
     phase,
     strength: interval(phase, [0, .46]) * (1 - interval(phase, [.60, 1])),
     layers: INK_CLOUD_SETS[setIndex].map((layer, index) => {
-      if (variant.direction === 'right-to-left') return sweepCloudLayerFrame(layer, phase, width, height, index);
+      if (variant.direction) return sweepCloudLayerFrame(layer, phase, width, height, index);
       const motion = variant.layers[index] || {};
       const closure = interval(phase, motion.enter || layer.enter) * (1 - interval(phase, motion.leave || layer.leave));
       const w = Math.max(width * layer.width, height * layer.minHeightWidth) * (motion.scale ?? 1), h = w / layer.aspect;

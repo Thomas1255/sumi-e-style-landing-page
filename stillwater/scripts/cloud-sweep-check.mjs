@@ -44,25 +44,6 @@ function paintingAlpha(png) {
   return { width, height, alpha };
 }
 
-const record = JSON.parse(await readFile(new URL('../art-previews/cloud-s-layered-v9/artwork-record.json', import.meta.url), 'utf8'));
-assert.equal(INK_CLOUD_VARIANTS[2].id, 'tangled-whiskers-sweep');
-assert(INK_CLOUD_SETS[2].every(layer => layer.side === 'right'), 'All six S clouds must enter from the right');
-const paintings = await Promise.all(record.assets.map(async asset => {
-  const layer = INK_CLOUD_SETS[2].find(candidate => candidate.id === asset.id);
-  assert(layer); assert.equal(layer.src, asset.runtimeSrc);
-  const png = await readFile(new URL(`../dist/${layer.src}`, import.meta.url));
-  assert.equal(createHash('sha256').update(png).digest('hex'), asset.sha256, 'Use the approved complete cloud unchanged');
-  const painting = paintingAlpha(png);
-  for (let y = 0; y < painting.height; y++) {
-    for (let x = 0; x < painting.width; x++) {
-      if (x < 8 || y < 8 || x >= painting.width - 8 || y >= painting.height - 8) {
-        assert(painting.alpha[y * painting.width + x] <= 2, 'The whole silhouette needs clear margins on every side');
-      }
-    }
-  }
-  return painting;
-}));
-
 function sampleAlpha(painting, layer, x, y) {
   const u = (x - layer.x) / layer.width, v = (y - layer.y) / layer.height;
   if (u < 0 || u >= 1 || v < 0 || v >= 1) return 0;
@@ -75,28 +56,52 @@ function sampleAlpha(painting, layer, x, y) {
   return (a * (1 - fy) + b * fy) / 255 * layer.opacity;
 }
 
-const cut = SCENE_CUTS[1], span = INK_CLOUD_SCROLL_SPAN;
-for (const viewport of [[1280,720], [390,844], [2560,1080], [844,390]]) {
-  const [width, height] = viewport;
-  const at = phase => inkCloudFrame(cut - span / 2 + phase * span, width, height);
-  assert(at(.00001).layers.every(layer => layer.x > width), 'Complete clouds start beyond the right edge');
-  assert(at(.99999).layers.every(layer => layer.x + layer.width < 0), 'Every cloud must finish beyond the left edge');
-  let previous = at(.00001);
-  for (let step = 1; step < 1000; step++) {
-    const next = at(step / 1000);
-    assert(next.layers.every((layer, i) => layer.x <= previous.layers[i].x + 1e-7), 'The sweep must never turn back toward the right');
-    previous = next;
+for (const transition of [
+  { index: 2, variant: 'tangled-whiskers-sweep', record: 'cloud-s-layered-v9', field: 'assets', direction: -1 },
+  { index: 3, variant: 'bold-ink-rightward-sweep', record: 'cloud-bold-outline-prototypes-v11', field: 'variants', direction: 1 }
+]) {
+  const record = JSON.parse(await readFile(new URL(`../art-previews/${transition.record}/artwork-record.json`, import.meta.url), 'utf8'));
+  const assets = record[transition.field], layers = INK_CLOUD_SETS[transition.index];
+  assert.equal(INK_CLOUD_VARIANTS[transition.index].id, transition.variant);
+  assert(layers.every(layer => layer.side === (transition.direction === 1 ? 'left' : 'right')), 'All cloud layers must enter from the approved side');
+  assert.equal(layers.length, assets.length, 'Use every approved painting exactly once');
+  const paintings = await Promise.all(layers.map(async layer => {
+    const asset = assets.find(candidate => (candidate.runtimeId || candidate.id) === layer.id);
+    assert(asset); assert.equal(layer.src, asset.runtimeSrc);
+    const png = await readFile(new URL(`../dist/${layer.src}`, import.meta.url));
+    assert.equal(createHash('sha256').update(png).digest('hex'), asset.sha256, 'Use the approved complete cloud unchanged');
+    const painting = paintingAlpha(png);
+    for (let y = 0; y < painting.height; y++) for (let x = 0; x < painting.width; x++) {
+      if (x < 8 || y < 8 || x >= painting.width - 8 || y >= painting.height - 8) {
+        assert(painting.alpha[y * painting.width + x] <= 2, 'The whole silhouette needs clear margins on every side');
+      }
+    }
+    return painting;
+  }));
+  const cut = SCENE_CUTS[transition.index - 1], span = INK_CLOUD_SCROLL_SPAN;
+  for (const viewport of [[1280,720], [390,844], [2560,1080], [844,390]]) {
+    const [width, height] = viewport;
+    const at = phase => inkCloudFrame(cut - span / 2 + phase * span, width, height);
+    const fromLeft = transition.direction === 1;
+    assert(at(.00001).layers.every(layer => fromLeft ? layer.x + layer.width < 0 : layer.x > width), 'Complete clouds start offscreen on the entry side');
+    assert(at(.99999).layers.every(layer => fromLeft ? layer.x > width : layer.x + layer.width < 0), 'Every cloud must finish beyond the opposite edge');
+    let previous = at(.00001);
+    for (let step = 1; step < 1000; step++) {
+      const next = at(step / 1000);
+      assert(next.layers.every((layer, i) => (layer.x - previous.layers[i].x) * transition.direction >= -1e-7), 'The sweep must continue in its approved direction');
+      previous = next;
+    }
+    const arrivals = at(.24).layers.map(layer => layer.closure.toFixed(5));
+    assert.equal(new Set(arrivals).size, layers.length, 'Every painting needs a separately staggered arrival');
+    const closed = at(.5);
+    let minimum = 1, opaque = 0, samples = 0;
+    for (let y = .5; y < height; y += 8) for (let x = .5; x < width; x += 8) {
+      let transparent = 1;
+      closed.layers.forEach((layer, i) => { transparent *= 1 - sampleAlpha(paintings[i], layer, x, y); });
+      const alpha = 1 - transparent;
+      minimum = Math.min(minimum, alpha); opaque += Number(alpha >= .99); samples++;
+    }
+    assert(minimum > .98 && opaque / samples > .99, `${transition.variant} must conceal the ${width}x${height} scene cut: minimum alpha ${minimum.toFixed(4)}, opaque fraction ${(opaque / samples).toFixed(4)}`);
   }
-  const arrivals = at(.24).layers.map(layer => layer.closure.toFixed(5));
-  assert.equal(new Set(arrivals).size, 6, 'All six paintings need separately staggered arrivals');
-  const closed = at(.5);
-  let minimum = 1, opaque = 0, samples = 0;
-  for (let y = .5; y < height; y += 8) for (let x = .5; x < width; x += 8) {
-    let transparent = 1;
-    closed.layers.forEach((layer, i) => { transparent *= 1 - sampleAlpha(paintings[i], layer, x, y); });
-    const alpha = 1 - transparent;
-    minimum = Math.min(minimum, alpha); opaque += Number(alpha >= .99); samples++;
-  }
-  assert(minimum > .98 && opaque / samples > .99, 'Clouds must conceal the scene cut on desktop, mobile and ultrawide screens');
+  console.log(`Verified ${transition.variant}: ${layers.length} approved complete clouds, transparent borders, one-way staggered travel and responsive scene coverage.`);
 }
-console.log('Verified approved S: six complete cloud silhouettes, transparent borders, staggered right-to-left travel and responsive scene coverage.');

@@ -2,8 +2,8 @@
   "purpose": "Choose a third-transition cloud design with mixed thick and fine sumi-e outlines",
   "transition": 3,
   "direction": "left-to-right",
-  "status": "awaiting-user-selection",
-  "appliedToWebsite": false,
+  "status": "implemented",
+  "appliedToWebsite": true,
   "completeSilhouettes": true,
   "generationTool": "built-in ImageGen",
   "revisionOf": "../cloud-left-to-right-prototypes-v10/artwork-record.json",
@@ -31,7 +31,10 @@
         801
       ],
       "borderAlphaMaximum": 1,
-      "sha256": "2b0e6dd70103cda7111d7e4c15110c102c12d70bbed71d6266dc03d30ce72cde"
+      "sha256": "2b0e6dd70103cda7111d7e4c15110c102c12d70bbed71d6266dc03d30ce72cde",
+      "runtimeId": "crown-front",
+      "runtimeSrc": "assets/clouds/bold-ink/01-crown-front-bold.png",
+      "depth": "middle"
     },
     {
       "letter": "V2",
@@ -54,7 +57,10 @@
         716
       ],
       "borderAlphaMaximum": 1,
-      "sha256": "3dd7a8e2f166d3800b8766f8bdc8eaa57a106baef42ac7d18e0ee3c153abd6e1"
+      "sha256": "3dd7a8e2f166d3800b8766f8bdc8eaa57a106baef42ac7d18e0ee3c153abd6e1",
+      "runtimeId": "low-bank",
+      "runtimeSrc": "assets/clouds/bold-ink/02-low-tumbling-bank-bold.png",
+      "depth": "rear"
     },
     {
       "letter": "W2",
@@ -77,7 +83,10 @@
         861
       ],
       "borderAlphaMaximum": 0,
-      "sha256": "e92a36a080d92f3b55f4cdcf03777b239dfefb76758659af3a78ee877731d9ca"
+      "sha256": "e92a36a080d92f3b55f4cdcf03777b239dfefb76758659af3a78ee877731d9ca",
+      "runtimeId": "rising-tangle",
+      "runtimeSrc": "assets/clouds/bold-ink/03-rising-tangle-bold.png",
+      "depth": "middle"
     },
     {
       "letter": "X2",
@@ -100,7 +109,10 @@
         757
       ],
       "borderAlphaMaximum": 0,
-      "sha256": "acfa542562a9dc58610fd5d326aa0f4523a503db9dd540c795dc61225eccabe7"
+      "sha256": "acfa542562a9dc58610fd5d326aa0f4523a503db9dd540c795dc61225eccabe7",
+      "runtimeId": "charcoal-front",
+      "runtimeSrc": "assets/clouds/bold-ink/04-charcoal-front-bold.png",
+      "depth": "front"
     },
     {
       "letter": "Y2",
@@ -123,7 +135,12 @@
         806
       ],
       "borderAlphaMaximum": 1,
-      "sha256": "7624d675ee607f0931ddeb5339fa74b8ae4d606f4ab4a53e56dbdcf1266c009d"
+      "sha256": "7624d675ee607f0931ddeb5339fa74b8ae4d606f4ab4a53e56dbdcf1266c009d",
+      "runtimeId": "floating-canopy",
+      "runtimeSrc": "assets/clouds/bold-ink/05-floating-canopy-bold.png",
+      "depth": "rear"
     }
-  ]
+  ],
+  "runtimeDirectory": "assets/clouds/bold-ink",
+  "implementation": "Five approved complete cloud paintings in independently staggered left-to-right layers"
 }
