@@ -1,0 +1,96 @@
+{
+  "purpose": "Choose a right-to-left cloud design for the second scene transition",
+  "transition": 2,
+  "direction": "right-to-left",
+  "status": "awaiting-user-selection",
+  "appliedToWebsite": false,
+  "generationTool": "built-in ImageGen",
+  "source": "Text-only generation; no reference images or raw attachments uploaded",
+  "transparentBackground": true,
+  "variants": [
+    {
+      "letter": "O",
+      "title": "Billowing wall",
+      "file": "01-billowing-wall.png",
+      "description": "A broad, blunt cloud head leads left, followed by smaller folds and fine trailing wisps.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "3b858e7fad310ab0f8a90bfcb337e1b2264f3c96b4f5c45639b78249c85a1105",
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "letter": "P",
+      "title": "Staggered arrival",
+      "file": "02-staggered-arrival.png",
+      "description": "A small upper leader and a heavier lower cloud create an uneven, stepped front.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "39ec95ecbc460951addcabc49173affa5153aeee5421114a685c1fd853d6221a",
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "letter": "Q",
+      "title": "Slanting canopy",
+      "file": "03-slanting-canopy.png",
+      "description": "An overhanging upper cloud leads first; the diagonal edge delays the lower portion.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "85488479b99241a8ee4583f89e685767c17f33f39400c7c3c06abb25f2895eec",
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "letter": "R",
+      "title": "Long vapor folds",
+      "file": "04-long-vapor-folds.png",
+      "description": "A quiet ivory cloud head stretches into long, fine-outlined folds trailing right.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "5913f78dd5fb1e5d29b8421b3d194c13b3ced3d9d49d34703870bea4aee747d3",
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "letter": "S",
+      "title": "Tangled whisker front",
+      "file": "05-tangled-whisker-front.png",
+      "description": "Intricate curls and broken filaments lead larger, calmer masses of cloud.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "aef1ef9cd9c1cbbe69a87d59240e8c5968f19ca848b969ac016c3d180949f1e2",
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ]
+    },
+    {
+      "letter": "T",
+      "title": "Charcoal squall",
+      "file": "06-charcoal-squall.png",
+      "description": "A dark, torn ink front carries scattered ivory cloud curls and gray vapor.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "8a6ee1e46a1955963882d78f04db09178d100948568ee3c21eb716f594ad6fbf",
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ]
+    }
+  ]
+}
