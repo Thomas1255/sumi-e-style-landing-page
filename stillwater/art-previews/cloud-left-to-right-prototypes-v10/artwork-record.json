@@ -1,0 +1,118 @@
+{
+  "purpose": "Choose a layered left-to-right cloud design for the third scene transition",
+  "transition": 3,
+  "direction": "left-to-right",
+  "status": "awaiting-user-selection",
+  "appliedToWebsite": false,
+  "completeSilhouettes": true,
+  "generationTool": "built-in ImageGen",
+  "reference": "../cloud-s-layered-v9/complete-clouds/05-front-whiskers.png",
+  "referenceRole": "Generated artwork as a style reference only; original designs, no flipped sources or raw user references",
+  "variants": [
+    {
+      "letter": "U",
+      "title": "Crown front",
+      "file": "01-crown-front.png",
+      "description": "A broad, quiet leading head with two delicate trailing tails and a small low tangle.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        57,
+        95,
+        1718,
+        800
+      ],
+      "borderAlphaMaximum": 0,
+      "sha256": "d85f136c3161d9e4b8cad97d77ea6ffa516dff70c8f8f85ccd0ca7a59f0cf48a"
+    },
+    {
+      "letter": "V",
+      "title": "Low tumbling bank",
+      "file": "02-low-tumbling-bank.png",
+      "description": "A squat, heavy cloud with darker lower folds and an uneven rear knot.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        70,
+        238,
+        1689,
+        708
+      ],
+      "borderAlphaMaximum": 1,
+      "sha256": "eaab157a3e5822cf1185c4823d247b2f418e9115281cfcf5b9405a9612111155"
+    },
+    {
+      "letter": "W",
+      "title": "Rising tangle",
+      "file": "03-rising-tangle.png",
+      "description": "A tiny intricate leading cloud rises above a much larger low cloud mass.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        47,
+        65,
+        1736,
+        853
+      ],
+      "borderAlphaMaximum": 0,
+      "sha256": "51e4e4aba4c2ee05446b817893b3124d699fd16aceac75b2eb66270be5e308a2"
+    },
+    {
+      "letter": "X",
+      "title": "Charcoal front",
+      "file": "04-charcoal-front.png",
+      "description": "A dense gray cloud with strong black ink folds and scattered ivory forms.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        73,
+        141,
+        1702,
+        756
+      ],
+      "borderAlphaMaximum": 1,
+      "sha256": "b88823e05bc3c20ad751b97dfc1b39c93326ccc52de3b04eeeacfb56932a85c4"
+    },
+    {
+      "letter": "Y",
+      "title": "Floating canopy",
+      "file": "05-floating-canopy.png",
+      "description": "A broad pale canopy with a deep lower notch and a long pendant of fine curls.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        101,
+        80,
+        1674,
+        806
+      ],
+      "borderAlphaMaximum": 0,
+      "sha256": "9c586fe4f3dad85f8b2e9307e09bb1eab4430697d58189a2e8bff03f4105c928"
+    }
+  ]
+}
