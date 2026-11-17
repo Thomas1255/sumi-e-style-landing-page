@@ -4,12 +4,12 @@
   const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
   const interval = (p, range) => ease((p - range[0]) / (range[1] - range[0]));
   const layers = [
-    { file: '01-rear-upper-veil.png', aspect: 1672/941, width: 1.85, x: -.46, y: -.44, drift: .035, enter: [0,.36], leave: [.74,1] },
-    { file: '02-rear-lower-shelf.png', aspect: 2, width: 1.90, x: -.62, y: -.35, drift: -.025, enter: [.025,.39], leave: [.71,.99] },
-    { file: '03-middle-cloud-wall.png', aspect: 1, width: 1.94, x: -.83, y: -.96, drift: .025, enter: [.065,.41], leave: [.68,.97] },
-    { file: '04-middle-overhang.png', aspect: 1672/941, width: 1.65, x: -.55, y: -.58, drift: -.045, enter: [.11,.44], leave: [.65,.94] },
-    { file: '05-front-whiskers.png', aspect: 2, width: 1.55, x: -.20, y: -.36, drift: .055, enter: [.15,.455], leave: [.60,.87] },
-    { file: '06-front-low-billow.png', aspect: 1.5, width: 1.30, x: -.18, y: .08, drift: -.035, enter: [.21,.46], leave: [.63,.90] }
+    { file: 'complete-clouds/01-rear-upper-cloud.png', aspect: 1672/941, width: 2.05, x: -.55, y: -.61, drift: .035, enter: [0,.36], leave: [.74,1] },
+    { file: 'complete-clouds/02-rear-low-cloud.png', aspect: 1920/819, width: 2.10, x: -.44, y: -.17, drift: -.025, enter: [.025,.39], leave: [.71,.99] },
+    { file: 'complete-clouds/03-middle-cluster.png', aspect: 1, width: 2.20, x: -.60, y: -1.60, drift: .025, enter: [.065,.41], leave: [.68,.97] },
+    { file: 'complete-clouds/04-middle-pendant.png', aspect: 1448/1086, width: 1.50, x: -.20, y: -.45, drift: -.045, enter: [.11,.44], leave: [.65,.94] },
+    { file: 'complete-clouds/05-front-whiskers.png', aspect: 2, width: 1.55, x: -.12, y: -.30, drift: .055, enter: [.15,.455], leave: [.60,.87] },
+    { file: 'complete-clouds/06-front-low-billow.png', aspect: 1.5, width: 1.30, x: -.12, y: -.04, drift: -.035, enter: [.21,.46], leave: [.63,.90] }
   ].map(Object.freeze);
   function frame(progress, width, height) {
     const p = clamp(progress);

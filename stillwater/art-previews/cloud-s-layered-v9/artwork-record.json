@@ -3,7 +3,7 @@
   "design": "S — Tangled whisker front",
   "transition": 2,
   "direction": "right-to-left",
-  "status": "layered-preview-for-review",
+  "status": "complete-cloud-preview-for-review",
   "appliedToWebsite": false,
   "generationTool": "built-in ImageGen",
   "reference": "../cloud-right-to-left-prototypes-v8/05-tangled-whisker-front.png",
@@ -11,10 +11,10 @@
   "assets": [
     {
       "id": "rear-upper",
-      "title": "Rear upper veil",
-      "file": "01-rear-upper-veil.png",
+      "title": "Rear upper cloud",
+      "file": "complete-clouds/01-rear-upper-cloud.png",
       "depth": "rear",
-      "description": "Quiet upper bank with thin outlines and shallow, uneven lobes.",
+      "description": "A complete upper cloud with quiet outlines and two finished trailing curls.",
       "width": 1672,
       "height": 941,
       "mode": "RGBA",
@@ -22,29 +22,43 @@
         0,
         255
       ],
-      "sha256": "9427743f63d9767f596371d1cb01284f4fe44fc99de0b108ac22ed4ed4db4c02"
+      "sha256": "a0d6c67a4d743d88424b8f91eeae149c10099dbd913ee9336f3eef48c9edb794",
+      "paintedBounds": [
+        48,
+        220,
+        1614,
+        740
+      ],
+      "borderAlphaMaximum": 1
     },
     {
       "id": "rear-lower",
-      "title": "Rear lower shelf",
-      "file": "02-rear-lower-shelf.png",
+      "title": "Rear low cloud",
+      "file": "complete-clouds/02-rear-low-cloud.png",
       "depth": "rear",
-      "description": "Low, broad cloud shelf with a bottom-heavy silhouette.",
-      "width": 1774,
-      "height": 887,
+      "description": "A squat, bottom-heavy cloud with a rounded underside and fully visible tail.",
+      "width": 1920,
+      "height": 819,
       "mode": "RGBA",
       "alphaRange": [
         0,
         255
       ],
-      "sha256": "b23f900a1b1e3e78f9f5b8b75aaa3834d62b801ec784bf4fbef56ce839c8e692"
+      "sha256": "bb2b0a76ca243beee945e33a2adb8196a43e0b64221f410ae63ceecefa258243",
+      "paintedBounds": [
+        91,
+        111,
+        1832,
+        724
+      ],
+      "borderAlphaMaximum": 1
     },
     {
       "id": "middle-wall",
-      "title": "Middle cloud wall",
-      "file": "03-middle-cloud-wall.png",
+      "title": "Middle complete cluster",
+      "file": "complete-clouds/03-middle-cluster.png",
       "depth": "middle",
-      "description": "Dense coverage with a small high tangle and a large low cloud head.",
+      "description": "A dense, complete cloud cluster with a large low billow and tiny high tangle.",
       "width": 1254,
       "height": 1254,
       "mode": "RGBA",
@@ -52,29 +66,43 @@
         0,
         255
       ],
-      "sha256": "35e74324b726078781b5320df36bc551d9ed1068641dc7fad6f26110ebb86090"
+      "sha256": "1764ba2b3df78017a24505a48d7195c98c007902b46691f9a226ecd9edb68fc7",
+      "paintedBounds": [
+        34,
+        287,
+        1221,
+        993
+      ],
+      "borderAlphaMaximum": 1
     },
     {
       "id": "middle-overhang",
-      "title": "Middle overhang",
-      "file": "04-middle-overhang.png",
+      "title": "Middle pendant cloud",
+      "file": "complete-clouds/04-middle-pendant.png",
       "depth": "middle",
-      "description": "A broad pale overhang and one long trailing pendant.",
-      "width": 1672,
-      "height": 941,
+      "description": "A whole cloud with a broad upper lobe and an irregular pendant ending in fine curls.",
+      "width": 1448,
+      "height": 1086,
       "mode": "RGBA",
       "alphaRange": [
         0,
         255
       ],
-      "sha256": "593667ff89de85a19bb588665007bb70150b9b7a3eea52cada12b8dc8eb979e4"
+      "sha256": "a247bc87a45464394966083ad528109e1c353b190e6b5123faef0658ceaa09e6",
+      "paintedBounds": [
+        62,
+        99,
+        1383,
+        987
+      ],
+      "borderAlphaMaximum": 1
     },
     {
       "id": "front-whiskers",
-      "title": "Foreground whiskers",
-      "file": "05-front-whiskers.png",
+      "title": "Foreground whisker cloud",
+      "file": "complete-clouds/05-front-whiskers.png",
       "depth": "front",
-      "description": "Fine interwoven curls and black ink gestures along a low leading knot.",
+      "description": "A tangled leading knot connected to a larger rear cloud with a finished perimeter.",
       "width": 1774,
       "height": 887,
       "mode": "RGBA",
@@ -82,14 +110,21 @@
         0,
         255
       ],
-      "sha256": "014c37e6cc02efbaa9ebe5ad9eb6de6b6ada4884c1fdac3490477b7cf25f072a"
+      "sha256": "d0155f4ea17c97789c8ab63c9daf60ab24f6af3a4a74f68641a3515ac10b9786",
+      "paintedBounds": [
+        61,
+        133,
+        1697,
+        724
+      ],
+      "borderAlphaMaximum": 1
     },
     {
       "id": "front-billow",
       "title": "Foreground low billow",
-      "file": "06-front-low-billow.png",
+      "file": "complete-clouds/06-front-low-billow.png",
       "depth": "front",
-      "description": "A large quiet ivory billow with a strong dark brush contour.",
+      "description": "A full ivory billow with strong brush contours, small upper cloud heads and complete whiskers.",
       "width": 1536,
       "height": 1024,
       "mode": "RGBA",
@@ -97,10 +132,20 @@
         0,
         254
       ],
-      "sha256": "1d002ed414cfa3c8a2048d663f954f2e1b10ee6f56b316450473f10fa7b66a12"
+      "sha256": "134a02ce2a6a9c3536c610d97e5617326bcbf9fa67b91f6deb24483e6899d171",
+      "paintedBounds": [
+        84,
+        180,
+        1452,
+        861
+      ],
+      "borderAlphaMaximum": 1
     }
   ],
   "alternates": [
     "alternates/06-front-low-billow-initial.png"
-  ]
+  ],
+  "revision": 2,
+  "completeSilhouettes": true,
+  "previousArtworkRecord": "cropped-artwork-record.json"
 }

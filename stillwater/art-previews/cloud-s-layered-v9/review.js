@@ -7,7 +7,7 @@
   const after = document.querySelector('.landscape-after');
   const planes = [...document.querySelectorAll('.plane')];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let progress = .27, playing = false, animation = 0, previous = 0;
+  let progress = .76, playing = false, animation = 0, previous = 0;
   function render() {
     const { width, height } = stage.getBoundingClientRect();
     sCloudStudy.frame(progress, width, height).forEach((layer, index) => {
@@ -22,7 +22,7 @@
   }
   function pause() {
     playing = false; cancelAnimationFrame(animation); animation = 0; previous = 0;
-    play.textContent = 'Play sweep'; play.setAttribute('aria-pressed','false');
+    play.textContent = 'Play full sweep'; play.setAttribute('aria-pressed','false');
   }
   function tick(time) {
     if (!playing) return;
@@ -34,11 +34,12 @@
   slider.addEventListener('input', () => { pause(); progress = Number(slider.value) / 1000; render(); });
   play.addEventListener('click', () => {
     if (playing) { pause(); return; }
-    if (progress >= .999) progress = 0;
+    progress = 0;
     playing = true; previous = 0; play.textContent = 'Pause'; play.setAttribute('aria-pressed','true');
     animation = requestAnimationFrame(tick);
   });
   document.querySelector('#closed').addEventListener('click', () => { pause(); progress = .52; render(); });
+  document.querySelector('#exit').addEventListener('click', () => { pause(); progress = .76; render(); });
   document.querySelector('#reset').addEventListener('click', () => { pause(); progress = 0; render(); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
   reduced.addEventListener('change', pause);

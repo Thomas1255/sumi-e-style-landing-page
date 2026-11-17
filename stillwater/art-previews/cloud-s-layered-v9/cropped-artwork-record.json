@@ -1,0 +1,106 @@
+{
+  "purpose": "Develop approved prototype S into independent right-to-left cloud layers",
+  "design": "S — Tangled whisker front",
+  "transition": 2,
+  "direction": "right-to-left",
+  "status": "layered-preview-for-review",
+  "appliedToWebsite": false,
+  "generationTool": "built-in ImageGen",
+  "reference": "../cloud-right-to-left-prototypes-v8/05-tangled-whisker-front.png",
+  "referenceRole": "Approved generated artwork only; no raw user references uploaded",
+  "assets": [
+    {
+      "id": "rear-upper",
+      "title": "Rear upper veil",
+      "file": "01-rear-upper-veil.png",
+      "depth": "rear",
+      "description": "Quiet upper bank with thin outlines and shallow, uneven lobes.",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "9427743f63d9767f596371d1cb01284f4fe44fc99de0b108ac22ed4ed4db4c02"
+    },
+    {
+      "id": "rear-lower",
+      "title": "Rear lower shelf",
+      "file": "02-rear-lower-shelf.png",
+      "depth": "rear",
+      "description": "Low, broad cloud shelf with a bottom-heavy silhouette.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "b23f900a1b1e3e78f9f5b8b75aaa3834d62b801ec784bf4fbef56ce839c8e692"
+    },
+    {
+      "id": "middle-wall",
+      "title": "Middle cloud wall",
+      "file": "03-middle-cloud-wall.png",
+      "depth": "middle",
+      "description": "Dense coverage with a small high tangle and a large low cloud head.",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "35e74324b726078781b5320df36bc551d9ed1068641dc7fad6f26110ebb86090"
+    },
+    {
+      "id": "middle-overhang",
+      "title": "Middle overhang",
+      "file": "04-middle-overhang.png",
+      "depth": "middle",
+      "description": "A broad pale overhang and one long trailing pendant.",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "593667ff89de85a19bb588665007bb70150b9b7a3eea52cada12b8dc8eb979e4"
+    },
+    {
+      "id": "front-whiskers",
+      "title": "Foreground whiskers",
+      "file": "05-front-whiskers.png",
+      "depth": "front",
+      "description": "Fine interwoven curls and black ink gestures along a low leading knot.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "014c37e6cc02efbaa9ebe5ad9eb6de6b6ada4884c1fdac3490477b7cf25f072a"
+    },
+    {
+      "id": "front-billow",
+      "title": "Foreground low billow",
+      "file": "06-front-low-billow.png",
+      "depth": "front",
+      "description": "A large quiet ivory billow with a strong dark brush contour.",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "sha256": "1d002ed414cfa3c8a2048d663f954f2e1b10ee6f56b316450473f10fa7b66a12"
+    }
+  ],
+  "alternates": [
+    "alternates/06-front-low-billow-initial.png"
+  ]
+}
