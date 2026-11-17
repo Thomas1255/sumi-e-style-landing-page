@@ -1,0 +1,129 @@
+{
+  "purpose": "Choose a third-transition cloud design with mixed thick and fine sumi-e outlines",
+  "transition": 3,
+  "direction": "left-to-right",
+  "status": "awaiting-user-selection",
+  "appliedToWebsite": false,
+  "completeSilhouettes": true,
+  "generationTool": "built-in ImageGen",
+  "revisionOf": "../cloud-left-to-right-prototypes-v10/artwork-record.json",
+  "styleReference": "../../dist/assets/clouds/calligraphic-curls/left-front.png",
+  "referenceRoles": "Each original generated prototype was the edit target; generated first-transition artwork supplied brushwork only. The raw user screenshot was not uploaded.",
+  "variants": [
+    {
+      "letter": "U2",
+      "sourceVariant": "U",
+      "title": "Crown front",
+      "file": "01-crown-front-bold.png",
+      "original": "../cloud-left-to-right-prototypes-v10/01-crown-front.png",
+      "description": "Heavy crown and front-curl arcs taper into delicate left-trailing whiskers.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        59,
+        80,
+        1730,
+        801
+      ],
+      "borderAlphaMaximum": 1,
+      "sha256": "2b0e6dd70103cda7111d7e4c15110c102c12d70bbed71d6266dc03d30ce72cde"
+    },
+    {
+      "letter": "V2",
+      "sourceVariant": "V",
+      "title": "Low tumbling bank",
+      "file": "02-low-tumbling-bank-bold.png",
+      "original": "../cloud-left-to-right-prototypes-v10/02-low-tumbling-bank.png",
+      "description": "A stronger charcoal underside contrasts with the fine upper knot and rear tail.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        73,
+        235,
+        1700,
+        716
+      ],
+      "borderAlphaMaximum": 1,
+      "sha256": "3dd7a8e2f166d3800b8766f8bdc8eaa57a106baef42ac7d18e0ee3c153abd6e1"
+    },
+    {
+      "letter": "W2",
+      "sourceVariant": "W",
+      "title": "Rising tangle",
+      "file": "03-rising-tangle-bold.png",
+      "original": "../cloud-left-to-right-prototypes-v10/03-rising-tangle.png",
+      "description": "Bold arcs weight the large lower cloud; the rising leading tangle stays fine.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        52,
+        68,
+        1737,
+        861
+      ],
+      "borderAlphaMaximum": 0,
+      "sha256": "e92a36a080d92f3b55f4cdcf03777b239dfefb76758659af3a78ee877731d9ca"
+    },
+    {
+      "letter": "X2",
+      "sourceVariant": "X",
+      "title": "Charcoal front",
+      "file": "04-charcoal-front-bold.png",
+      "original": "../cloud-left-to-right-prototypes-v10/04-charcoal-front.png",
+      "description": "Thicker, broken outer arcs frame the gray body and pale islands.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        70,
+        124,
+        1709,
+        757
+      ],
+      "borderAlphaMaximum": 0,
+      "sha256": "acfa542562a9dc58610fd5d326aa0f4523a503db9dd540c795dc61225eccabe7"
+    },
+    {
+      "letter": "Y2",
+      "sourceVariant": "Y",
+      "title": "Floating canopy",
+      "file": "05-floating-canopy-bold.png",
+      "original": "../cloud-left-to-right-prototypes-v10/05-floating-canopy.png",
+      "description": "Wide black canopy arcs narrow into the long, delicate pendant curl.",
+      "width": 1774,
+      "height": 887,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "paintedBounds": [
+        101,
+        58,
+        1681,
+        806
+      ],
+      "borderAlphaMaximum": 1,
+      "sha256": "7624d675ee607f0931ddeb5339fa74b8ae4d606f4ab4a53e56dbdcf1266c009d"
+    }
+  ]
+}
