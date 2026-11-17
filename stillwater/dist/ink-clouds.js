@@ -15,6 +15,17 @@ export const INK_CLOUD_LAYERS = Object.freeze([
   { id: 'right-front', side: 'right', depth: 'front', src: 'assets/clouds/right-03-front-roll.png', aspect: 1671 / 941, width: 1.04, minHeightWidth: 1.35, inset: .18, top: -.28, drift: -.045, opacity: 1, enter: [.21, .46], leave: [.60, .84] }
 ].map(layer => Object.freeze(layer)));
 
+// Approved S uses complete silhouettes: all six enter from the right and keep
+// travelling left. Their transparent trailing edges remain visible on exit.
+const WHISKER_SWEEP_LAYERS = [
+  { id: 'rear-upper', depth: 'rear', src: 'assets/clouds/tangled-whiskers/01-rear-upper-cloud.png', aspect: 1672/941, width: 2.05, x: -.55, y: -.61, drift: .035, enter: [0,.36], leave: [.74,1] },
+  { id: 'rear-lower', depth: 'rear', src: 'assets/clouds/tangled-whiskers/02-rear-low-cloud.png', aspect: 1920/819, width: 2.10, x: -.44, y: -.17, drift: -.025, enter: [.025,.39], leave: [.71,.99] },
+  { id: 'middle-wall', depth: 'middle', src: 'assets/clouds/tangled-whiskers/03-middle-cluster.png', aspect: 1, width: 2.20, x: -.60, y: -1.60, drift: .025, enter: [.065,.41], leave: [.68,.97] },
+  { id: 'middle-overhang', depth: 'middle', src: 'assets/clouds/tangled-whiskers/04-middle-pendant.png', aspect: 1448/1086, width: 1.50, x: -.20, y: -.45, drift: -.045, enter: [.11,.44], leave: [.65,.94] },
+  { id: 'front-whiskers', depth: 'front', src: 'assets/clouds/tangled-whiskers/05-front-whiskers.png', aspect: 2, width: 1.55, x: -.12, y: -.30, drift: .055, enter: [.15,.455], leave: [.60,.87] },
+  { id: 'front-billow', depth: 'front', src: 'assets/clouds/tangled-whiskers/06-front-low-billow.png', aspect: 1.5, width: 1.30, x: -.12, y: -.04, drift: -.035, enter: [.21,.46], leave: [.63,.90] }
+].map(layer => ({ ...layer, side: 'right', opacity: 1 }));
+
 // The opening keeps its original paintings. Every later passage uses six newly
 // approved PNGs, with its own arrangement and wind direction.
 export const INK_CLOUD_VARIANTS = Object.freeze([
@@ -27,14 +38,7 @@ export const INK_CLOUD_VARIANTS = Object.freeze([
     { scale: 1.20, y: -.25, drift: .10, arc: -.025, enter: [.14, .43], leave: [.60, .84], z: 6 },
     { scale: 1.10, y: .32, drift: -.08, arc: .025, enter: [.23, .46], leave: [.63, .88], z: 5 }
   ] },
-  { id: 'temples-right-crosswind', layers: [
-    { scale: .94, y: .35, drift: -.10, arc: .04, enter: [.04, .43], leave: [.70, 1], z: 1 },
-    { scale: 1.14, y: -.40, drift: .10, arc: -.04, enter: [0, .34], leave: [.73, 1], z: 2 },
-    { scale: 1.16, y: .14, drift: -.09, arc: .04, enter: [.12, .44], leave: [.66, .94], z: 3 },
-    { scale: 1.44, y: -.12, drift: .08, arc: -.04, enter: [.04, .40], leave: [.65, .96], z: 4 },
-    { scale: 1.38, y: -.23, drift: .14, arc: -.04, enter: [.24, .46], leave: [.65, .90], z: 5 },
-    { scale: 1.20, y: .24, drift: -.08, arc: .025, enter: [.14, .43], leave: [.60, .85], z: 6 }
-  ] },
+  { id: 'tangled-whiskers-sweep', direction: 'right-to-left', layers: [] },
   { id: 'gorge-cumulus-banks', layers: [
     { scale: 1.12, y: .32, drift: -.18, arc: -.045, enter: [0, .37], leave: [.71, 1], z: 2 },
     { scale: 1.20, y: -.42, drift: .12, arc: .045, enter: [.05, .39], leave: [.70, 1], z: 1 },
@@ -54,12 +58,28 @@ const paintedSet = (directory, aspects) => INK_CLOUD_LAYERS.map((layer, index) =
 export const INK_CLOUD_SETS = Object.freeze([
   INK_CLOUD_LAYERS,
   paintedSet('calligraphic-curls', [1897 / 829, 1774 / 887, 1, 1, 1672 / 941, 1672 / 941]),
-  paintedSet('temple-volutes', [1672 / 941, 1672 / 941, 1, 1, 1672 / 941, 1672 / 941]),
+  WHISKER_SWEEP_LAYERS,
   paintedSet('gorge-cumulus', [1672 / 941, 1983 / 793, 1, 1671 / 941, 1774 / 887, 1672 / 941])
 ].map(layers => Object.freeze(layers.map(layer => Object.freeze(layer)))));
 
 const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
 const interval = (value, [start, end]) => ease((value - start) / (end - start));
+
+function sweepCloudLayerFrame(layer, phase, width, height, index) {
+  // Preserve the approved 16:9 overlap, cropping its center on narrower or wider
+  // viewports so the scene stays covered without stretching a cloud silhouette.
+  const stageWidth = Math.max(width, height * 16/9), stageHeight = stageWidth * 9/16;
+  const w = stageWidth * layer.width, h = w / layer.aspect;
+  const entry = interval(phase, layer.enter), exit = interval(phase, layer.leave);
+  const start = width + 24, closed = stageWidth * layer.x + (width - stageWidth) / 2;
+  const end = -w - 24;
+  return {
+    id: layer.id, src: layer.src, side: layer.side, width: w, height: h,
+    x: start + (closed - start) * entry + (end - closed) * exit,
+    y: stageHeight * (layer.y + layer.drift * Math.sin(Math.PI * (entry + exit))) + (height - stageHeight) / 2,
+    closure: entry * (1 - exit), opacity: layer.opacity, zIndex: index + 1
+  };
+}
 
 // Position depends only on scroll: reversing or jumping cannot leave a timed animation behind.
 export function inkCloudFrame(progress, viewportWidth, viewportHeight, reducedMotion = false, openingEnabled = true) {
@@ -82,6 +102,7 @@ export function inkCloudFrame(progress, viewportWidth, viewportHeight, reducedMo
     phase,
     strength: interval(phase, [0, .46]) * (1 - interval(phase, [.60, 1])),
     layers: INK_CLOUD_SETS[setIndex].map((layer, index) => {
+      if (variant.direction === 'right-to-left') return sweepCloudLayerFrame(layer, phase, width, height, index);
       const motion = variant.layers[index] || {};
       const closure = interval(phase, motion.enter || layer.enter) * (1 - interval(phase, motion.leave || layer.leave));
       const w = Math.max(width * layer.width, height * layer.minHeightWidth) * (motion.scale ?? 1), h = w / layer.aspect;

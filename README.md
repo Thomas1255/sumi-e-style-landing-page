@@ -6,6 +6,7 @@ A neo-traditional sumi-e and watercolor scroll experience. Follow a flock of nin
 
 - Four generated crane films share a reversible scroll timeline with four painted landscapes. Scroll down to advance, scroll up to retrace, and stop to hold the current frame.
 - Layered sumi-e cloud paintings conceal changes in perspective, with a distinct cloud composition for each transition. Gentle ambient mist adds movement between scenes.
+- The second transition uses six complete ink-cloud silhouettes that sweep from right to left at staggered speeds. Their finished contours and tails stay intact as they pass offscreen.
 - An ink-circle loader stamps the 水 seal before a full-screen Canvas UI ripple reveals the page.
 - Story text hangs on animated linen using Canvas UI Cloth. Each scroll unrolls as it appears and rolls back up in place before leaving; scrolling upward reverses the motion.
 - Chapter navigation, a keyboard-accessible flight slider, reduced-motion support, painted fallbacks and optional pond audio keep the journey accessible.

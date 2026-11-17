@@ -3,8 +3,8 @@
   "design": "S — Tangled whisker front",
   "transition": 2,
   "direction": "right-to-left",
-  "status": "complete-cloud-preview-for-review",
-  "appliedToWebsite": false,
+  "status": "implemented",
+  "appliedToWebsite": true,
   "generationTool": "built-in ImageGen",
   "reference": "../cloud-right-to-left-prototypes-v8/05-tangled-whisker-front.png",
   "referenceRole": "Approved generated artwork only; no raw user references uploaded",
@@ -29,7 +29,8 @@
         1614,
         740
       ],
-      "borderAlphaMaximum": 1
+      "borderAlphaMaximum": 1,
+      "runtimeSrc": "assets/clouds/tangled-whiskers/01-rear-upper-cloud.png"
     },
     {
       "id": "rear-lower",
@@ -51,7 +52,8 @@
         1832,
         724
       ],
-      "borderAlphaMaximum": 1
+      "borderAlphaMaximum": 1,
+      "runtimeSrc": "assets/clouds/tangled-whiskers/02-rear-low-cloud.png"
     },
     {
       "id": "middle-wall",
@@ -73,7 +75,8 @@
         1221,
         993
       ],
-      "borderAlphaMaximum": 1
+      "borderAlphaMaximum": 1,
+      "runtimeSrc": "assets/clouds/tangled-whiskers/03-middle-cluster.png"
     },
     {
       "id": "middle-overhang",
@@ -95,7 +98,8 @@
         1383,
         987
       ],
-      "borderAlphaMaximum": 1
+      "borderAlphaMaximum": 1,
+      "runtimeSrc": "assets/clouds/tangled-whiskers/04-middle-pendant.png"
     },
     {
       "id": "front-whiskers",
@@ -117,7 +121,8 @@
         1697,
         724
       ],
-      "borderAlphaMaximum": 1
+      "borderAlphaMaximum": 1,
+      "runtimeSrc": "assets/clouds/tangled-whiskers/05-front-whiskers.png"
     },
     {
       "id": "front-billow",
@@ -139,7 +144,8 @@
         1452,
         861
       ],
-      "borderAlphaMaximum": 1
+      "borderAlphaMaximum": 1,
+      "runtimeSrc": "assets/clouds/tangled-whiskers/06-front-low-billow.png"
     }
   ],
   "alternates": [
@@ -147,5 +153,6 @@
   ],
   "revision": 2,
   "completeSilhouettes": true,
-  "previousArtworkRecord": "cropped-artwork-record.json"
+  "previousArtworkRecord": "cropped-artwork-record.json",
+  "runtimeDirectory": "assets/clouds/tangled-whiskers"
 }

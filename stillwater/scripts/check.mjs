@@ -74,7 +74,7 @@ assert.equal(INK_CLOUD_SETS.length,4,'Each passage needs its approved artwork se
 assert.deepEqual(INK_CLOUD_SETS[0],INK_CLOUD_LAYERS,'The original opening artwork must stay intact');
 const cloudHashes=[];
 for(const layers of INK_CLOUD_SETS){
-  assert.equal(layers.length,6,'Every artwork set needs independent left/right layers at all three depths');
+  assert.equal(layers.length,6,'Every artwork set needs six independent paintings across three depths');
   for(const layer of layers){
     const png=await readFile(path.join(root,layer.src));
     assert.equal(png.toString('ascii',1,4),'PNG','Cloud artwork must be PNG');
@@ -163,5 +163,6 @@ for(const scene of SCENES)await access(path.join(root,scene));
 assert.equal((html.match(/data-cloth/g)||[]).length,5,'Every story panel must have cloth');
 await import('./ink-opening-check.mjs');
 await import('./scroll-roll-check.mjs');
+await import('./cloud-sweep-check.mjs');
 await import('./server-check.mjs');
 console.log('Verified assets, reversible video frames, four synchronized landscapes, 24 unique PNGs in four staggered cloud sets, five cloth panels, reduced motion, and HTTP video seeking.');
