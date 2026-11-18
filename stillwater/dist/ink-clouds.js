@@ -1,5 +1,6 @@
 import { clamp, SCENE_CUTS } from './flight-timeline.js';
 import { createInkCloudRenderer } from './ink-cloud-renderer.js';
+import { INK_CLOUD_PALETTES, CLOUD_REFERENCE_TONES, createCloudPaletteFilters } from './ink-cloud-palette.js';
 
 // Give the painted banks a longer scroll runway than the underlying scene dissolve.
 export const INK_CLOUD_SCROLL_SPAN = .20;
@@ -130,6 +131,7 @@ export function mountInkClouds(after, { openingEnabled = true } = {}) {
   root.className = 'ink-cloud-transition';
   root.setAttribute('aria-hidden', 'true');
   root.dataset.cloudState = 'loading';
+  root.append(createCloudPaletteFilters(document));
   const fallback = document.createElement('div');
   fallback.className = 'ink-cloud-loading';
   root.append(fallback);
@@ -154,6 +156,7 @@ export function mountInkClouds(after, { openingEnabled = true } = {}) {
       image.dataset.layer = layer.id;
       image.dataset.depth = layer.depth;
       image.src = layer.src;
+      if (INK_CLOUD_PALETTES[setIndex]) image.style.filter = `url(#${INK_CLOUD_PALETTES[setIndex].id})`;
       element.append(image);
       return image;
     });
@@ -172,9 +175,11 @@ export function mountInkClouds(after, { openingEnabled = true } = {}) {
     root.dataset.active = String(frame.active);
     root.dataset.intro = String(frame.intro);
     root.dataset.cloudVariant = frame.variant;
+    root.dataset.cloudPalette = INK_CLOUD_PALETTES[frame.setIndex]?.id || 'original';
     root.dataset.cloudPhase = frame.phase.toFixed(6);
     root.dataset.cloudTransition = frame.strength.toFixed(6);
     fallback.style.opacity = String(bank.state === 'ready' ? 0 : frame.strength * .985);
+    fallback.style.backgroundColor = INK_CLOUD_PALETTES[frame.setIndex] ? `rgb(${CLOUD_REFERENCE_TONES.paper.join(',')})` : '';
     const reconstructed = bank.state === 'ready' && !!renderer?.draw(frame,bank.planes,innerWidth,innerHeight,devicePixelRatio || 1);
     root.dataset.cloudRenderer = reconstructed ? 'reconstructed' : 'images';
     surface.hidden = !reconstructed;

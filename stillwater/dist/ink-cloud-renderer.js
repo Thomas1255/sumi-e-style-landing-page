@@ -1,3 +1,5 @@
+import { CLOUD_PALETTE_STEPS, INK_CLOUD_PALETTES } from './ink-cloud-palette.js';
+
 // Reconstruct the approved paintings on one high-density surface instead of
 // stretching large, bilinearly filtered DOM compositor layers.
 export const INK_CLOUD_SHARPNESS = .8;
@@ -24,6 +26,8 @@ uniform sampler2D uPainting;
 uniform vec2 uSourceSize;
 uniform float uOpacity;
 uniform float uSharpness;
+uniform float uPaletteEnabled;
+uniform vec3 uPalette[${CLOUD_PALETTE_STEPS + 1}];
 in vec2 vUv;
 out vec4 color;
 
@@ -53,6 +57,17 @@ vec4 reconstruct(vec2 uv) {
 
 vec3 straight(vec4 sampleColor) { return sampleColor.rgb / max(sampleColor.a, .0001); }
 
+vec3 matchFirstPalette(vec3 rgb) {
+  vec3 position = clamp(rgb, 0., 1.) * ${CLOUD_PALETTE_STEPS}.;
+  ivec3 low = ivec3(floor(position));
+  ivec3 high = min(low + ivec3(1), ivec3(${CLOUD_PALETTE_STEPS}));
+  vec3 fraction = fract(position);
+  return vec3(
+    mix(uPalette[low.r].r, uPalette[high.r].r, fraction.r),
+    mix(uPalette[low.g].g, uPalette[high.g].g, fraction.g),
+    mix(uPalette[low.b].b, uPalette[high.b].b, fraction.b));
+}
+
 void main() {
   vec4 original = texture(uPainting, vUv);
   if (original.a < .001) { color = vec4(0.); return; }
@@ -71,6 +86,7 @@ void main() {
   float interior = smoothstep(.85, .99, min(original.a,min(min(left.a,right.a),min(up.a,down.a))));
   vec3 detail = clamp(reconstructed - (l+r+u+d)*.25, vec3(-.10), vec3(.10));
   vec3 ink = clamp(reconstructed + detail*uSharpness*interior, low, high);
+  if (uPaletteEnabled > .5) ink = matchFirstPalette(ink);
   float alpha = original.a*uOpacity;
   color = vec4(clamp(ink,0.,1.)*alpha, alpha);
 }`;
@@ -80,6 +96,7 @@ export function createInkCloudRenderer(canvas, onChange) {
   if (!gl) return null;
   let program, buffer, uniforms, usable = false, disposed = false;
   const textures = new Map();
+  const paletteTables = new Map(Object.entries(INK_CLOUD_PALETTES).map(([index, palette]) => [Number(index), new Float32Array(palette.table)]));
   const limit = Math.min(gl.getParameter(gl.MAX_RENDERBUFFER_SIZE), ...gl.getParameter(gl.MAX_VIEWPORT_DIMS));
 
   function shader(type, source) {
@@ -106,7 +123,8 @@ export function createInkCloudRenderer(canvas, onChange) {
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0,0, 1,0, 0,1, 0,1, 1,0, 1,1]), gl.STATIC_DRAW);
       const corner = gl.getAttribLocation(program, 'aCorner');
       gl.enableVertexAttribArray(corner); gl.vertexAttribPointer(corner, 2, gl.FLOAT, false, 0, 0);
-      uniforms = Object.fromEntries(['uViewport','uRect','uSourceSize','uOpacity','uSharpness','uPainting'].map(name => [name,gl.getUniformLocation(program,name)]));
+      uniforms = Object.fromEntries(['uViewport','uRect','uSourceSize','uOpacity','uSharpness','uPainting','uPaletteEnabled'].map(name => [name,gl.getUniformLocation(program,name)]));
+      uniforms.uPalette = gl.getUniformLocation(program, 'uPalette[0]');
       gl.uniform1i(uniforms.uPainting,0);
       gl.uniform1f(uniforms.uSharpness,INK_CLOUD_SHARPNESS);
       gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
@@ -154,6 +172,9 @@ export function createInkCloudRenderer(canvas, onChange) {
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.useProgram(program);
         gl.uniform2f(uniforms.uViewport,width,height);
+        const palette = paletteTables.get(frame.setIndex);
+        gl.uniform1f(uniforms.uPaletteEnabled,palette ? 1 : 0);
+        if (palette) gl.uniform3fv(uniforms.uPalette,palette);
         gl.activeTexture(gl.TEXTURE0);
         const ordered = frame.layers.map((layer,index) => ({layer,image:images[index]})).sort((a,b)=>a.layer.zIndex-b.layer.zIndex);
         for (const {layer,image} of ordered) {
